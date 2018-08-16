@@ -1,3 +1,6 @@
+.idea/*
+.*
+app/app.iml
 MyApplication.iml
 app/release/*
 projectFilesBackup/

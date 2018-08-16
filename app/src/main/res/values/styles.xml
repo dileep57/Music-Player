@@ -1,0 +1,605 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppFullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/Themecolor</item>
+        <item name="colorPrimaryDark">#142E3C</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="colorControlHighlight">@color/LightGrey</item>
+        <item name="android:popupMenuStyle">@style/AppFullScreenTheme.PopupMenu</item>
+
+        <!--<item name="android:popupAnimationStyle">@style/Animation</item>-->
+        <!--<item name="android:panelFullBackground">@color/Blue</item>-->
+        <!--<item name="android:popupMenuStyle">@style/PopupMenu</item>-->
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
+    </style>
+
+    <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:dropDownHorizontalOffset">-4dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+    </style>
+
+
+    <style name="Blue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#0000FF</item>
+        <item name="colorPrimaryDark">#0000FF</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="BlueViolet" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#8A2BE2</item>
+        <item name="colorPrimaryDark">#8A2BE2</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Brown" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#A52A2A</item>
+        <item name="colorPrimaryDark">#A52A2A</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="CadetBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#5F9EA0</item>
+        <item name="colorPrimaryDark">#5F9EA0</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Chocolate" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#D2691E</item>
+        <item name="colorPrimaryDark">#D2691E</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="CornflowerBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#6495ED</item>
+        <item name="colorPrimaryDark">#6495ED</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Crimson" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#DC143C</item>
+        <item name="colorPrimaryDark">#DC143C</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#00008B</item>
+        <item name="colorPrimaryDark">#00008B</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkCyan" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#008B8B</item>
+        <item name="colorPrimaryDark">#008B8B</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkGray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#A9A9A9</item>
+        <item name="colorPrimaryDark">#A9A9A9</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkGrey" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#A9A9A9</item>
+        <item name="colorPrimaryDark">#A9A9A9</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#006400</item>
+        <item name="colorPrimaryDark">#006400</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkMagenta" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#8B008B</item>
+        <item name="colorPrimaryDark">#8B008B</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkOrange" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF8C00</item>
+        <item name="colorPrimaryDark">#FF8C00</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkOrchid" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#9932CC</item>
+        <item name="colorPrimaryDark">#9932CC</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkRed" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#8B0000</item>
+        <item name="colorPrimaryDark">#8B0000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkSlateBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#483D8B</item>
+        <item name="colorPrimaryDark">#483D8B</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkSlateGray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#2F4F4F</item>
+        <item name="colorPrimaryDark">#2F4F4F</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkSlateGrey" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#2F4F4F</item>
+        <item name="colorPrimaryDark">#2F4F4F</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DarkViolet" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#9400D3</item>
+        <item name="colorPrimaryDark">#9400D3</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DeepPink" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF1493</item>
+        <item name="colorPrimaryDark">#FF1493</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DimGray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#696969</item>
+        <item name="colorPrimaryDark">#696969</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="DodgerBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#1E90FF</item>
+        <item name="colorPrimaryDark">#1E90F9</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="FireBrick" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#B22222</item>
+        <item name="colorPrimaryDark">#B22229</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="ForestGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#228B22</item>
+        <item name="colorPrimaryDark">#228B29</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Fuchsia" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF00FF</item>
+        <item name="colorPrimaryDark">#FF00FF</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="GoldenRod" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#DAA520</item>
+        <item name="colorPrimaryDark">#DAA520</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Gray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#808080</item>
+        <item name="colorPrimaryDark">#808080</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Green" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#008000</item>
+        <item name="colorPrimaryDark">#008000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="GreenYellow" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#ADFF2F</item>
+        <item name="colorPrimaryDark">#ADFF2F</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="HotPink" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF69B4</item>
+        <item name="colorPrimaryDark">#FF69B4</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="IndianRed" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#CD5C5C</item>
+        <item name="colorPrimaryDark">#CD5C5C</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Indigo" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#4B0082</item>
+        <item name="colorPrimaryDark">#4B0082</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightGrey" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#D3D3D3</item>
+        <item name="colorPrimaryDark">#D3D3D3</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#90EE90</item>
+        <item name="colorPrimaryDark">#90EE90</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightPink" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FFB6C1</item>
+        <item name="colorPrimaryDark">#FFB6C1</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightSalmon" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FFA07A</item>
+        <item name="colorPrimaryDark">#FFA07A</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightSeaGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#20B2AA</item>
+        <item name="colorPrimaryDark">#20B2AA</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightSkyBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#87CEFA</item>
+        <item name="colorPrimaryDark">#87CEFA</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightSlateGray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#778899</item>
+        <item name="colorPrimaryDark">#778899</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LightSlateGrey" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#778899</item>
+        <item name="colorPrimaryDark">#778899</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Lime" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#00FF00</item>
+        <item name="colorPrimaryDark">#00FF00</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="LimeGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#32CD32</item>
+        <item name="colorPrimaryDark">#32CD32</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Magenta" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF00FF</item>
+        <item name="colorPrimaryDark">#FF00FF</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Maroon" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#800000</item>
+        <item name="colorPrimaryDark">#800000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#0000CD</item>
+        <item name="colorPrimaryDark">#0000CD</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumOrchid" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#BA55D3</item>
+        <item name="colorPrimaryDark">#BA55D3</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumPurple" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#9370DB</item>
+        <item name="colorPrimaryDark">#9370DB</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumSeaGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#3CB371</item>
+        <item name="colorPrimaryDark">#3CB371</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumSlateBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#7B68EE</item>
+        <item name="colorPrimaryDark">#7B68EE</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumSpringGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#00FA9A</item>
+        <item name="colorPrimaryDark">#00FA9A</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MediumVioletRed" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#C71585</item>
+        <item name="colorPrimaryDark">#C71585</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="MidnightBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#191970</item>
+        <item name="colorPrimaryDark">#191970</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Navy" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#000080</item>
+        <item name="colorPrimaryDark">#000080</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Orange" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FFA500</item>
+        <item name="colorPrimaryDark">#FFA500</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="OrangeRed" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF4500</item>
+        <item name="colorPrimaryDark">#FF4500</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Orchid" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#DA70D6</item>
+        <item name="colorPrimaryDark">#DA70D6</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="PaleVioletRed" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#DB7093</item>
+        <item name="colorPrimaryDark">#DB7093</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Pink" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FFC0CB</item>
+        <item name="colorPrimaryDark">#FFC0CB</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Plum" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#DDA0DD</item>
+        <item name="colorPrimaryDark">#DDA0DD</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Purple" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#800080</item>
+        <item name="colorPrimaryDark">#800080</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="RebeccaPurple" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#663399</item>
+        <item name="colorPrimaryDark">#663399</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Red" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF0000</item>
+        <item name="colorPrimaryDark">#FF0000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="RoyalBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#4169E1</item>
+        <item name="colorPrimaryDark">#4169E1</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="SeaGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#2E8B57</item>
+        <item name="colorPrimaryDark">#2E8B57</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Silver" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#C0C0C0</item>
+        <item name="colorPrimaryDark">#C0C0C0</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="SlateBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#6A5ACD</item>
+        <item name="colorPrimaryDark">#6A5ACD</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="SlateGray" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#708090</item>
+        <item name="colorPrimaryDark">#708090</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="SpringGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#00FF7F</item>
+        <item name="colorPrimaryDark">#00FF7F</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="SteelBlue" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#4682B4</item>
+        <item name="colorPrimaryDark">#4682B4</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Teal" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#008080</item>
+        <item name="colorPrimaryDark">#008080</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Tomato" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FF6347</item>
+        <item name="colorPrimaryDark">#FF6347</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Violet" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#EE82EE</item>
+        <item name="colorPrimaryDark">#EE82EE</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="Yellow" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#FFFF00</item>
+        <item name="colorPrimaryDark">#FFFF00</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+    <style name="YellowGreen" parent="AppFullScreenTheme">
+        <item name="colorPrimary">#9ACD32</item>
+        <item name="colorPrimaryDark">#9ACD32</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/White</item></style>
+
+
+
+
+
+
+
+
+    <style name="TransparentBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="error_appearence" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/Red</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="hint_appearence" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/Themecolor</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="playertheme" parent="AppFullScreenTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
+    <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="tabtext_size" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_from_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_to_left</item>
+    </style>
+
+    <style name="AppFullScreenTheme.PopupMenu" parent="android:Widget.ListPopupWindow">
+        <item name="android:popupBackground">#f5f5f5</item>
+        <item name="android:elevation">50dp</item>
+    </style>
+
+</resources>

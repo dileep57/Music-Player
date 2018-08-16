@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="gridspace">2dp</dimen>
+    <dimen name="card_album_radius">3dp</dimen>
+    <dimen name="card_cover_height">140dp</dimen>
+    <dimen name="card_title_padding">10dp</dimen>
+    <dimen name="card_price_padding_bottom">5dp</dimen>
+    <dimen name="setting_layout_padding_upper_bottom">5dp</dimen>
+    <dimen name="setting_dialog_shake_radiobutton_padding">7dp</dimen>
+    <dimen name="setting_dialog_shake_radiobutton_fontsize">15dp</dimen>
+
+</resources>

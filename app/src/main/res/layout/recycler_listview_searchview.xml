@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#003346"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:elevation="5dp"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardElevation="0dp"
+        android:background="@drawable/player_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/cardrelative"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:padding="7dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:weightSum="100"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:layout_weight="10"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/small_banner"
+                                android:layout_centerVertical="true"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/playlist_white"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:paddingLeft="20dp"
+                            android:layout_weight="90"
+                            android:layout_width="0dp"
+                            android:id="@+id/central"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/songname"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Add New Playlist"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/frag_playlist_txt_color"
+                                android:singleLine="true"
+                                android:textSize="18sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/artist"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Track"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/frag_playlist_txt_color"
+                                android:singleLine="true"
+                                android:textSize="15sp"
+                                />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

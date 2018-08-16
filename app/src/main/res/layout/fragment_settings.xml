@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:background="@color/White"
+    android:layout_height="match_parent">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:id="@+id/heading1"
+       android:paddingTop="12dp"
+       android:paddingLeft="16dp"
+       android:layout_height="wrap_content">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Shake Event"
+           android:textStyle="bold"
+           android:textSize="15dp"
+           android:padding="10dp"
+           android:textColor="@color/Themecolor"
+           />
+   </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/shake_event"
+        android:layout_below="@id/heading1"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:paddingLeft="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:id="@+id/shake_status_head"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="16dp"
+                android:gravity="center_vertical"
+                android:layout_weight="70">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Enable Shake"
+                    android:textSize="14sp"
+                    android:textColor="@color/lightblack1"
+                    android:fontFamily="sans-serif-medium"
+                     />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingLeft="14dp"
+                android:paddingBottom="16dp"
+                android:layout_weight="30">
+
+                <Switch
+                    android:id="@+id/shake_status_switch"
+                    android:textColor="@color/Themecolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:paddingTop="0.01dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingBottom="0.1dp"
+            android:id="@+id/action_head"
+
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="12dp"
+                android:background="@color/White"
+                android:layout_height="wrap_content"
+                android:layout_weight="70">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Shake Action"
+                    android:textSize="14sp"
+                    android:textColor="@color/lightblack1"
+                    android:fontFamily="sans-serif-medium"
+                    android:id="@+id/action_left_text"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="14dp"
+                android:paddingBottom="12dp"
+                android:background="@color/White"
+                android:layout_height="match_parent"
+                android:layout_weight="30">
+
+                <TextView
+                    android:id="@+id/action_right_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    android:textColor="@color/lightblack1"
+                    android:text="Shake"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:paddingBottom="0.001dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:id="@+id/force_head"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="12dp"
+                android:background="@color/White"
+                android:layout_height="wrap_content"
+                android:layout_weight="70">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Shake Force"
+                    android:textSize="14sp"
+                    android:paddingLeft="16dp"
+                    android:textColor="@color/lightblack1"
+                    android:fontFamily="sans-serif-medium"
+                    android:id="@+id/force_left_text"
+                    android:padding="10dp"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="14dp"
+                android:paddingBottom="12dp"
+                android:layout_height="match_parent"
+                android:background="@color/White"
+                android:layout_weight="30">
+
+                <TextView
+                    android:id="@+id/force_right_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="30"
+                    android:textSize="13sp"
+                    android:textColor="@color/lightblack1"
+                    android:padding="10dp"/>
+
+
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:paddingBottom="0.001dp"
+            android:id="@+id/rescan_head"
+            android:background="@color/White"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="12dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_weight="100">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Rescan Library"
+                    android:textSize="14sp"
+                    android:paddingLeft="16dp"
+                    android:textColor="@color/lightblack1"
+                    android:fontFamily="sans-serif-medium"
+                    android:id="@+id/rescan"
+                    android:padding="10dp"/>
+
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

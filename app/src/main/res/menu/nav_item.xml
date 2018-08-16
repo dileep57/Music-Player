@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+
+    <group>
+        <item
+            android:id="@+id/home"
+            android:title="Home"
+            android:icon="@drawable/home"/>
+
+        <item
+            android:id="@+id/music_library"
+            android:title="Music library"
+            android:icon="@drawable/music_library"/>
+
+
+        <!--<item-->
+            <!--android:id="@+id/songs"-->
+            <!--android:title="Songs"-->
+            <!--android:icon="@drawable/music"/>-->
+
+        <item
+            android:id="@+id/equilizer"
+            android:title="Equilizer"
+            android:icon="@drawable/equilizer1"/>
+
+        <item
+            android:id="@+id/theme"
+            android:title="Theme"
+            android:icon="@drawable/theme_red"/>
+
+
+        <item
+            android:id="@+id/player2"
+            android:title="Player"
+            android:icon="@drawable/play_icon_red"/>
+
+        <item
+            android:id="@+id/settings"
+            android:title="Settings"
+            android:iconTint="@color/Black"
+            android:icon="@drawable/settings"/>
+
+        <item
+            android:id="@+id/invite"
+            android:title="Invite Friends"
+            app:showAsAction="always"
+            android:icon="@drawable/send_button"/>
+
+    </group>
+
+</menu>

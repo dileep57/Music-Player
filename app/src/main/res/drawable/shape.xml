@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorPrimary"/>
+    <item>
+        <bitmap android:src="@drawable/music1"
+                android:gravity="fill"
+                android:alpha="0.5"/>
+    </item>
+
+    <item android:top="330dp"
+        android:bottom="-330dp"
+        android:left="0dp"
+        android:right="-330dp"
+         >
+        <rotate
+            android:fromDegrees="-10"
+            android:pivotX="0%"
+            android:pivotY="100%">
+            <shape
+                android:shape="rectangle">
+                <solid
+                    android:color="#232327"/>
+            </shape>
+        </rotate>
+    </item>
+
+
+</layer-list>

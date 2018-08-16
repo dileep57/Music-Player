@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_song_background"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/heading"
+            android:text="Title"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:textColor="@color/Black"
+            android:textAlignment="textStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title_dialog"
+            android:text="Title: "
+
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/dialog_detail_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/title_value"
+            android:textColor="@color/dialog_detail_text_color"
+
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/artist_dialog"
+            android:text="Artist: "
+
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/artist_value"
+            android:text="Delete"
+
+            android:paddingLeft="5dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/album_dialog_dialog"
+            android:text="Album : "
+
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/album_value"
+            android:text="Delete"
+
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/composer_dialog"
+            android:text="Composer : "
+
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/composer_value"
+            android:text="Delete"
+
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/year_dialog"
+            android:text="Year : "
+
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/dialog_detail_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/year_value"
+            android:text="Delete"
+
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_song_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/location_dialog"
+            android:text="Location : "
+
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="@color/dialog_detail_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/location_value"
+            android:text="Delete"
+
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/dialog_detail_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

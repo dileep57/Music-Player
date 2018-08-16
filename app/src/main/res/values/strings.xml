@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Music Player</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dialog_detail_text_size">15dp</string>
+    <string name="lightblack">#383838</string>
+    <integer name="slide_animation_duration">200</integer>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="rate_it_now">No</string>
+    <string name="rate_it_later">No</string>
+    <string name="rate_no">No</string>
+
+
+
+</resources>

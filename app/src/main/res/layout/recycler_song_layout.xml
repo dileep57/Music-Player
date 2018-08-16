@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        android:elevation="5dp"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardElevation="0dp"
+        android:background="@drawable/player_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+
+            android:id="@+id/cardrelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:weightSum="100"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="80"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/small_banner"
+                            android:layout_centerVertical="true"
+                            android:adjustViewBounds="true"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:paddingLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/song_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Song name"
+                            android:textColor="@color/recycler_song_color"
+                            android:singleLine="true"
+                            android:textSize="15sp"
+                            />
+                        <TextView
+                            android:id="@+id/artist"
+                            android:layout_below="@+id/song_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Artist Name"
+                            android:textColor="@color/recycler_song_color"
+                            android:singleLine="true"
+                            android:textSize="10sp"
+                            />
+                        <TextView
+                            android:id="@+id/duration"
+                            android:layout_below="@+id/artist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Artist Name"
+                            android:textColor="@color/recycler_song_color"
+                            android:singleLine="true"
+                            android:textSize="10sp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--<LinearLayout-->
+                    <!--android:layout_weight="20"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent">-->
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_height="match_parent">-->
+
+                        <!--<es.claucookie.miniequalizerlibrary.EqualizerView-->
+                            <!--xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+                            <!--android:id="@+id/equalizer_view"-->
+                            <!--android:layout_width="30dp"-->
+                            <!--android:layout_height="30dp"-->
+                            <!--android:visibility="invisible"-->
+                            <!--custom:animDuration="3500"/>-->
+                    <!--</RelativeLayout>-->
+
+                <!--</LinearLayout>-->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:clickable="true"
+                    android:id="@+id/popup"
+                    android:theme="@style/MyPopupMenu"
+                    android:layout_weight="20">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center_vertical"
+                        android:text="&#x22ee;"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/frag_playlist_txt_color"
+                        android:textAppearance="?android:textAppearanceLarge" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_10"
+    android:layout_height="match_parent">
+
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+        android:id="@+id/sub_fragment_album_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fastScrollPopupTextColor="@color/Themecolor"
+        app:fastScrollThumbColor="@color/white"
+        android:padding="5dp"
+        app:fastScrollPopupBgColor="@color/white"
+        app:fastScrollPopupTextSize="20dp"
+        />
+
+</RelativeLayout>

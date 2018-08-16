@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/play"
+        app:showAsAction="never"
+        android:title="Play"
+        />
+
+    <item
+        android:id="@+id/play_next"
+        android:title="Play Next"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/add_to_queue"
+        android:title="Add to Queue"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/remove_from_playlist"
+        android:title="Remove From Playlist"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/delete"
+        android:title="Delete"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/send"
+        android:title="Send"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/set_ringtone"
+        android:title="Set Ringtone"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_to_playlistt"
+        android:title="Add to Playlist"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/detail"
+        android:title="Detail"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_favrioute"
+        android:title="Favourite"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        app:showAsAction="never"/>
+
+
+
+</menu>

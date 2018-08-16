@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         >
+
+        <!--<android.support.design.widget.TabLayout-->
+            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/tabs"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:elevation="10dp"-->
+            <!--app:tabSelectedTextColor="@color/white"-->
+            <!--app:tabTextAppearance="@style/tabtext_size"-->
+            <!--app:tabMode="scrollable"-->
+            <!--android:gravity="center"-->
+            <!--app:tabTextColor="#ececec"-->
+            <!--app:tabIndicatorColor="@android:color/white"-->
+            <!--app:tabIndicatorHeight="3dp"-->
+            <!--app:tabPaddingStart="25dp"-->
+            <!--app:tabPaddingEnd="25dp"-->
+            <!--app:tabGravity="fill"-->
+            <!--app:tabBackground="@android:color/transparent"/>-->
+
+
+        <com.ogaclejapan.smarttablayout.SmartTabLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clickable="false"
+        app:stl_customTabTextLayoutId="@layout/custom_tab"
+        app:stl_customTabTextViewId="@id/custom_text"
+        app:stl_indicatorColor="@color/white"
+        app:stl_indicatorInterpolation="linear"
+        app:stl_indicatorThickness="3dp"
+        app:stl_dividerThickness="0dp"
+        app:stl_underlineThickness="0dp"
+        app:tabBackground = "@android:color/transparent"
+        app:layout_scrollFlags="scroll|enterAlways"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_10"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:paddingTop="2dp"
+        android:visibility="gone"
+        android:id="@+id/recent_upper_card"
+        android:background="@drawable/player_card"
+        app:cardElevation="8dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/White"
+            android:paddingLeft="30dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recent Activity"
+                    android:textColor="@color/Black"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recently play|Top 20 songs"
+                    android:textColor="@color/Grey"
+                    android:textSize="10dp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="No Recent Activity"
+        android:gravity="center"
+        android:id="@+id/no_recent_activity"
+        android:textColor="@color/White"
+        android:textStyle="bold|italic"
+        android:textSize="25dp"
+        android:layout_height="match_parent" />
+
+
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+        android:id="@+id/recentsong_recycler"
+        android:layout_below="@id/recent_upper_card"
+        android:layout_width="match_parent"
+        app:fastScrollPopupBgColor="@color/Themecolor"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

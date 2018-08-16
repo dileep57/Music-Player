@@ -1,0 +1,43 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/replaceable_layout"
+    android:layout_width="match_parent"
+    android:background="@drawable/gradient_10"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_layout"
+                app:titleTextColor="@color/White"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize">
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+        android:layout_below="@id/appbar_layout"
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fastScrollPopupBackgroundSize="60dp"
+        app:fastScrollPopupTextSize="40sp"
+        android:scrollbarSize="3dp"
+        app:fastScrollPopupBgColor="@color/Themecolor"
+        app:fastScrollThumbColor="@color/fastScrollThumbColor"
+        app:fastScrollPopupTextColor="@color/White"/>
+
+
+</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

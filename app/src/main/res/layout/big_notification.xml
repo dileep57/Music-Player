@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="5dp"
+        android:background="#0c2c38"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewAlbumArt"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:clickable="true"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textSongName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingLeft="3dp"
+                android:maxLines="1"
+                android:text="Song title here"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textArtistname"
+                    android:text="Artist name here"
+                    android:layout_width="0dp"
+                    android:layout_weight="70"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="3dp"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:selectAllOnFocus="true"
+                    android:maxLines="1"
+                    android:textColor="#E5E5E5"
+                    android:textSize="12dp" />
+
+
+            </LinearLayout>
+            <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textAlbumName"
+                    android:text="Album title here"
+                    android:layout_width="0dp"
+                    android:layout_weight="70"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="3dp"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:selectAllOnFocus="true"
+                    android:maxLines="1"
+                    android:textColor="#E5E5E5"
+                    android:textSize="12dp" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/timeelapse"-->
+                    <!--android:text="00:00"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="30"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="right"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:selectAllOnFocus="true"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:textColor="#E5E5E5"-->
+                    <!--android:textSize="12dp" />-->
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/Grey" />
+
+    <LinearLayout
+        android:background="#0c2c38"
+        android:layout_width="match_parent"
+        android:weightSum="100"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center"
+            android:id="@+id/btnprev"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="15dp" >
+
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:background="@drawable/prev_white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center"
+            android:id="@+id/playpause_head"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp" >
+
+            <ImageView
+                android:id="@+id/playpause"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/play_white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center"
+            android:id="@+id/btnNext"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="12dp" >
+
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:background="@drawable/next_white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center"
+            android:id="@+id/btnDelete"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:background="@drawable/close"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

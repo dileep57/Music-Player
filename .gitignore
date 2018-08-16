@@ -1,4 +1,5 @@
 MyApplication.iml
-app/release/
+app/release/*
 projectFilesBackup/
 AndroPlayer_wall.jpg
+projectFilesBackup/*

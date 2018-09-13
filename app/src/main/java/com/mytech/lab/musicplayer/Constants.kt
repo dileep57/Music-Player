@@ -368,8 +368,8 @@ companion object {
             }
             else
             {
-                Log.i("TAGGI ","EXECUTE")
-                Log.i("TAGGI ","YES")
+//                Log.i("TAGGI ","EXECUTE")
+//                Log.i("TAGGI ","YES")
                 return
             }
 

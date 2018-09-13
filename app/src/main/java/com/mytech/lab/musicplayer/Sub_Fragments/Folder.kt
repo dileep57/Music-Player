@@ -171,7 +171,7 @@ class Folder : Fragment() {
                 Constants.SONGS_LIST.clear()
                 Constants.SONGS_LIST.add(Pair(s, Home.Songname_position.get(name)!!))
                 Constants.SONG_NUMBER = 0
-                Log.i("FileName ",file.name)
+//                Log.i("FileName ",file.name)
                 Constants.mediaAfterprepared(null,context,s,position, position,
                         "general", "folder")
 

@@ -75,8 +75,8 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
         val state = Environment.getExternalStorageState()
         val file = File(temp.url)
         var dialog = AlertDialog.Builder(cntxt).create()
-        Log.i("File to delete",temp.song_name)
-        Log.i("Song_name ",Home.shared.getString("song_name","name"))
+//        Log.i("File to delete",temp.song_name)
+//        Log.i("Song_name ",Home.shared.getString("song_name","name"))
         dialog.setMessage("Are you sure you want to delete this song permanently")
         dialog.setTitle("Confirm Delete")
         dialog.setCancelable(true)
@@ -99,17 +99,17 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
                 adapter?.notifyItemRemoved(position)
                 if(position==null)
                 {
-                    Log.i("DELETE","position null")
+//                    Log.i("DELETE","position null")
                 }
                 if(song_array==null)
                 {
-                    Log.i("DELETE","array null")
+//                    Log.i("DELETE","array null")
                 }
                 adapter?.notifyItemRangeChanged(position,song_array!!.size)
                 if(cntxt!=null)
                 {
                     Toast.makeText(cntxt, "Successfully Deleted", Toast.LENGTH_SHORT).show()
-                    Log.i("DELETE","Success")
+//                    Log.i("DELETE","Success")
                 }
 
                 Refresh_song().execute(temp.song_name)

@@ -66,13 +66,13 @@ object UniversalFilter{
                 }.size
 
                 if (indexInList > 0) {
-                    Log.i(TAG, "findInDirectory => " + dir.name + " return true for => " + indexInList)
+//                    Log.i(TAG, "findInDirectory => " + dir.name + " return true for => " + indexInList)
                     return true
                 }
 
                 for (subDirectory in sub) {
                     if (findInDirectory(subDirectory)) {
-                        Log.i(TAG, "findInDirectory => " + subDirectory.toString())
+//                        Log.i(TAG, "findInDirectory => " + subDirectory.toString())
                         return true
                     }
                 }

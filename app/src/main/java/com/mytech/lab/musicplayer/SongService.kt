@@ -76,7 +76,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
 
-    private var timer: Timer? = null
 
     override fun onCreate() {
 
@@ -87,8 +86,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         maxvol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         currentvol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         duck_volume = currentvol.toDouble()
-
-        timer = Timer()
 
         mp!!.setOnCompletionListener {
             Controls.nextControl(getApplicationContext())
@@ -420,16 +417,18 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             mp?.prepare()
             mp?.start()
             mEqualizer = Equalizer(0,mp!!.audioSessionId)
-            mEqualizer.setEnabled(true)
 
-            timer!!.scheduleAtFixedRate( MainTask(), 0, 100)
+            mEqualizer.setEnabled(true)
+            val timer:Timer = Timer(true)
+            timer.scheduleAtFixedRate( MainTask(), 0, 100)
         } catch (e:Exception) {
              Home.filenotsupport()
              Controls.nextControl(applicationContext)
         }
     }
 
-        @SuppressLint("NewApi")
+        @SuppressLint("" +
+                "")
         private fun RegisterRemoteClient() {
             remoteComponentName = ComponentName(applicationContext, PhoneStateReceiver().ComponentName())
             try
@@ -490,7 +489,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         Controls.playPauseControl("pause")
                         Handler().postDelayed({
                             Controls.playPauseControl("play")
-                        }, TimeUnit.SECONDS.toMillis(3))
+                        }, TimeUnit.SECONDS.toMillis(2))
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS -> {

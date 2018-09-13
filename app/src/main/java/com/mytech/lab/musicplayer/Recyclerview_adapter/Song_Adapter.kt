@@ -109,7 +109,7 @@ class Song_Adapter(internal var song_info: ArrayList<Song_base>, internal var co
 
         holder.popup.setOnClickListener {view ->
 //            playwithpopmenu(holder.popup,song,position)
-            Log.i("LOG"," CLICK")
+//            Log.i("LOG"," CLICK")
             if(menuclick !=null )
             {
                 menuclick?.clickonmenu(holder.popup, song, position)

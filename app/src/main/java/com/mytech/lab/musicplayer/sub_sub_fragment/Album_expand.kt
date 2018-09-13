@@ -52,7 +52,7 @@ class Album_expand :Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(v.context)
         recyclerView?.setHasFixedSize(true)
 
-        Log.i("Album name is ",album_name)
+//        Log.i("Album name is ",album_name)
         if(Home.albummap.get(album_name)!=null)
         {
             for (temp in Home.albummap.get(album_name)!!)

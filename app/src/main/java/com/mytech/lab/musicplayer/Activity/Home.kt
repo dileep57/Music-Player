@@ -309,7 +309,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         colorpicker.setOnFastChooseColorListener(object :ColorPicker.OnFastChooseColorListener {
 
             override fun setOnFastChooseColorListener(position:Int, color:Int) {
-                Log.i("color", Constants.coloHexlist[position])
+//                Log.i("color", Constants.coloHexlist[position])
                 Constants.setcolortheme(position)
 
                 val intent:Intent = Intent(applicationContext, Home::class.java)
@@ -384,7 +384,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     private fun getFragmentTag() :String
     {
         val manager = supportFragmentManager
-        Log.i("GETTAG",manager.getBackStackEntryCount().toString())
+//        Log.i("GETTAG",manager.getBackStackEntryCount().toString())
         val index = manager.getBackStackEntryCount() - 1
         val backentry:FragmentManager.BackStackEntry = manager.getBackStackEntryAt(index)
         return backentry.getName()
@@ -638,7 +638,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 sorting_by = MediaStore.Audio.Media.DISPLAY_NAME
             else
                 sorting_by = sorting
-            Log.i("String ",sorting_by.toString())
+//            Log.i("String ",sorting_by.toString())
             all_songs.clear()
             val cursor = context.contentResolver.query(uri, null, selection, null, sorting_by)
             if (cursor != null) {

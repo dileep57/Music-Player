@@ -1,6 +1,7 @@
 package com.mytech.lab.musicplayer
 
 import android.content.Context
+import android.widget.Toast
 
 
 object Controls {
@@ -86,6 +87,13 @@ object Controls {
         } catch (e: Exception) {
         }
 
+
+
+    }
+
+    public fun createToast(context: Context, message: String,duration:Int){
+        var toast:Toast = Toast.makeText(context, message, duration)
+        toast.show()
 
 
     }

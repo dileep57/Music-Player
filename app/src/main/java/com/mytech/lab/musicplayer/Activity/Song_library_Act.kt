@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -124,7 +125,12 @@ class Song_library_Act : AppCompatActivity() {
                     if (!isServiceRunning)
                     {
                         val i = Intent(applicationContext, SongService::class.java)
-                        startService(i)
+                        //startService(i)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(i)
+                        } else {
+                            startService(i)
+                        }
 
                     } else {
 

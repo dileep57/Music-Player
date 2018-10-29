@@ -2,6 +2,7 @@ package com.mytech.lab.musicplayer.Activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -134,7 +135,11 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
                 if (!isServiceRunning)
                 {
                     val i = Intent(applicationContext, SongService::class.java)
-                    startService(i)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(i);
+                    } else {
+                        startService(i);
+                    }
 
                 }
                 Controls.nextControl(applicationContext)

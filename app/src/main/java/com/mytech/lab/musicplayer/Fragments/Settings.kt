@@ -287,7 +287,7 @@ class Settings : Fragment() {
 
              var ob = Refresh()
              ob.execute(cntx)
-            Toast.makeText(cntx,"Library Refreshing...",Toast.LENGTH_SHORT).show()
+            Controls.createToast(cntx,"Library Refreshing...",Toast.LENGTH_SHORT)
         }
 
 

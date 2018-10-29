@@ -1,10 +1,7 @@
 package com.mytech.lab.musicplayer
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -21,8 +18,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.media.MediaMetadataRetriever
+import android.os.Build
 import android.provider.MediaStore
+import android.support.annotation.RequiresApi
+import android.support.v4.app.NotificationCompat.PRIORITY_MAX
 import android.util.Log
 import android.widget.Toast
 import com.mytech.lab.musicplayer.Activity.GeneralPlayer
@@ -46,6 +47,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     lateinit var mEqualizer:Equalizer
     lateinit var mVqualizer:Visualizer
     private var remoteComponentName: ComponentName? = null
+    val CHANNEL_ID:String = "my_musicPlayer"
 
     private var remoteControlClient: RemoteControlClient? = null
     internal var mDummyAlbumArt: Bitmap? = null
@@ -168,8 +170,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                             {
                                 Constants.SONGS_LIST.add(Pair(Home.servicearraylist[i].first, Home.servicearraylist[i].second))
                             }
-
-
                         }
 
                         s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
@@ -199,6 +199,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     }
 
                     collectsongdata(s)
+                    Log.i("CLICK","SongChnage Handler call")
                     newnotification()
                     startNotify()
                     return false
@@ -239,6 +240,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
                     GeneralPlayer().changeButton_general()
+                    Log.i("CLICK","PlayPause Handler call")
                     updatenotification()
                     startNotify()
                     return true
@@ -282,6 +284,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         Recent_song.setvisibility()
     }
 
+
     fun newnotification()
     {
 
@@ -291,11 +294,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         val notificationIntent = Intent(applicationContext, Home::class.java)
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 99, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        notification = NotificationCompat.Builder(applicationContext,"notify")
-                .setContentIntent(pendingIntent)
-                .setPriority(99)
-                .setSmallIcon(R.drawable.headphones_tick)
-                .build()
 
         simpleContentView = RemoteViews(applicationContext.packageName, R.layout.custom_notification)
         if(currentVersionSupportBigNotification){
@@ -328,17 +326,69 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             e.printStackTrace()
         }
 
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+            //val name:String = "for_oreo"// The user-visible name of the channel.
+            //val importance:Int = NotificationManager.IMPORTANCE_HIGH
+            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                val channelId = createNotificationChannel("my_service", "My Background Service")
+                val notificationBuilder = NotificationCompat.Builder(this, channelId )
+                notification = notificationBuilder.setOngoing(true)
+                        .setPriority(PRIORITY_MAX)
+                        .setCategory(Notification.CATEGORY_SERVICE)
+                        .setContentIntent(pendingIntent)
+                        .setCustomBigContentView(expandedView)
+                        .setContent(simpleContentView)
+                        .setSmallIcon(R.drawable.headphones_tick)
+                        .build()
+
+            }else{
+                notification = NotificationCompat.Builder(applicationContext, "notify")
+                        .setContentIntent(pendingIntent)
+                        .setPriority(99)
+                        .setCustomBigContentView(expandedView)
+                        .setContent(simpleContentView)
+                        .setSmallIcon(R.drawable.headphones_tick)
+                        .setChannelId(CHANNEL_ID)
+                        .build()
+            }
+
+
+
+        }else{
+            notification = NotificationCompat.Builder(applicationContext, "notify")
+                    .setContentIntent(pendingIntent)
+                    .setPriority(99)
+                    .setSmallIcon(R.drawable.headphones_tick)
+                    .build()
+        }
 
         setListeners(simpleContentView)
         if(currentVersionSupportBigNotification)
             setListeners(expandedView)
 
 
-        notification.contentView = simpleContentView
-        if(currentVersionSupportBigNotification)
-            notification.bigContentView = expandedView
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+
+        }else{
+            notification.contentView = simpleContentView
+            if(currentVersionSupportBigNotification)
+                notification.bigContentView = expandedView
+        }
 
 
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String): String{
+        val chan = NotificationChannel(channelId,
+                channelName, NotificationManager.IMPORTANCE_NONE)
+//        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+        return channelId
     }
 
     private fun startForeground() {
@@ -348,7 +398,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun startNotify() {
 //        expandedView.setTextViewText(R.id.timeelapse,Constants.calculatetime(mp!!.currentPosition))
         val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.notify(NOTIFICATION_ID, notification)
+
+            mNotificationManager.notify(NOTIFICATION_ID, notification)
+
+
+
     }
 
 
@@ -357,44 +411,46 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         if(Constants.SONG_PAUSED)
         {
-
+            Log.i("BUTTON PRESS","button change to play")
             simpleContentView.setImageViewResource(R.id.playpause,R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause,R.drawable.play_white)
         }
         else
         {
-
+            Log.i("BUTTON PRESS","button change to pause")
             simpleContentView.setImageViewResource(R.id.playpause,R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause,R.drawable.pause_white)
 
         }
 
-
-
-
     }
-
-
 
 
     fun setListeners(view: RemoteViews) {
         val previous = Intent(NOTIFY_PREVIOUS)
         val delete = Intent(NOTIFY_DELETE)
-        val pauseplay = Intent(NOTIFY_PAUSEPLAY)
+        var pauseplay = Intent(NOTIFY_PAUSEPLAY)
         val next = Intent(NOTIFY_NEXT)
+        Log.i("CLICK","CHECK LISTner")
         updatenotification()
 
-        val pPrevious = PendingIntent.getBroadcast(applicationContext, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnprev, pPrevious)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-        val pDelete = PendingIntent.getBroadcast(applicationContext, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
 
-        val pPlayPause = PendingIntent.getBroadcast(applicationContext, 0, pauseplay, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.playpause_head, pPlayPause)
+        }else{
+            val pPrevious = PendingIntent.getBroadcast(applicationContext, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
+            view.setOnClickPendingIntent(R.id.btnprev, pPrevious)
 
-        val pNext = PendingIntent.getBroadcast(applicationContext, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnNext, pNext)
+            val pDelete = PendingIntent.getBroadcast(applicationContext, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
+            view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
+
+            val pPlayPause = PendingIntent.getBroadcast(applicationContext, 0, pauseplay, PendingIntent.FLAG_UPDATE_CURRENT)
+            view.setOnClickPendingIntent(R.id.playpause_head, pPlayPause)
+
+            val pNext = PendingIntent.getBroadcast(applicationContext, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
+            view.setOnClickPendingIntent(R.id.btnNext, pNext)
+        }
+
     }
 
     override fun onDestroy() {
@@ -427,8 +483,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
     }
 
-        @SuppressLint("" +
-                "")
+    @SuppressLint("NewApi")
         private fun RegisterRemoteClient() {
             remoteComponentName = ComponentName(applicationContext, PhoneStateReceiver().ComponentName())
             try

@@ -602,4 +602,10 @@
         <item name="android:elevation">50dp</item>
     </style>
 
+    <style name="BaseTheme" >
+        <item name="colorPrimary">#7B68EE</item>
+        <item name="colorPrimaryDark">#7B68EE</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>

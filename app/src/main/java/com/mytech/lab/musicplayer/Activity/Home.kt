@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.media.audiofx.AudioEffect
 import android.net.Uri
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -146,7 +147,12 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
             if (!isServiceRunning)
             {
-                startService(Intent(applicationContext, SongService::class.java))
+                //startService(Intent(applicationContext, SongService::class.java))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, SongService::class.java))
+                } else {
+                    startService(Intent(applicationContext, SongService::class.java))
+                }
             }
             else
             {
@@ -422,7 +428,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             return
         }
         this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+        Controls.createToast(this,"Press again to exit",Toast.LENGTH_SHORT)
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 

@@ -23,7 +23,7 @@ import android.system.Os.listen
 /**
  * Created by lnx on 26/3/18.
  */
-class PhoneStateReceiver : BroadcastReceiver(){
+public class PhoneStateReceiver : BroadcastReceiver(){
 
     var mgr:TelephonyManager? = null
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -35,13 +35,11 @@ class PhoneStateReceiver : BroadcastReceiver(){
                 if (intent!!.getAction() == Intent.ACTION_MEDIA_BUTTON)
                 {
                     val keyEvent = intent.getExtras()!!.get(Intent.EXTRA_KEY_EVENT) as KeyEvent
-                    Toast.makeText(context,"Key presss",Toast.LENGTH_SHORT).show()
                     if (keyEvent.action != KeyEvent.ACTION_DOWN)
                         return
 
                     when (keyEvent.keyCode)
                     {
-
                         KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> if (!Constants.SONG_PAUSED) {
                             Toast.makeText(context,"Headphone",Toast.LENGTH_SHORT).show()
 

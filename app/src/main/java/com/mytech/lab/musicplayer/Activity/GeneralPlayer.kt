@@ -48,7 +48,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
             setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
         }
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_general_player)
+        setContentView(R.layout.new_player_ui)
         toolbar = findViewById(R.id.GeneralPlayer_toolbar_layout)
         toolbar.setTitle("Music Player")
         setSupportActionBar(toolbar)

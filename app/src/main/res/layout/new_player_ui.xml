@@ -19,7 +19,7 @@
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:weightSum="12">
+               android:weightSum="20">
 
                <LinearLayout
                    android:layout_width="0dp"
@@ -27,13 +27,14 @@
                    android:paddingBottom="5dp"
                    android:paddingLeft="10dp"
                    android:paddingRight="5dp"
+                   android:gravity="center"
                    android:layout_height="wrap_content"
-                   android:layout_weight="3">
+                   android:layout_weight="4">
 
                    <de.hdodenhof.circleimageview.CircleImageView
                        android:id="@+id/songImage"
-                       android:layout_width="65dp"
-                       android:layout_height="65dp"
+                       android:layout_width="50dp"
+                       android:layout_height="50dp"
                        android:src="@drawable/musical"
                        app:civ_border_color="@color/semiTransparentWhite"
                        app:civ_border_width="3dp" />
@@ -45,21 +46,39 @@
                    android:layout_height="wrap_content"
                    android:orientation="vertical"
                    android:layout_gravity="center"
-                   android:layout_weight="9">
+                   android:layout_weight="13">
 
                    <TextView
                        android:layout_width="match_parent"
-                       android:id="@+id/SongName"
+                       android:id="@+id/song_name"
+                       android:maxLines="1"
                        android:text="SongName"
                        android:padding="3dp"
                        android:layout_height="wrap_content" />
 
                    <TextView
                        android:layout_width="match_parent"
-                       android:id="@+id/albumName"
+                       android:id="@+id/artist_name"
                        android:padding="3dp"
+                       android:maxLines="1"
                        android:text="albumName"
                        android:layout_height="wrap_content" />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id="@+id/fav_id"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:gravity="center"
+                   android:layout_height="match_parent">
+
+                   <ImageView
+                       android:id="@+id/fav_image"
+                       android:src="@drawable/fav_unclick"
+                       android:layout_width="27dp"
+                       android:layout_weight="50"
+                       android:layout_height="27dp" />
 
                </LinearLayout>
 
@@ -100,7 +119,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="100"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:background="@color/white"
                 android:clickable="true"
                 android:orientation="horizontal"
@@ -113,12 +132,13 @@
                     android:gravity="center"
                     android:id="@+id/shuffle"
                     android:layout_margin="10dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/shuffle_image"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:src="@drawable/ic_shuffle_black"/>
 
                 </LinearLayout>
@@ -129,6 +149,7 @@
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:id="@+id/prev"
+                    android:background="?android:attr/selectableItemBackground"
                     android:layout_height="match_parent">
 
                     <ImageView
@@ -143,14 +164,15 @@
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:id="@+id/playandpause"
+                    android:background="?android:attr/selectableItemBackground"
                     android:layout_height="match_parent">
 
 
                     <ImageView
                         android:id="@+id/playandpause_image"
-                        android:layout_width="65dp"
+                        android:layout_width="match_parent"
                         android:contentDescription="playpauseImage"
-                        android:layout_height="65dp"
+                        android:layout_height="match_parent"
                         android:src="@drawable/ic_play"/>
 
 
@@ -161,6 +183,7 @@
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:id="@+id/next"
+                    android:background="?android:attr/selectableItemBackground"
                     android:layout_margin="10dp"
                     android:layout_height="match_parent">
 
@@ -176,11 +199,14 @@
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:id="@+id/repeat"
+                    android:layout_margin="10dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/repeat_image"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:src="@drawable/ic_repeat_black"/>
 
                 </LinearLayout>
@@ -196,48 +222,50 @@
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:padding="10dp"
+                    android:paddingTop="0dp"
                     android:layout_weight="3"
                     android:layout_height="0dp">
 
                     <LinearLayout
-                        android:layout_weight="15"
                         android:layout_width="0dp"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
                         android:clickable="true"
-                        android:layout_height="match_parent">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:gravity="center"
-                            android:clickable="true"
-                            android:text="00:00"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
                             android:id="@+id/start"
-                            android:textColor="@color/Black"
-                            android:textSize="15dp"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="15"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="00:00"
+                            android:textColor="@color/Grey"
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="70"
+                        android:layout_weight="80"
                         android:layout_width="0dp"
-                        android:gravity="center"
                         android:clickable="true"
-                        android:layout_height="match_parent">
-
+                        android:layout_height="wrap_content">
 
                         <SeekBar
                             android:id="@+id/seekbar"
                             style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="1dp"
+                            android:thumbTint="@color/OrangeRed1"
+                            android:progressBackgroundTint="@color/LightGray"
                             />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="15"
+                        android:layout_weight="10"
                         android:layout_width="0dp"
                         android:gravity="center"
                         android:clickable="true"
@@ -251,8 +279,8 @@
                             android:layout_weight="15"
                             android:layout_height="match_parent"
                             android:id="@+id/end"
-                            android:textColor="@color/Black"
-                            android:textSize="15dp"/>
+                            android:textColor="@color/Grey"
+                            android:textSize="12dp"/>
 
                     </LinearLayout>
 

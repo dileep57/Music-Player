@@ -52,7 +52,7 @@
                        android:layout_width="match_parent"
                        android:id="@+id/song_name"
                        android:maxLines="1"
-                       android:text="SongName"
+                       android:text="Song_name"
                        android:padding="3dp"
                        android:layout_height="wrap_content" />
 

@@ -189,7 +189,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     }
 
                     collectsongdata(s)
-                    Log.i("CLICK", "SongChnage Handler call")
+//                    Log.i("CLICK", "SongChnage Handler call")
                     newnotification()
                     startNotify()
                     return false
@@ -387,11 +387,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     fun updatenotification() {
 
         if (Constants.SONG_PAUSED) {
-            Log.i("BUTTON PRESS", "button change to play")
+//            Log.i("BUTTON PRESS", "button change to play")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
         } else {
-            Log.i("BUTTON PRESS", "button change to pause")
+//            Log.i("BUTTON PRESS", "button change to pause")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
 
@@ -405,7 +405,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         val delete = Intent(NOTIFY_DELETE)
         var pauseplay = Intent(NOTIFY_PAUSEPLAY)
         val next = Intent(NOTIFY_NEXT)
-        Log.i("CLICK", "CHECK LISTner")
+//        Log.i("CLICK", "CHECK LISTner")
         updatenotification()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

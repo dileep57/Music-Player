@@ -23,7 +23,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Crimson">
         <activity android:name=".Activity.Wel"
@@ -67,13 +67,18 @@
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.tutorialsface.audioplayer.delete" />
-                <action android:name="com.tutorialsface.audioplayer.pause" />
-                <action android:name="com.tutorialsface.audioplayer.next" />
-                <action android:name="com.tutorialsface.audioplayer.play" />
-                <action android:name="com.tutorialsface.audioplayer.previous" />
+                <action android:name="com.mytech.lab.musicplayer.delete" />
+                <action android:name="com.mytech.lab.musicplayer.pause" />
+                <action android:name="com.mytech.lab.musicplayer.next" />
+                <action android:name="com.mytech.lab.musicplayer.play" />
+                <action android:name="com.mytech.lab.musicplayer.previous" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="ACTION_UPDATE_BADGE" />
+            </intent-filter>
+
         </receiver>
 
         <activity android:name=".Activity.GeneralPlayer"></activity>

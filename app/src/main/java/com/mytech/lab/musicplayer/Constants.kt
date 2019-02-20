@@ -39,6 +39,35 @@ companion object {
 
 
     var tint = "hello"
+    const val PLAY = "play"
+    const val PAUSE = "pause"
+    const val HEADPHONE = "Headphone"
+    const val RECENT_SONG = "RecentSong"
+    const val PLAYLIST_NAME = "playlist_name"
+    const val SPECIAL_PLAYER = "Special_player"
+    const val POPUP_PLAYLIST = "popup_playlist"
+    const val RECENT_ADD_SONG = "Recent_add_song"
+    const val SONG_TYPE = "song_type"
+
+    const val SONG_NAME = "song_name"
+    const val ARTIST_NAME = "artist_name"
+    const val ALBUM_NAME = "album_name"
+    const val DURATION = "duration"
+    const val ACTUAL_SONG_POSITION = "actual_song_position"
+
+    const val SUB_SUB_POSITION = "sub_song_position"
+    const val URL = "url"
+    const val CURRENT_ALBUM = "current_album"
+    const val ALBUM_ID = "albumid"
+
+    const val SHUFFLE = "shuffle"
+    const val REPEAT = "repeat"
+    const val ONLY_SONG = "only_song"
+    const val MINI_TRACK = "mini_track"
+
+
+
+
     val coloHexlist = arrayListOf<String>("#0000FF", "#8A2BE2", "#A52A2A", "#5F9EA0", "#D2691E",
             "#6495ED", "#DC143C", "#00008B", "#008B8B", "#A9A9A9", "#A9A9A9", "#006400",
             "#8B008B", "#FF8C00", "#9932CC", "#8B0000", "#483D8B", "#2F4F4F", "#2F4F4F",
@@ -93,7 +122,7 @@ companion object {
     fun databasedata(s: Song_base, cntx: Context, song_position: Int, table_name: String) {
 
         val helper = DatabaseHelperAdapter(cntx)
-        if (table_name.equals("RecentSong")) {
+        if (table_name.equals(RECENT_SONG)) {
             if (helper.checkexists_for_song_in_table(s.song_name, table_name) > 0) {
                 var count = helper.checkexists_for_song_in_table(s.song_name, table_name)
                 ++count
@@ -107,7 +136,7 @@ companion object {
                 helper.insert_in_any_table(s.song_name, s.artist, s.url, s.albumId.toString(), s.album_name, song_position, s.duration, 1, table_name)
 
             }
-        } else if (table_name == "playlist_name") {
+        } else if (table_name.equals(PLAYLIST_NAME, true)) {
 
         }
 
@@ -137,21 +166,21 @@ companion object {
         val edit = Home.shared.edit()
 
         edit.putString("song_type", song_type)
-        edit.putString("song_name", s.song_name)
-        edit.putString("artist_name", s.artist)
-        edit.putString("album_name", s.album_name)
-        edit.putLong("duration",s.duration.toLong())
+        edit.putString(Constants.SONG_NAME, s.song_name)
+        edit.putString(Constants.ARTIST_NAME, s.artist)
+        edit.putString(Constants.ALBUM_NAME, s.album_name)
+        edit.putLong(Constants.DURATION,s.duration.toLong())
 
-        edit.putInt("actual_song_position", actual_song_pos)
-        edit.putInt("sub_song_position", sub_song_pos)
+        edit.putInt(Constants.ACTUAL_SONG_POSITION, actual_song_pos)
+        edit.putInt(Constants.SUB_SUB_POSITION, sub_song_pos)
 
-        edit.putString("playlist_name", playlist_name)
-        edit.putString("current_album", current_album)
+        edit.putString(Constants.PLAYLIST_NAME, playlist_name)
+        edit.putString(Constants.CURRENT_ALBUM, current_album)
 
-        edit.putString("url", s.url)
-        edit.putLong("albumid", s.albumId!!)
-        edit.putBoolean("shuffle", shuffle)
-        edit.putBoolean("repeat", repeat)
+        edit.putString(Constants.URL, s.url)
+        edit.putLong(Constants.ALBUM_ID, s.albumId!!)
+        edit.putBoolean(Constants.SHUFFLE, shuffle)
+        edit.putBoolean(Constants.REPEAT, repeat)
         edit.apply()
     }
 
@@ -161,7 +190,7 @@ companion object {
         val rand = Random()
         var p: Int = 0
 
-        if (player != null && !player.equals("Special_player", ignoreCase = false))
+        if (player != null && !player.equals(SPECIAL_PLAYER, ignoreCase = false))
         {
             if (Home.song_array_general.size == 1)
             {
@@ -299,8 +328,8 @@ companion object {
         Constants.setsharedpreference(s,
                 song_type,
                 actual_song_pos, local_position,
-                Home.shared.getBoolean("shuffle",false),
-                Home.shared.getBoolean("repeat",false),
+                Home.shared.getBoolean(Constants.SHUFFLE,false),
+                Home.shared.getBoolean(Constants.REPEAT,false),
                 current_album,playlist
         )
 
@@ -343,23 +372,23 @@ companion object {
     fun servicearray(section:String,album_name:String?=null,artist_name:String?=null,playlist_name: String?=null,firstopen:Boolean=false,cntx:Context?=null)
     {
 
-        if(section.equals(Home.shared.getString("current_album","alb"),ignoreCase = true) && !firstopen)
+        if(section.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true) && !firstopen)
         {
             if(section.equals("artist",ignoreCase = true))
             {
-                if(Home.shared.getString("artist_name","alb").equals(artist_name,ignoreCase = true))
+                if(Home.shared.getString(Constants.ARTIST_NAME,"alb").equals(artist_name,ignoreCase = true))
                 {
                     return
                 }
             }
             else if(section.equals("album",ignoreCase = true))
             {
-                if(Home.shared.getString("album_name","alb").equals(album_name,ignoreCase = true))
+                if(Home.shared.getString(Constants.ALBUM_NAME,"alb").equals(album_name,ignoreCase = true))
                 {
                     return
                 }
             }
-            else if(section.equals("popup_playlist",ignoreCase = true))
+            else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
             {
                 if(Home.shared.getString("playlist","alb").equals(playlist_name,ignoreCase = true))
                 {
@@ -376,7 +405,7 @@ companion object {
         }
 
         Home.servicearraylist.clear()
-        if(section.equals("only_song",ignoreCase = true))
+        if(section.equals(Constants.ONLY_SONG,ignoreCase = true))
         {
 
             for(inc in Home.all_songs.indices)
@@ -385,14 +414,14 @@ companion object {
             }
 
         }
-        else if(section.equals("mini_track",ignoreCase = true))
+        else if(section.equals(Constants.MINI_TRACK,ignoreCase = true))
         {
             for(temp in Home.mini_track)
             {
                 Home.servicearraylist.add(Pair(temp.first,temp.second))
             }
         }
-        else if(section.equals("popup_playlist",ignoreCase = true))
+        else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
         {
             if(playlist_name.equals("Recent_add_song",ignoreCase = true))
             {
@@ -443,18 +472,18 @@ companion object {
         else if(section.equals("folder",ignoreCase = true))
         {
 
-            val song_name = Home.shared.getString("song_name",null)
-            val artist_name = Home.shared.getString("artist_name",null)
-            val url = Home.shared.getString("url",null)
-            val albumId = Home.shared.getLong("albumid",0)
-            val act_pos = Home.shared.getInt("actual_song_position",0)
-            val album_name = Home.shared.getString("album_name",null)
-            val duration = Home.shared.getLong("duration",0)
+            val song_name = Home.shared.getString(Constants.SONG_NAME,null)
+            val artist_name = Home.shared.getString(Constants.ARTIST_NAME,null)
+            val url = Home.shared.getString(Constants.URL,null)
+            val albumId = Home.shared.getLong(Constants.ALBUM_ID,0)
+            val act_pos = Home.shared.getInt(Constants.ACTUAL_SONG_POSITION,0)
+            val album_name = Home.shared.getString(Constants.ALBUM_NAME,null)
+            val duration = Home.shared.getLong(Constants.DURATION,0)
             val composer = Home.shared.getString("Composer","Composer")
 
             val s: Song_base = Song_base(song_name, artist_name, url, albumId, album_name, duration.toString(), composer, 0, cntx!!)
 
-            if(Home.Songname_position.get(Home.shared.getString("song_name",null))!=null)
+            if(Home.Songname_position.get(Home.shared.getString(Constants.SONG_NAME,null))!=null)
                     {
                         Home.servicearraylist.add(Pair(s,act_pos))
                     }
@@ -546,8 +575,8 @@ companion object {
             if (Constants.SONG_REPEAT == true) { Constants.SONG_REPEAT = false }
         }
         Controls.shuffle_repeat()
-        Home.shared.edit().putBoolean("shuffle", Constants.SONG_SHUFFLE).apply()
-        Home.shared.edit().putBoolean("repeat", Constants.SONG_REPEAT).apply()
+        Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
+        Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
     }
 
     fun change_repeat(context: Context?)
@@ -565,8 +594,8 @@ companion object {
             if (Constants.SONG_SHUFFLE == true) { Constants.SONG_SHUFFLE = false }
         }
         Controls.shuffle_repeat()
-        Home.shared.edit().putBoolean("shuffle", Constants.SONG_SHUFFLE).apply()
-        Home.shared.edit().putBoolean("repeat", Constants.SONG_REPEAT).apply()
+        Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
+        Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
     }
 
     fun playandpause(context: Context?)
@@ -574,11 +603,11 @@ companion object {
         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
         if (!isServiceRunning)
         {
-            val current = Home.shared.getString("current_album","alb")
-            val playlist_name = Home.shared.getString("playlist_name","popup_playlist")
-            val album_name = Home.shared.getString("album_name","alb")
-            val artist_name = Home.shared.getString("artist_name","alb")
-            val sub_song = Home.shared.getInt("sub_song_position",0)
+            val current = Home.shared.getString(Constants.CURRENT_ALBUM,"alb")
+            val playlist_name = Home.shared.getString(Constants.PLAYLIST_NAME,Constants.POPUP_PLAYLIST)
+            val album_name = Home.shared.getString(Constants.ALBUM_NAME,"alb")
+            val artist_name = Home.shared.getString(Constants.ARTIST_NAME,"alb")
+            val sub_song = Home.shared.getInt(Constants.SUB_SUB_POSITION,0)
             Constants.servicearray(current,album_name,artist_name,playlist_name,true,context)
             Constants.SONG_NUMBER = sub_song
 

@@ -2,6 +2,7 @@
 .*
 app/app.iml
 MyApplication.iml
+app/src/main/res/*
 app/release/*
 projectFilesBackup/
 AndroPlayer_wall.jpg

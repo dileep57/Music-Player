@@ -8,7 +8,6 @@ object Controls {
 
     var LOG_CLASS = "Controls"
 
-
     fun playPauseControl(command:String)
     {
         sendMessage(command)
@@ -51,8 +50,6 @@ object Controls {
             }
         }
         Constants.SONG_PAUSED = false
-
-
     }
 
     fun previousControl(context: Context) {
@@ -78,7 +75,6 @@ object Controls {
         }
         Constants.SONG_PAUSED = false
 
-
     }
 
     private fun sendMessage(message: String) {
@@ -87,14 +83,11 @@ object Controls {
         } catch (e: Exception) {
         }
 
-
-
     }
 
     public fun createToast(context: Context, message: String,duration:Int){
         var toast:Toast = Toast.makeText(context, message, duration)
         toast.show()
-
 
     }
 }

@@ -41,14 +41,13 @@ public class PhoneStateReceiver : BroadcastReceiver(){
                     when (keyEvent.keyCode)
                     {
                         KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> if (!Constants.SONG_PAUSED) {
-                            Toast.makeText(context,"Headphone",Toast.LENGTH_SHORT).show()
-
-                            Controls.playPauseControl("pause")
+                            Toast.makeText(context,Constants.HEADPHONE,Toast.LENGTH_SHORT).show()
+                            Controls.playPauseControl(Constants.PAUSE)
 
                         }
                         else
                         {
-                            Controls.playPauseControl("play")
+                            Controls.playPauseControl(Constants.PLAY)
                         }
                         KeyEvent.KEYCODE_MEDIA_PREVIOUS ->
                         {
@@ -62,10 +61,11 @@ public class PhoneStateReceiver : BroadcastReceiver(){
 
                     var status:String? = null
 
-                    if(Constants.SONG_PAUSED){ status = "play"}
-
-                    else { status = "pause"}
-
+                    if(Constants.SONG_PAUSED){
+                        status = Constants.PLAY
+                    } else {
+                        status = Constants.PAUSE
+                    }
                     Controls.playPauseControl(status)
 
 
@@ -90,14 +90,6 @@ public class PhoneStateReceiver : BroadcastReceiver(){
                 {
 
                     Controls.previousControl(context)
-                }
-            else
-                {
-//                    if(SongService.mp!=null && SongService.mp!!.isPlaying)
-//                    {
-//                        mgr?.listen(call_listen,PhoneStateListener.LISTEN_CALL_STATE)
-//                    }
-
                 }
 
         } catch (e: Exception) {

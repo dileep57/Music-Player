@@ -33,6 +33,7 @@ import com.mytech.lab.musicplayer.Fragments.Recent_song
 import com.mytech.lab.musicplayer.utils.PhoneStateReceiver
 import com.mytech.lab.musicplayer.utils.Song_base
 import java.util.concurrent.TimeUnit
+import java.util.logging.Logger
 
 
 class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
@@ -60,10 +61,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         var mp: MediaPlayer? = null
         var NOTIFICATION_ID = 1111
         lateinit var notification: Notification
-        val NOTIFY_PREVIOUS = "com.tutorialsface.audioplayer.previous"
-        val NOTIFY_DELETE = "com.tutorialsface.audioplayer.delete"
-        val NOTIFY_PAUSEPLAY = "com.tutorialsface.audioplayer.pause"
-        val NOTIFY_NEXT = "com.tutorialsface.audioplayer.next"
+
+        val NOTIFY_PREVIOUS = "com.mytech.lab.musicplayer.previous"
+        val NOTIFY_DELETE = "com.mytech.lab.musicplayer.delete"
+        val NOTIFY_PAUSEPLAY = "com.mytech.lab.musicplayer.pause"
+        val NOTIFY_NEXT = "com.mytech.lab.musicplayer.next"
 
         lateinit var simpleContentView: RemoteViews
         lateinit var expandedView: RemoteViews
@@ -71,14 +73,12 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         private var currentVersionSupportBigNotification = false
         private var currentVersionSupportLockScreenControls = false
 
-
     }
 
 
     override fun onCreate() {
 
         mp = MediaPlayer()
-
 
         audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         maxvol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
@@ -167,13 +167,13 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
                         songPath = s.url
                     } catch (e: Exception) {
+                        Log.e("ERROR - ", e.message)
                         Constants.SONG_PAUSED = true
                         mp?.pause()
                         Home().changeButton_Home()
                         MusicPlayer().changeButton_musicplayer()
                         GeneralPlayer().changeButton_general()
-                        updatenotification()
-                        return true
+                        return false
                     }
 
 
@@ -185,14 +185,13 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         MusicPlayer().updateUI_Musicplayer()
                         GeneralPlayer().updateUI_GeneralPlayer(applicationContext)
                     } catch (e: Exception) {
-                        e.printStackTrace();
+                        Log.e("ERROR", e.message)
                     }
-
+                    Log.i("CLICK", "Song change")
                     collectsongdata(s)
-//                    Log.i("CLICK", "SongChnage Handler call")
                     newnotification()
                     startNotify()
-                    return false
+                    return true
 
                 }
 
@@ -207,14 +206,16 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     if (mp == null)
                         return false
-                    if (message.equals("play")) {
+
+                    if (message.equals(Constants.PLAY)) {
                         Constants.SELF_CHANGE = false
                         Constants.SONG_PAUSED = false
                         if (currentVersionSupportLockScreenControls) {
                             remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING)
                         }
                         mp!!.start()
-                    } else if (message.equals("pause")) {
+
+                    } else if (message.equals(Constants.PAUSE)) {
                         Constants.SELF_CHANGE = true
                         Constants.SONG_PAUSED = true
                         if (currentVersionSupportLockScreenControls) {
@@ -223,13 +224,12 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         mp!!.pause()
                     }
 
-//                    newnotification()
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
+                    Log.i("CLICK", "PlayPause")
                     GeneralPlayer().changeButton_general()
-                    Log.i("CLICK", "PlayPause Handler call")
+
                     updatenotification()
-                    startNotify()
                     return true
 
                 }
@@ -288,7 +288,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         expandedView.setTextViewText(R.id.textSongName, songname)
         expandedView.setTextViewText(R.id.textAlbumName, albumname)
         expandedView.setTextViewText(R.id.textArtistname, artistname)
-//        expandedView.setTextViewText(R.id.timeelapse,Constants.calculatetime(mp!!.currentPosition))
 
 
         try {
@@ -312,7 +311,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             //val name:String = "for_oreo"// The user-visible name of the channel.
             //val importance:Int = NotificationManager.IMPORTANCE_HIGH
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                val channelId = createNotificationChannel("my_service", "My Background Service")
+                val channelId = createNotificationChannel("my_service", "NotificationService")
                 val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 notification = notificationBuilder.setOngoing(true)
                         .setPriority(PRIORITY_MAX)
@@ -326,7 +325,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             } else {
                 notification = NotificationCompat.Builder(applicationContext, "notify")
                         .setContentIntent(pendingIntent)
-                        .setPriority(99)
+                        .setPriority(PRIORITY_MAX)
                         .setCustomBigContentView(expandedView)
                         .setContent(simpleContentView)
                         .setSmallIcon(R.drawable.headphones_tick)
@@ -338,7 +337,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         } else {
             notification = NotificationCompat.Builder(applicationContext, "notify")
                     .setContentIntent(pendingIntent)
-                    .setPriority(99)
+                    .setPriority(PRIORITY_MAX)
                     .setSmallIcon(R.drawable.headphones_tick)
                     .build()
         }
@@ -348,22 +347,18 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             setListeners(expandedView)
 
 
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
 
-        } else {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
             notification.contentView = simpleContentView
             if (currentVersionSupportBigNotification)
                 notification.bigContentView = expandedView
         }
 
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
-        val chan = NotificationChannel(channelId,
-                channelName, NotificationManager.IMPORTANCE_NONE)
-//        chan.lightColor = Color.BLUE
+        val chan = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
         chan.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
@@ -372,58 +367,63 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private fun startForeground() {
         startForeground(NOTIFICATION_ID, notification)
+        Log.i("start", "foreground")
     }
 
     private fun startNotify() {
-//        expandedView.setTextViewText(R.id.timeelapse,Constants.calculatetime(mp!!.currentPosition))
-        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        var mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.notify(NOTIFICATION_ID, notification)
-
-
+        Log.i("CLICK", "notificsion update")
     }
 
 
     fun updatenotification() {
-
+//        Log.i("CLICK", "enter to update notification")
         if (Constants.SONG_PAUSED) {
-            Log.i("BUTTON PRESS", "button change to play")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
+            Log.i("CLICK", "song pause")
         } else {
-            Log.i("BUTTON PRESS", "button change to pause")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
-
+            Log.i("CLICK", "song play")
         }
-
+        startNotify()
     }
 
-
     fun setListeners(view: RemoteViews) {
-        val previous = Intent(NOTIFY_PREVIOUS)
-        val delete = Intent(NOTIFY_DELETE)
-        var pauseplay = Intent(NOTIFY_PAUSEPLAY)
-        val next = Intent(NOTIFY_NEXT)
-        Log.i("CLICK", "CHECK LISTner")
-        updatenotification()
+        var previous:Intent? = null
+        var delete:Intent? = null
+        var pauseplay:Intent? = null
+        var next:Intent? = null
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            Log.i("CLICK", "FOr oreo")
-
+            previous = Intent(applicationContext, PhoneStateReceiver::class.java).setAction(NOTIFY_PREVIOUS);
+            delete = Intent(applicationContext, PhoneStateReceiver::class.java).setAction(NOTIFY_DELETE);
+            pauseplay = Intent(applicationContext, PhoneStateReceiver::class.java).setAction(NOTIFY_PAUSEPLAY);
+            next = Intent(applicationContext, PhoneStateReceiver::class.java).setAction(NOTIFY_NEXT)
         } else {
-            val pPrevious = PendingIntent.getBroadcast(applicationContext, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
-            view.setOnClickPendingIntent(R.id.btnprev, pPrevious)
-
-            val pDelete = PendingIntent.getBroadcast(applicationContext, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
-            view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
-
-            val pPlayPause = PendingIntent.getBroadcast(applicationContext, 0, pauseplay, PendingIntent.FLAG_UPDATE_CURRENT)
-            view.setOnClickPendingIntent(R.id.playpause_head, pPlayPause)
-
-            val pNext = PendingIntent.getBroadcast(applicationContext, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
-            view.setOnClickPendingIntent(R.id.btnNext, pNext)
+            previous = Intent(NOTIFY_PREVIOUS)
+            delete = Intent(NOTIFY_DELETE)
+            pauseplay = Intent(NOTIFY_PAUSEPLAY)
+            next = Intent(NOTIFY_NEXT)
         }
+
+        val pPrevious = PendingIntent.getBroadcast(applicationContext, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
+        view.setOnClickPendingIntent(R.id.btnprev, pPrevious)
+
+        val pDelete = PendingIntent.getBroadcast(applicationContext, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
+        view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
+
+        val pPlayPause = PendingIntent.getBroadcast(applicationContext, 0, pauseplay, PendingIntent.FLAG_UPDATE_CURRENT)
+        view.setOnClickPendingIntent(R.id.playpause_head, pPlayPause)
+
+        val pNext = PendingIntent.getBroadcast(applicationContext, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
+        view.setOnClickPendingIntent(R.id.btnNext, pNext)
+
+        updatenotification()
 
     }
 
@@ -504,22 +504,22 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             when (p0) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
                     Constants.SONG_PAUSED = false
-                    Controls.playPauseControl("play")
+                    Controls.playPauseControl(Constants.PLAY)
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                    Controls.playPauseControl("pause")
+                    Controls.playPauseControl(Constants.PAUSE)
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                    Controls.playPauseControl("pause")
+                    Controls.playPauseControl(Constants.PAUSE)
                     Handler().postDelayed({
-                        Controls.playPauseControl("play")
+                        Controls.playPauseControl(Constants.PLAY)
                     }, TimeUnit.SECONDS.toMillis(2))
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS -> {
-                    Controls.playPauseControl("pause")
+                    Controls.playPauseControl(Constants.PAUSE)
 
                 }
             }

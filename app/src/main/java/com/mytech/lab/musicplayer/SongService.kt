@@ -348,7 +348,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             setListeners(expandedView)
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
 
         } else {
             notification.contentView = simpleContentView
@@ -387,11 +387,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     fun updatenotification() {
 
         if (Constants.SONG_PAUSED) {
-//            Log.i("BUTTON PRESS", "button change to play")
+            Log.i("BUTTON PRESS", "button change to play")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
         } else {
-//            Log.i("BUTTON PRESS", "button change to pause")
+            Log.i("BUTTON PRESS", "button change to pause")
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
 
@@ -405,11 +405,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         val delete = Intent(NOTIFY_DELETE)
         var pauseplay = Intent(NOTIFY_PAUSEPLAY)
         val next = Intent(NOTIFY_NEXT)
-//        Log.i("CLICK", "CHECK LISTner")
+        Log.i("CLICK", "CHECK LISTner")
         updatenotification()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
+            Log.i("CLICK", "FOr oreo")
 
         } else {
             val pPrevious = PendingIntent.getBroadcast(applicationContext, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)

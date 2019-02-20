@@ -147,7 +147,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             updatenotification()
 
 
-
             Constants.SONG_CHANGE_HANDLER = Handler(object : Handler.Callback {
 
                 override fun handleMessage(msg: Message?): Boolean {
@@ -225,8 +224,8 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
                     GeneralPlayer().changeButton_general()
-
                     updatenotification()
+                    startNotify()
                     return true
 
                 }
@@ -375,11 +374,12 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         if (Constants.SONG_PAUSED) {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
+            Log.i("pause", "ok")
         } else {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
+            Log.i("play", "ok")
         }
-        startNotify()
     }
 
     fun setListeners(view: RemoteViews) {

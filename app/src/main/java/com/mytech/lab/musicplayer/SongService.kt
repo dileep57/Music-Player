@@ -167,7 +167,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
                         songPath = s.url
                     } catch (e: Exception) {
-                        Log.e("ERROR - ", e.message)
                         Constants.SONG_PAUSED = true
                         mp?.pause()
                         Home().changeButton_Home()
@@ -187,7 +186,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     } catch (e: Exception) {
                         Log.e("ERROR", e.message)
                     }
-                    Log.i("CLICK", "Song change")
                     collectsongdata(s)
                     newnotification()
                     startNotify()
@@ -226,7 +224,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
-                    Log.i("CLICK", "PlayPause")
                     GeneralPlayer().changeButton_general()
 
                     updatenotification()
@@ -308,8 +305,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
-            //val name:String = "for_oreo"// The user-visible name of the channel.
-            //val importance:Int = NotificationManager.IMPORTANCE_HIGH
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 val channelId = createNotificationChannel("my_service", "NotificationService")
                 val notificationBuilder = NotificationCompat.Builder(this, channelId)
@@ -367,27 +362,22 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private fun startForeground() {
         startForeground(NOTIFICATION_ID, notification)
-        Log.i("start", "foreground")
     }
 
     private fun startNotify() {
 
         var mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.notify(NOTIFICATION_ID, notification)
-        Log.i("CLICK", "notificsion update")
     }
 
 
     fun updatenotification() {
-//        Log.i("CLICK", "enter to update notification")
         if (Constants.SONG_PAUSED) {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
-            Log.i("CLICK", "song pause")
         } else {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
-            Log.i("CLICK", "song play")
         }
         startNotify()
     }

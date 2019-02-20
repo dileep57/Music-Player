@@ -195,7 +195,6 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-//        Home.cardview.visibility = View.GONE
         try {
             update_favourite()
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)

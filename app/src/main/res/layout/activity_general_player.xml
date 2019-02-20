@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:elevation="99dp"
-    tools:context="com.android.mytechlab.androplayer.Activity.GeneralPlayer">
+    tools:context="com.mytech.lab.musicplayer.Activity.GeneralPlayer">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/GeneralPlayer_appbar_layout"

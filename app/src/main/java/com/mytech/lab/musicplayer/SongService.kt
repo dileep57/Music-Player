@@ -61,6 +61,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         var mp: MediaPlayer? = null
         var NOTIFICATION_ID = 1111
         lateinit var notification: Notification
+
         val NOTIFY_PREVIOUS = "com.mytech.lab.musicplayer.previous"
         val NOTIFY_DELETE = "com.mytech.lab.musicplayer.delete"
         val NOTIFY_PAUSEPLAY = "com.mytech.lab.musicplayer.pause"
@@ -71,6 +72,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         private var currentVersionSupportBigNotification = false
         private var currentVersionSupportLockScreenControls = false
+
     }
 
 
@@ -165,7 +167,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
                         songPath = s.url
                     } catch (e: Exception) {
-                        Log.e("ERROR - ", e.message)
                         Constants.SONG_PAUSED = true
                         mp?.pause()
                         Home().changeButton_Home()
@@ -173,6 +174,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         GeneralPlayer().changeButton_general()
                         return false
                     }
+
 
 
                     try {
@@ -184,7 +186,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     } catch (e: Exception) {
                         Log.e("ERROR", e.message)
                     }
-                    Log.i("CLICK", "Song change")
                     collectsongdata(s)
                     newnotification()
                     startNotify()
@@ -203,6 +204,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     if (mp == null)
                         return false
+
                     if (message.equals(Constants.PLAY)) {
                         Constants.SELF_CHANGE = false
                         Constants.SONG_PAUSED = false
@@ -210,6 +212,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                             remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING)
                         }
                         mp!!.start()
+
                     } else if (message.equals(Constants.PAUSE)) {
                         Constants.SELF_CHANGE = true
                         Constants.SONG_PAUSED = true
@@ -221,10 +224,9 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
-                    Log.i("CLICK", "PlayPause")
                     GeneralPlayer().changeButton_general()
+
                     updatenotification()
-                    startNotify()
                     return true
 
                 }
@@ -284,6 +286,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         expandedView.setTextViewText(R.id.textAlbumName, albumname)
         expandedView.setTextViewText(R.id.textArtistname, artistname)
 
+
         try {
             val albumId = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.albumId
             val albumArt = Constants.getAlbumart(applicationContext, albumId)
@@ -302,8 +305,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
-            //val name:String = "for_oreo"// The user-visible name of the channel.
-            //val importance:Int = NotificationManager.IMPORTANCE_HIGH
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 val channelId = createNotificationChannel("my_service", "NotificationService")
                 val notificationBuilder = NotificationCompat.Builder(this, channelId)
@@ -341,21 +342,18 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             setListeners(expandedView)
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-        } else {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
             notification.contentView = simpleContentView
             if (currentVersionSupportBigNotification)
                 notification.bigContentView = expandedView
         }
 
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
-        val chan = NotificationChannel(channelId,
-                channelName, NotificationManager.IMPORTANCE_NONE)
+        val chan = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
         chan.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
@@ -364,29 +362,24 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private fun startForeground() {
         startForeground(NOTIFICATION_ID, notification)
-        Log.i("start", "foreground")
     }
 
     private fun startNotify() {
+
         var mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            mNotificationManager.notify(NOTIFICATION_ID, notification)
-        Log.i("CLICK", "notificsion update")
+        mNotificationManager.notify(NOTIFICATION_ID, notification)
     }
 
 
     fun updatenotification() {
-
-        Log.i("CLICK", "enter to update notification")
         if (Constants.SONG_PAUSED) {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
-            Log.i("CLICK", "song pause")
         } else {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
-            Log.i("CLICK", "song play")
         }
-
+        startNotify()
     }
 
     fun setListeners(view: RemoteViews) {

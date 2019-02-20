@@ -7,8 +7,8 @@ android {
         applicationId "com.mytech.lab.musicplayer"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 11
-        versionName "1.8"
+        versionCode 12
+        versionName "1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

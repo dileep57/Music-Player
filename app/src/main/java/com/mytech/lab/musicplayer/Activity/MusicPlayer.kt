@@ -112,7 +112,6 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
                     if (!isServiceRunning)
                     {
                         val i = Intent(cntx, SongService::class.java)
-                       // cntx.startService(i)
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             cntx.startForegroundService(i);

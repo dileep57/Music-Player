@@ -18,6 +18,7 @@ import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.SongService
 import com.mytech.lab.musicplayer.sub_sub_fragment.Playlist_single
 import com.mytech.lab.musicplayer.utils.Song_base
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
@@ -49,10 +50,10 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
             setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
         }
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_general_player)
-        toolbar = findViewById(R.id.GeneralPlayer_toolbar_layout)
-        toolbar.setTitle("Music Player")
-        setSupportActionBar(toolbar)
+        setContentView(R.layout.new_player_ui)
+//        toolbar = findViewById(R.id.GeneralPlayer_toolbar_layout)
+//        toolbar.setTitle("Music Player")
+//        setSupportActionBar(toolbar)
         getviews()
 
 
@@ -90,6 +91,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
     fun getviews()
     {
         song_name = findViewById(R.id.song_name)
+        songImage = findViewById(R.id.songImage)
         artist_name = findViewById(R.id.artist_name)
         banner = findViewById(R.id.center_banner)
         banner?.isClickable = false
@@ -110,7 +112,6 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
         prev = findViewById(R.id.prev)
         prev?.setOnClickListener(this)
 
-        playandpause = findViewById(R.id.playandpause)
         playandpause!!.setOnClickListener(this)
 
         next = findViewById(R.id.next)
@@ -194,7 +195,6 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-//        Home.cardview.visibility = View.GONE
         try {
             update_favourite()
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
@@ -261,20 +261,20 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
         {
             try {
                 if (Constants.SONG_PAUSED)
-                    playandpause_image?.setImageResource(R.drawable.album_play)
+                    playandpause_image?.setImageResource(R.drawable.ic_play)
 
                 else {
-                    playandpause_image?.setImageResource(R.drawable.album_pause)}
+                    playandpause_image?.setImageResource(R.drawable.ic_pause)}
 
 
                 if(Constants.SONG_SHUFFLE==true) {
-                    shuffle_image?.setImageResource(R.drawable.ic_shuffle_click_24dp)}
+                    shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)}
 
-                else {shuffle_image?.setImageResource(R.drawable.ic_shuffle_black_24dp)}
+                else {shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)}
 
-                if(Constants.SONG_REPEAT==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_click_24dp)}
+                if(Constants.SONG_REPEAT==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_orange)}
 
-                else {repeat_image?.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
+                else {repeat_image?.setImageResource(R.drawable.ic_repeat_black)}
 
             }catch (e:Exception){e.printStackTrace()}
         }
@@ -309,10 +309,11 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
                 val albumArt = Constants.getAlbumart(cntx, albumId)
                 if (albumArt != null) {
                     banner?.setImageBitmap(albumArt)
+                    songImage?.setImageBitmap(albumArt)
 
                 } else {
                     banner?.setImageResource(R.drawable.default_general_player_albumart)
-
+                    songImage?.setImageResource(R.drawable.default_general_player_albumart)
                 }
             },delay)
         }
@@ -339,6 +340,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
         private var banner: ImageView? = null
         private var fav_head: LinearLayout?=null
         private var fav_Image: ImageView? = null
+        private var songImage : CircleImageView?= null;
     }
 
 }

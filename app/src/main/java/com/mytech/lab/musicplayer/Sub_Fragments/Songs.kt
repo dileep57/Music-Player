@@ -153,7 +153,12 @@ class Songs : Fragment() {
                         if (!isServiceRunning)
                         {
                             val i = Intent(cntx, SongService::class.java)
-                            cntx.startService(i)
+                            //cntx.startService(i)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                cntx.startForegroundService(i);
+                            } else {
+                                cntx.startService(i);
+                            }
 
                         } else {
 

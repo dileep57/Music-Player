@@ -1,12 +1,12 @@
 package com.mytech.lab.musicplayer
 
 import android.content.Context
+import android.widget.Toast
 
 
 object Controls {
 
     var LOG_CLASS = "Controls"
-
 
     fun playPauseControl(command:String)
     {
@@ -50,8 +50,6 @@ object Controls {
             }
         }
         Constants.SONG_PAUSED = false
-
-
     }
 
     fun previousControl(context: Context) {
@@ -77,7 +75,6 @@ object Controls {
         }
         Constants.SONG_PAUSED = false
 
-
     }
 
     private fun sendMessage(message: String) {
@@ -86,7 +83,11 @@ object Controls {
         } catch (e: Exception) {
         }
 
+    }
 
+    public fun createToast(context: Context, message: String,duration:Int){
+        var toast:Toast = Toast.makeText(context, message, duration)
+        toast.show()
 
     }
 }

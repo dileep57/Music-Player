@@ -23,7 +23,7 @@ import android.system.Os.listen
 /**
  * Created by lnx on 26/3/18.
  */
-class PhoneStateReceiver : BroadcastReceiver(){
+public class PhoneStateReceiver : BroadcastReceiver(){
 
     var mgr:TelephonyManager? = null
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -35,22 +35,19 @@ class PhoneStateReceiver : BroadcastReceiver(){
                 if (intent!!.getAction() == Intent.ACTION_MEDIA_BUTTON)
                 {
                     val keyEvent = intent.getExtras()!!.get(Intent.EXTRA_KEY_EVENT) as KeyEvent
-                    Toast.makeText(context,"Key presss",Toast.LENGTH_SHORT).show()
                     if (keyEvent.action != KeyEvent.ACTION_DOWN)
                         return
 
                     when (keyEvent.keyCode)
                     {
-
                         KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> if (!Constants.SONG_PAUSED) {
-                            Toast.makeText(context,"Headphone",Toast.LENGTH_SHORT).show()
-
-                            Controls.playPauseControl("pause")
+                            Toast.makeText(context,Constants.HEADPHONE,Toast.LENGTH_SHORT).show()
+                            Controls.playPauseControl(Constants.PAUSE)
 
                         }
                         else
                         {
-                            Controls.playPauseControl("play")
+                            Controls.playPauseControl(Constants.PLAY)
                         }
                         KeyEvent.KEYCODE_MEDIA_PREVIOUS ->
                         {
@@ -64,10 +61,11 @@ class PhoneStateReceiver : BroadcastReceiver(){
 
                     var status:String? = null
 
-                    if(Constants.SONG_PAUSED){ status = "play"}
-
-                    else { status = "pause"}
-
+                    if(Constants.SONG_PAUSED){
+                        status = Constants.PLAY
+                    } else {
+                        status = Constants.PAUSE
+                    }
                     Controls.playPauseControl(status)
 
 
@@ -92,14 +90,6 @@ class PhoneStateReceiver : BroadcastReceiver(){
                 {
 
                     Controls.previousControl(context)
-                }
-            else
-                {
-//                    if(SongService.mp!=null && SongService.mp!!.isPlaying)
-//                    {
-//                        mgr?.listen(call_listen,PhoneStateListener.LISTEN_CALL_STATE)
-//                    }
-
                 }
 
         } catch (e: Exception) {

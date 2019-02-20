@@ -195,6 +195,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+//        Home.cardview.visibility = View.GONE
         try {
             update_favourite()
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
@@ -314,6 +315,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
                 } else {
                     banner?.setImageResource(R.drawable.default_general_player_albumart)
                     songImage?.setImageResource(R.drawable.default_general_player_albumart)
+
                 }
             },delay)
         }
@@ -340,7 +342,7 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
         private var banner: ImageView? = null
         private var fav_head: LinearLayout?=null
         private var fav_Image: ImageView? = null
-        private var songImage : CircleImageView?= null;
+        private var songImage:CircleImageView?= null
     }
 
 }

@@ -144,7 +144,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             Home().updateuiwithbutton_home(applicationContext)
             GeneralPlayer().changeuiwithbutton_general(applicationContext)
             MusicPlayer().changeUIwithbutton_musicplayer(applicationContext)
-            updatenotification()
+            updatenotificationIcon()
 
 
             Constants.SONG_CHANGE_HANDLER = Handler(object : Handler.Callback {
@@ -186,7 +186,8 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         Log.e("ERROR", e.message)
                     }
                     collectsongdata(s)
-                    newnotification()
+                    updateNotificationData()
+                    updatenotificationIcon()
                     startNotify()
                     return true
 
@@ -224,7 +225,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
                     GeneralPlayer().changeButton_general()
-                    updatenotification()
+                    updatenotificationIcon()
                     startNotify()
                     return true
 
@@ -251,7 +252,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
 
 
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
 
@@ -267,9 +268,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     fun newnotification() {
 
-        var songname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.song_name
-        var albumname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.album_name
-        var artistname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.artist
+
         val notificationIntent = Intent(applicationContext, Home::class.java)
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 99, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -278,29 +277,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         if (currentVersionSupportBigNotification) {
             expandedView = RemoteViews(applicationContext.packageName, R.layout.big_notification)
         }
-
-        simpleContentView.setTextViewText(R.id.textSongName, songname)
-        simpleContentView.setTextViewText(R.id.textAlbumName, albumname)
-        expandedView.setTextViewText(R.id.textSongName, songname)
-        expandedView.setTextViewText(R.id.textAlbumName, albumname)
-        expandedView.setTextViewText(R.id.textArtistname, artistname)
-
-
-        try {
-            val albumId = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.albumId
-            val albumArt = Constants.getAlbumart(applicationContext, albumId)
-            if (albumArt != null) {
-                simpleContentView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt)
-                expandedView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt)
-
-            } else {
-                simpleContentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.general_player_small_art)
-                expandedView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.general_player_small_art)
-
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        updateNotificationData()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
@@ -350,6 +327,35 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     }
 
+
+    private fun updateNotificationData(){
+        try {
+            val albumId = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.albumId
+            val albumArt = Constants.getAlbumart(applicationContext, albumId)
+            if (albumArt != null) {
+                simpleContentView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt)
+                expandedView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt)
+
+            } else {
+                simpleContentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.general_player_small_art)
+                expandedView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.general_player_small_art)
+
+            }
+        } catch (e: Exception) {
+            Log.i("error",e.message)
+        }
+
+        var songname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.song_name
+        var albumname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.album_name
+        var artistname: String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.artist
+        simpleContentView.setTextViewText(R.id.textSongName, songname)
+        simpleContentView.setTextViewText(R.id.textAlbumName, albumname)
+        expandedView.setTextViewText(R.id.textSongName, songname)
+        expandedView.setTextViewText(R.id.textAlbumName, albumname)
+        expandedView.setTextViewText(R.id.textArtistname, artistname)
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
         val chan = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
@@ -370,7 +376,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
 
-    fun updatenotification() {
+    fun updatenotificationIcon() {
         if (Constants.SONG_PAUSED) {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
@@ -380,6 +386,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             Log.i("play", "ok")
         }
+        startNotify()
     }
 
     fun setListeners(view: RemoteViews) {
@@ -412,8 +419,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         val pNext = PendingIntent.getBroadcast(applicationContext, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.btnNext, pNext)
-
-        updatenotification()
 
     }
 

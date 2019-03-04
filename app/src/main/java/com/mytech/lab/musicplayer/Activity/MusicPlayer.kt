@@ -9,6 +9,7 @@ import android.os.*
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -365,24 +366,26 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
 
     fun changeButton_musicplayer()
     {
-        try {
-            if (Constants.SONG_PAUSED) { playandpause.setImageResource(R.drawable.album_play) }
+        runOnUiThread {
+            try {
+                if (Constants.SONG_PAUSED) { playandpause.setImageResource(R.drawable.album_play) }
 
-            else { playandpause.setImageResource(R.drawable.album_pause) }
+                else { playandpause.setImageResource(R.drawable.album_pause) }
 
 
-            if(Constants.SONG_SHUFFLE ==true) {
-                shuffle.setImageResource(R.drawable.ic_shuffle_click_24dp)}
+                if(Constants.SONG_SHUFFLE ==true) {
+                    shuffle.setImageResource(R.drawable.ic_shuffle_click_24dp)}
 
-            else {
-                shuffle.setImageResource(R.drawable.ic_shuffle_black_24dp)}
+                else {
+                    shuffle.setImageResource(R.drawable.ic_shuffle_black_24dp)}
 
-            if(Constants.SONG_REPEAT ==true) { repeat.setImageResource(R.drawable.ic_repeat_click_24dp)}
+                if(Constants.SONG_REPEAT ==true) { repeat.setImageResource(R.drawable.ic_repeat_click_24dp)}
 
-            else {
-                repeat.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
+                else {
+                    repeat.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
 
-        }catch (e:Exception){}
+            }catch (e:Exception){Log.e("Error",e.message)}
+        }
     }
 
     fun changeUIwithbutton_musicplayer(cntx:Context)

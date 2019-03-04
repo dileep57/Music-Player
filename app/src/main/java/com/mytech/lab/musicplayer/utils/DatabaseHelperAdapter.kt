@@ -22,8 +22,9 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     @JvmOverloads
     fun insert_in_any_table(songname: String, artistname: String, url: String, albumid: String, albumname: String, position: Int, duration: String, count: Int? = null, table_name: String, playlist_name: String? = null): Long {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val values = ContentValues()
             values.put(DataHelper.SONG_NAME, songname)
             values.put(DataHelper.ARTIST_NAME, artistname)
@@ -41,7 +42,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
             return db.insert(table_name, null, values)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
@@ -49,8 +50,9 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     fun getalldata_table(table_name: String): ArrayList<Song_base> {
         val recent_song = ArrayList<Song_base>()
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val cursor = db.query(table_name, null, null, null, null, null, DataHelper.COUNT + " DESC")
             if (cursor.moveToFirst()) {
                 do {
@@ -70,14 +72,15 @@ class DatabaseHelperAdapter(internal var context: Context) {
             }
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return recent_song
     }
 
     fun countalldata_in_any_table(table_name: String): Int {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val str = StringBuffer()
             str.append(" ")
             val col = arrayOf(DataHelper.ID, DataHelper.SONG_NAME, DataHelper.ARTIST_NAME)
@@ -85,15 +88,16 @@ class DatabaseHelperAdapter(internal var context: Context) {
             return cursor.count
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
     }
 
     fun getposition_in_table(table_name: String): ArrayList<Int> {
         val pos = ArrayList<Int>()
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val cursor = db.query(table_name, null, null, null, null, null, DataHelper.COUNT + " DESC")
             if (cursor.moveToFirst()) {
                 do {
@@ -105,15 +109,16 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return pos
     }
 
     fun getalldata_favourite(): ArrayList<Song_base> {
         val recent_song = ArrayList<Song_base>()
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
 
             val cursor = db.query("favourite", null, null, null, null, null, null)
             if (cursor.moveToFirst()) {
@@ -134,7 +139,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
             }
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return recent_song
     }
@@ -143,8 +148,9 @@ class DatabaseHelperAdapter(internal var context: Context) {
     @JvmOverloads
     fun checkexists_for_song_in_table(song_name: String?, table_name: String, playlist_nme: String? = null): Int {
         var num = 0
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             if (table_name.equals("RecentSong") || table_name.equals("favourites", ignoreCase = true)) {
                 val col = arrayOf(DataHelper.COUNT, DataHelper.SONG_NAME)
                 val selectionargs = arrayOf(song_name)
@@ -154,43 +160,47 @@ class DatabaseHelperAdapter(internal var context: Context) {
                 }
             }
         } catch (e: Exception) {
+
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return num
     }
 
     fun checkexist_for_playlist(playlist_nme: String? = null): Int {
+        var db : SQLiteDatabase?= null;
         try {
+            db = database.readableDatabase
             var num = 0
-            val db = database.readableDatabase
             val cursor = db.rawQuery("SELECT * FROM Playlist WHERE playlist_name = '" + playlist_nme + "'", null)
             return cursor.count
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
     }
 
     fun updatecount(song_name: String, num: Int): Int {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val values = ContentValues()
             values.put(DataHelper.COUNT, num)
             val selectionargs = arrayOf(song_name)
             return db.update(DataHelper.TABLE_NAME, values, DataHelper.SONG_NAME + " =?", selectionargs)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
     }
 
     fun deletelastrow(): Int {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val col = arrayOf(DataHelper.ID)
             var id: Long? = null
             val cursor = db.query(DataHelper.TABLE_NAME, col, null, null, null, null, DataHelper.ID + " LIMIT 1")
@@ -200,16 +210,17 @@ class DatabaseHelperAdapter(internal var context: Context) {
             return db.delete(DataHelper.TABLE_NAME, DataHelper.ID + " = '" + id + "'", null)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
     }
 
     fun deletesong_for_table(name: String, table_name: String): Int {
+        var db : SQLiteDatabase?= null;
         try {
+            db = database.readableDatabase
             var num = 0
-            val db = database.readableDatabase
 //        val col = arrayOf(DataHelper.ID, DataHelper.SONG_NAME)
 //        val selectionargs = arrayOf(name)
 //        val cursor = db.query(table_name, col, DataHelper.SONG_NAME + " =? ", selectionargs, null, null, null)
@@ -220,16 +231,17 @@ class DatabaseHelperAdapter(internal var context: Context) {
             return db.delete(table_name, DataHelper.SONG_NAME + " = '" + name + "'", null)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
     }
 
     fun deletesong_for_playlist(song_name: String, sub_playlist: String): Int {
+        var db : SQLiteDatabase?= null;
         try {
+            db = database.readableDatabase
             var num = 0
-            val db = database.readableDatabase
             val col = arrayOf(DataHelper.ID, DataHelper.SONG_NAME)
             val selectionargs = arrayOf(song_name, sub_playlist)
             if (sub_playlist.equals("all")) {
@@ -240,7 +252,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
             }
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
@@ -254,15 +266,16 @@ class DatabaseHelperAdapter(internal var context: Context) {
     }
 
     fun update_position(name: String, position: Int): Int {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val values = ContentValues()
             values.put(DataHelper.POSITION, position)
             val selectionargs = arrayOf(name)
             return db.update(DataHelper.TABLE_NAME, values, DataHelper.SONG_NAME + " =?", selectionargs)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
 
@@ -270,9 +283,9 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     fun fetchdistinctplaylist(): ArrayList<String> {
         var all_playlist = ArrayList<String>()
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
-
+            db = database.readableDatabase
             var col = arrayOf(DataHelper.Playlist_name)
 
             val cursor = db.rawQuery("SELECT DISTINCT playlist_name FROM Playlist;", null)
@@ -285,7 +298,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
             }
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
 
 
@@ -294,8 +307,9 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     fun getalldata_playlist(playlist_name: String): ArrayList<Song_base> {
         val playlist_song = ArrayList<Song_base>()
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val cursor = db.query("Playlist", null, DataHelper.Playlist_name + " = '" + playlist_name + "' AND " + DataHelper.SONG_NAME + " != 'sample' ", null, null, null, null)
             if (cursor.moveToFirst()) {
                 do {
@@ -317,34 +331,36 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return playlist_song;
     }
 
 
     fun deleteplaylist(playlist: String): Int {
+        var db : SQLiteDatabase?= null;
         try {
-            val db = database.readableDatabase
+            db = database.readableDatabase
             return db.delete("Playlist", DataHelper.Playlist_name + " = '" + playlist + "'", null)
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
     }
 
     fun checkexistance_of_song_in_playlist(song_name: String, playlist: String): Int {
+        var db : SQLiteDatabase?= null;
         try {
             var num = 0
-            val db = database.readableDatabase
+            db = database.readableDatabase
             val col = arrayOf(DataHelper.SONG_NAME)
             val selectionargs = arrayOf(song_name)
             val cursor = db.rawQuery("SELECT id FROM Playlist WHERE song_name = '" + song_name + "' AND playlist_name = '" + playlist + "' ", null)
             return cursor.count
         } catch (e: Exception) {
         } finally {
-            closedatabase()
+            closedatabase(db)
         }
         return 0
     }
@@ -408,9 +424,8 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     }
 
-    fun closedatabase() {
-        val db = database.readableDatabase
-        db.close()
+    fun closedatabase(db: SQLiteDatabase?) {
+        db?.close()
     }
 
 

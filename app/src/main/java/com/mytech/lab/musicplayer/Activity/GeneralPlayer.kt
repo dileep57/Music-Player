@@ -245,39 +245,43 @@ class GeneralPlayer : AppCompatActivity(), View.OnClickListener {
 
         fun updateUI_GeneralPlayer(cntx:Context)
         {
-            try {
-                val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
+            runOnUiThread {
+                try {
+                    val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
 
-                val delay:Long = 0
-                first_time_card = "abc"
-                artist_name?.text = s.first.artist
-                song_name?.text = s.first.song_name
-                loadimage(delay, s.first.albumId!!,cntx)
+                    val delay:Long = 0
+                    first_time_card = "abc"
+                    song_name?.text = s.first.song_name
+                    artist_name?.text = s.first.artist
+                    loadimage(delay, s.first.albumId!!,cntx)
+                }
+                catch (e:Exception){Log.e("Error",e.message)}
             }
-            catch (e:Exception){}
-
 
         }
         internal fun changeButton_general()
         {
-            try {
-                if (Constants.SONG_PAUSED)
-                    playandpause_image?.setImageResource(R.drawable.ic_play)
+            runOnUiThread {
+                try {
+                    if (Constants.SONG_PAUSED)
+                        playandpause_image?.setImageResource(R.drawable.ic_play)
 
-                else {
-                    playandpause_image?.setImageResource(R.drawable.ic_pause)}
+                    else {
+                        playandpause_image?.setImageResource(R.drawable.ic_pause)}
 
 
-                if(Constants.SONG_SHUFFLE==true) {
-                    shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)}
+                    if(Constants.SONG_SHUFFLE==true) {
+                        shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)}
 
-                else {shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)}
+                    else {shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)}
 
-                if(Constants.SONG_REPEAT==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_orange)}
+                    if(Constants.SONG_REPEAT==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_orange)}
 
-                else {repeat_image?.setImageResource(R.drawable.ic_repeat_black)}
+                    else {repeat_image?.setImageResource(R.drawable.ic_repeat_black)}
 
-            }catch (e:Exception){e.printStackTrace()}
+                }catch (e:Exception){Log.i("Error",e.message)}
+
+            }
         }
 
         fun update_favourite()

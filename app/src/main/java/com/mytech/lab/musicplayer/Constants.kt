@@ -140,7 +140,7 @@ companion object {
 
         }
 
-     helper.closedatabase()
+//     helper.closedatabase()
     }
 
     fun calculatetime(minisec: Int?): String {
@@ -567,11 +567,11 @@ companion object {
     fun change_shuffle(context: Context?)
     {
         if (Constants.SONG_SHUFFLE == true) {
-            Toast.makeText(context,"Shuffle Off", Toast.LENGTH_SHORT).show()
+            Controls.createToast(context!!,"Shuffle Off",Toast.LENGTH_SHORT)
             Constants.SONG_SHUFFLE = false }
 
         else {  Constants.SONG_SHUFFLE = true
-            Toast.makeText(context,"Shuffle On", Toast.LENGTH_SHORT).show()
+            Controls.createToast(context!!,"Shuffle On",Toast.LENGTH_SHORT)
             if (Constants.SONG_REPEAT == true) { Constants.SONG_REPEAT = false }
         }
         Controls.shuffle_repeat()
@@ -583,14 +583,14 @@ companion object {
     {
         if (Constants.SONG_REPEAT == true)
         {
-            Toast.makeText(context,"Repeat Off", Toast.LENGTH_SHORT).show()
+            Controls.createToast(context!!,"Repeat Off",Toast.LENGTH_SHORT)
             Constants.SONG_REPEAT = false
         }
 
         else
         {
             Constants.SONG_REPEAT = true
-            Toast.makeText(context,"Repeat On", Toast.LENGTH_SHORT).show()
+            Controls.createToast(context!!,"Repeat On",Toast.LENGTH_SHORT)
             if (Constants.SONG_SHUFFLE == true) { Constants.SONG_SHUFFLE = false }
         }
         Controls.shuffle_repeat()

@@ -145,6 +145,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             GeneralPlayer().changeuiwithbutton_general(applicationContext)
             MusicPlayer().changeUIwithbutton_musicplayer(applicationContext)
             updatenotificationIcon()
+            Log.i("print","again")
 
 
             Constants.SONG_CHANGE_HANDLER = Handler(object : Handler.Callback {
@@ -240,29 +241,32 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     Home().changeButton_Home()
                     MusicPlayer().changeButton_musicplayer()
                     GeneralPlayer().changeButton_general()
-                    return false;
+                    return true
 
                 }
-
             })
 
 
         } catch (e: Exception) {
-            e.printStackTrace();
+            Controls.createToast(this, e.message!!,Toast.LENGTH_SHORT)
         }
 
 
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
 
     fun collectsongdata(s: Song_base) {
-        val actual_pos = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
-        Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
-                "general", Home.shared.getString("current_album", "alb"), Home.shared.getString("playlist_name", "alb"))
-        Constants.databasedata(s, applicationContext, actual_pos, "RecentSong")
-        Recent_song.updaterecentsong(applicationContext)
-        Recent_song.setvisibility()
+        val lambda1=Thread{
+            val actual_pos = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
+            Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
+                    "general", Home.shared.getString("current_album", "alb"), Home.shared.getString("playlist_name", "alb"))
+            Constants.databasedata(s, applicationContext, actual_pos, "RecentSong")
+            Recent_song.updaterecentsong(applicationContext)
+            Recent_song.setvisibility()
+        }
+        lambda1.start()
+
     }
 
 
@@ -371,8 +375,8 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private fun startNotify() {
 
-        var mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.notify(NOTIFICATION_ID, notification)
+            var mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            mNotificationManager.notify(NOTIFICATION_ID, notification)
     }
 
 
@@ -380,11 +384,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         if (Constants.SONG_PAUSED) {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.play_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.play_white)
-            Log.i("pause", "ok")
+//            Log.i("pause", "ok")
         } else {
             simpleContentView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
             expandedView.setImageViewResource(R.id.playpause, R.drawable.pause_white)
-            Log.i("play", "ok")
+//            Log.i("play", "ok")
         }
         startNotify()
     }

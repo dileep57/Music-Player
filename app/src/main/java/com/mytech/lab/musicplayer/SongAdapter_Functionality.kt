@@ -344,7 +344,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
             }
             Recent_song.updaterecentsong(cntxt)
         }
-        helper.closedatabase()
+//        helper.closedatabase(null)
     }
 
 
@@ -371,7 +371,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
         {
             Home.helper.deletesong_for_table(delete_song_name, "favourites")
         }
-        helper.closedatabase()
+//        helper.closedatabase(null)
 
         Playlist().notifychange()
     }

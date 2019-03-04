@@ -147,7 +147,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
             if (!isServiceRunning)
             {
-                //startService(Intent(applicationContext, SongService::class.java))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(Intent(applicationContext, SongService::class.java))
                 } else {
@@ -182,8 +181,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         when (item.itemId) {
 
-//            R.id.playlist -> addplaylist()
-
             R.id.send_app -> sendapp()
 
             R.id.shuffle_all -> shuffle_all()
@@ -203,13 +200,10 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.home -> createfragment(Recent_song(), "recent_song")
 
             R.id.music_library -> {
-
-
                 createfragment(Music_lib_2(), "music_library")
             }
 
-            R.id.equilizer ->
-            {
+            R.id.equilizer -> {
                 val intent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
 
                 if (intent.resolveActivity(packageManager) != null)
@@ -219,25 +213,21 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
             }
 
-            R.id.theme ->
-            {
+            R.id.theme -> {
                 selecttheme()
             }
 
-            R.id.player2 ->
-            {
+            R.id.player2 ->  {
                 val q = Intent(this, MusicPlayer::class.java)
                 startActivity(q)
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
-
             }
 
-            R.id.settings ->
-            {
+            R.id.settings -> {
                 createfragment(Settings(), "settings")
             }
 
-            R.id.invite ->{
+            R.id.invite -> {
                 close_drawer()
                 sendapp()
             }
@@ -249,19 +239,14 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     fun createfragment(fragment: Fragment, str: String) {
 
         val manager = supportFragmentManager
-        var topfragName:String = ""
         val transaction = manager.beginTransaction()
 
-
-        if(str.equals("music_library"))
-        {
+        if(str.equals("music_library")) {
             transaction.replace(R.id.replaceable_layout, fragment, str)
         }
-        else
-        {
+        else {
             transaction.add(R.id.replaceable_layout, fragment, str)
         }
-
 
         if (str != "music_library") {
 
@@ -276,11 +261,9 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             transaction.addToBackStack(str)
 
         }
-        else
-        {
+        else {
 
-            if(manager.getBackStackEntryCount()>0)
-            {
+            if(manager.getBackStackEntryCount()>0) {
 
                 if(getFragmentTag().equals(str,ignoreCase = true)) {
                     close_drawer()
@@ -299,23 +282,20 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     }
 
-    private fun close_drawer()
-    {
+    private fun close_drawer() {
         val drawer = findViewById<View>(R.id.drawer) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
     }
 
-    fun selecttheme()
-    {
-        var colorpicker:ColorPicker = ColorPicker(this)
+    fun selecttheme() {
 
+        var colorpicker:ColorPicker = ColorPicker(this)
         colorpicker.setColors(Constants.coloHexlist)
         colorpicker.setColorButtonSize(46,46)
         colorpicker.setRoundColorButton(true)
         colorpicker.setOnFastChooseColorListener(object :ColorPicker.OnFastChooseColorListener {
 
             override fun setOnFastChooseColorListener(position:Int, color:Int) {
-//                Log.i("color", Constants.coloHexlist[position])
                 Constants.setcolortheme(position)
 
                 val intent:Intent = Intent(applicationContext, Home::class.java)
@@ -816,13 +796,15 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     fun changeButton_Home()
     {
-        if(Constants.SONG_PAUSED)
-        {
-            card_songicon.setImageResource(R.drawable.play_icon_black)
-        }
-        else
-        {
-            card_songicon.setImageResource(R.drawable.pause_icon_black)
+        runOnUiThread {
+            if(Constants.SONG_PAUSED)
+            {
+                card_songicon.setImageResource(R.drawable.play_icon_black)
+            }
+            else
+            {
+                card_songicon.setImageResource(R.drawable.pause_icon_black)
+            }
         }
     }
 

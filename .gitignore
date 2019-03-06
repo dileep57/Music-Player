@@ -1,11 +1,5 @@
 .idea/*
 .*
-app/app.iml
-app/build*
-build.gradle
-MyApplication.iml
-app/src/main/res/m*
-app/release/*
 projectFilesBackup/
 AndroPlayer_wall.jpg
 projectFilesBackup/*

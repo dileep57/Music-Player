@@ -45,9 +45,6 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
     public var cardview: CardView?= null
 
-    public val helper: DatabaseHelperAdapter =  DatabaseHelperAdapter(this)
-
-
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 

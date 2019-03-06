@@ -9,7 +9,7 @@
     <group>
         <item
             android:id="@+id/home"
-            android:title="Home"
+            android:title="Recent Songs"
             android:icon="@drawable/home"/>
 
         <item

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 
 import java.util.ArrayList
@@ -283,7 +284,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
 
     fun fetchdistinctplaylist(): ArrayList<String> {
         var all_playlist = ArrayList<String>()
-        var db : SQLiteDatabase?= null;
+        var db : SQLiteDatabase?= null
         try {
             db = database.readableDatabase
             var col = arrayOf(DataHelper.Playlist_name)
@@ -296,7 +297,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
                     all_playlist.add(name)
                 } while (cursor.moveToNext())
             }
-        } catch (e: Exception) {
+        } catch (e: Exception) {Log.e("Error",e.message)
         } finally {
             closedatabase(db)
         }

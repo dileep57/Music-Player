@@ -28,6 +28,8 @@ class Playlist_single : android.support.v4.app.Fragment() {
     internal var cntx: Context? = null
     private var playlist_song:ArrayList<Song_base>? = null
     private lateinit var playlist_name:String
+    internal var song_adapter:Song_Adapter?=null
+    lateinit var helper: DatabaseHelperAdapter
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -43,7 +45,7 @@ class Playlist_single : android.support.v4.app.Fragment() {
 
         playlist_name = arguments!!.getString("name")
 
-        val helper = DatabaseHelperAdapter(v.context)
+        helper = DatabaseHelperAdapter(v.context)
 
         if(playlist_name.equals("Recent_add_song",ignoreCase = true))
         {
@@ -62,7 +64,6 @@ class Playlist_single : android.support.v4.app.Fragment() {
         val recyclerView:FastScrollRecyclerView = v.findViewById(R.id.recycler_single)
         recyclerView.layoutManager = LinearLayoutManager(v.context)
         recyclerView.setHasFixedSize(true)
-
         song_adapter = Song_Adapter(playlist_song!!,v.context)
 
         recyclerView.adapter = song_adapter
@@ -193,13 +194,9 @@ class Playlist_single : android.support.v4.app.Fragment() {
         popup.show()
     }
 
-    companion object {
-        internal var song_adapter:Song_Adapter?=null
-        fun notify_change()
+        public fun notify_change()
         {
             song_adapter?.notifyDataSetChanged()
         }
-    }
-
 
 }

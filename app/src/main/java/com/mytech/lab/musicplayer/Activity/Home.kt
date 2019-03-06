@@ -58,10 +58,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     private var toolbar: Toolbar?= null
 
     lateinit internal var playorpausecard:LinearLayout
-
+    lateinit var drawer: DrawerLayout
+    lateinit var helper: DatabaseHelperAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("cycle", "Oncreate")
         if(Wel.colorshared.getInt("themename",-1)!=-1)
         {
 
@@ -169,6 +169,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         artist_name = findViewById(R.id.artist_name)
         card_playPauseIcon = findViewById(R.id.playorpauseicon)
         playorpausecard = findViewById(R.id.playorpause)
+        helper = DatabaseHelperAdapter(applicationContext)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -331,10 +332,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             {
                 supportFragmentManager.popBackStack()
             }
-//
-//            if (shared.getString("song_name", null) != null) {
-//                cardview?.visibility = View.VISIBLE
-//            }
+
         }
 
 
@@ -459,7 +457,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     override fun onResume() {
         super.onResume()
-        Log.i("cycle", "OnResume")
         try{
             Constants.SONG_SHUFFLE = Home.shared.getBoolean("shuffle",false)
             Constants.SONG_REPEAT  = Home.shared.getBoolean("repeat",false)
@@ -469,6 +466,11 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             initiliseUIHandler()
             inilitiseUIOnResume()
 
+            if (shared.getString("song_name", null) != null) {
+                cardview?.visibility = View.VISIBLE
+            }else{
+                cardview?.visibility = View.INVISIBLE
+            }
 
         }
         catch (e:Exception){}
@@ -515,7 +517,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     override fun updateButtonUI() {
 
-        Log.i("Updata Crad UI", "CARD")
         try {
             if(Constants.SONG_PAUSED)
             {
@@ -565,7 +566,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     public override fun onDestroy() {
         super.onDestroy()
-        Log.i("cycle", "OnDestroy")
         if (AccelerometerManager.isListening)
         {
             AccelerometerManager.stopListening()
@@ -574,10 +574,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     }
 
-    public override fun onRestart() {
-        super.onRestart()
-        Log.i("cycle", "OnRestart")
-    }
 
     private fun ratingDialog()
     {
@@ -618,8 +614,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     companion object {
 
         lateinit var toggle: ActionBarDrawerToggle
-
-        lateinit var drawer: DrawerLayout
 
         var localimage = intArrayOf(R.drawable.music1, R.drawable.music2)
 

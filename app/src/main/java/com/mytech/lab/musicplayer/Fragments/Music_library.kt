@@ -44,11 +44,11 @@ class Music_library : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
 
-        menu!!.clear()
+        menu?.clear()
         inflater!!.inflate(R.menu.main_menu,menu)
         if (viewPager.getCurrentItem()==0)
         {
-            menu.findItem(R.id.by_title).setVisible(true)
+            menu?.findItem(R.id.by_title)?.setVisible(true)
         }
         else if(viewPager.getCurrentItem()==1)
         {

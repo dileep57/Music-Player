@@ -337,14 +337,11 @@ class Playlist : Fragment() {
         var textinput : TextInputLayout = dp.findViewById(R.id.username_textinputlayout);
 
         create.setOnClickListener {
-            if(name.getText().toString().isEmpty())
-            {
+            if(name.getText().toString().isEmpty()) {
                 textinput.setError("PlayList Name Is Mandatory")
                 isvalid = false;
 
-            }
-            else
-            {
+            } else {
                 textinput.setErrorEnabled(false);
                 isvalid = true;
             }
@@ -364,9 +361,7 @@ class Playlist : Fragment() {
                     Playlist.playlist_name_array.add(name.text.toString())
                     Playlist().notifychange()
 
-                }
-                else
-                {
+                } else {
                    playlist_already_exists()
                 }
 
@@ -418,13 +413,12 @@ class Playlist : Fragment() {
 
         var adapter:ArrayAdapter<String>? = null
         lateinit var playlist_name_array:ArrayList<String>
-        internal lateinit var hide_txt:TextView
 
     }
 
     fun notifychange() {
         adapter?.notifyDataSetChanged()
-        Playlist_single.notify_change()
+        Playlist_single().notify_change()
     }
 
     private fun getview(v:View)

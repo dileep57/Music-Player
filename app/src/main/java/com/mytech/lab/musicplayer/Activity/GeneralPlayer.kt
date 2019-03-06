@@ -17,6 +17,7 @@ import com.mytech.lab.musicplayer.R
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.SongService
 import com.mytech.lab.musicplayer.sub_sub_fragment.Playlist_single
+import com.mytech.lab.musicplayer.utils.DatabaseHelperAdapter
 import com.mytech.lab.musicplayer.utils.PlayerAbstractClass
 import com.mytech.lab.musicplayer.utils.Song_base
 import de.hdodenhof.circleimageview.CircleImageView
@@ -50,6 +51,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     private var fav_head: LinearLayout?=null
     private var fav_Image: ImageView? = null
+    lateinit var helper: DatabaseHelperAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +79,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     fun getviews()
     {
+        helper =  DatabaseHelperAdapter(applicationContext)
         song_name = findViewById(R.id.song_name)
         songImage = findViewById(R.id.songImage)
         artist_name = findViewById(R.id.artist_name)
@@ -182,7 +185,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
                         if (check > 0)
                         {
-                            Playlist_single.notify_change()
+                            Playlist_single().notify_change()
                             Toast.makeText(applicationContext, "1 song added to Favourite Song", Toast.LENGTH_SHORT).show()
                         }
                     }

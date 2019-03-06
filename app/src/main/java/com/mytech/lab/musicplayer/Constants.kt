@@ -336,7 +336,7 @@ companion object {
         )
 
         Constants.databasedata(s, context!!, actual_song_pos,"RecentSong")
-        Recent_song.updaterecentsong(context)
+        Recent_song().updaterecentsong(context)
     }
 
     fun getDefaultAlbumArt(context: Context): Bitmap? {
@@ -373,6 +373,7 @@ companion object {
     @JvmOverloads
     fun servicearray(section:String,album_name:String?=null,artist_name:String?=null,playlist_name: String?=null,firstopen:Boolean=false,cntx:Context?=null)
     {
+
 
         if(section.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true) && !firstopen)
         {
@@ -425,6 +426,7 @@ companion object {
         }
         else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
         {
+            val helper:DatabaseHelperAdapter = DatabaseHelperAdapter(cntx!!)
             if(playlist_name.equals("Recent_add_song",ignoreCase = true))
             {
                 for(temp in get_topsong(cntx!!,MediaStore.Audio.Media.DATE_ADDED + " DESC"))
@@ -435,14 +437,14 @@ companion object {
             }
             else if(playlist_name.equals("favourites",ignoreCase = true))
             {
-                for(temp in Home().helper!!.getalldata_table(playlist_name!!))
+                for(temp in helper.getalldata_table(playlist_name!!))
                 {
                     Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
                 }
             }
             else
             {
-                for(temp in Home().helper!!.getalldata_playlist(playlist_name!!))
+                for(temp in helper.getalldata_playlist(playlist_name!!))
                 {
                     Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
                 }

@@ -314,21 +314,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     }
 
-//    fun loadimage(delay:Long,albumId:Long?)
-//    {
-//        Handler().postDelayed({
-//            val albumArt = Constants.getAlbumart(cntx, albumId)
-//            if (albumArt != null) {
-//                gallery.setImageBitmap(albumArt)
-//
-//            } else {
-//                gallery.setImageResource(R.drawable.default_general_player_albumart)
-//
-//            }
-//        },delay)
-//    }
-
-
     private fun buttonclick(res:Boolean)
     {
         playandpause?.isClickable = res

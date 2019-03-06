@@ -31,7 +31,11 @@ import java.util.ArrayList
 
 class Recent_song : Fragment() {
 //    internal var context: Context? = null
-    internal var helper: DatabaseHelperAdapter? = null
+    private var helper: DatabaseHelperAdapter? = null
+    private var recent_activity:TextView? = null
+    private var upper_card:CardView? = null
+    internal var recent: FastScrollRecyclerView? = null
+    internal var song_adapter: Song_Adapter? = null
 
 
 
@@ -178,14 +182,10 @@ class Recent_song : Fragment() {
     }
 
     companion object {
-
-        internal var recent: FastScrollRecyclerView? = null
-        internal var song_adapter: Song_Adapter? = null
         internal lateinit var recent_song: ArrayList<Song_base>
-        var recent_activity:TextView? = null
-        var upper_card:CardView? = null
+    }
 
-        fun updaterecentsong(cntx: Context?) {
+       public fun updaterecentsong(cntx: Context?) {
             val helper = DatabaseHelperAdapter(cntx!!)
             recent_song = ArrayList()
             recent_song.clear()
@@ -197,7 +197,7 @@ class Recent_song : Fragment() {
 
         }
 
-        fun setvisibility()
+       public fun setvisibility()
         {
             if(recent_song.size>0)
             {
@@ -205,7 +205,6 @@ class Recent_song : Fragment() {
                 upper_card?.visibility = View.VISIBLE
             }
         }
-    }
 
 
     fun playwithpopmenu(pop: LinearLayout, temp: Song_base, position: Int)

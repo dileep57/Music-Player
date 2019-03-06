@@ -245,8 +245,8 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
                     "general", Home.shared.getString("current_album", "alb"), Home.shared.getString("playlist_name", "alb"))
             Constants.databasedata(s, applicationContext, actual_pos, "RecentSong")
-            Recent_song.updaterecentsong(applicationContext)
-            Recent_song.setvisibility()
+            Recent_song().updaterecentsong(applicationContext)
+            Recent_song().setvisibility()
         }
         lambda1.start()
 

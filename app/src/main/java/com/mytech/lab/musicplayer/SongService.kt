@@ -18,10 +18,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.media.MediaMetadataRetriever
 import android.os.Build
-import android.provider.MediaStore
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat.PRIORITY_MAX
 import android.util.Log
@@ -33,7 +31,6 @@ import com.mytech.lab.musicplayer.Fragments.Recent_song
 import com.mytech.lab.musicplayer.utils.PhoneStateReceiver
 import com.mytech.lab.musicplayer.utils.Song_base
 import java.util.concurrent.TimeUnit
-import java.util.logging.Logger
 
 
 class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
@@ -93,35 +90,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         currentVersionSupportLockScreenControls = Constants.currentVersionSupportLockScreenControls();
 
         super.onCreate()
-    }
-
-    val handler = Handler(object : Handler.Callback {
-        override fun handleMessage(p0: Message?): Boolean {
-            if (mp != null) {
-                val progress = mp!!.getCurrentPosition() * 100 / mp!!.getDuration()
-                val i = arrayOfNulls<Int>(4)
-                i[0] = mp!!.currentPosition
-                i[1] = mp!!.getDuration()
-
-                try {
-                    Constants.PROGRESSBAR_HANDLER!!.sendMessage(Constants.PROGRESSBAR_HANDLER!!.obtainMessage(0, i))
-                } catch (e: Exception) {
-                }
-
-            }
-            return false
-        }
-    })
-
-    private inner class MainTask : TimerTask() {
-        override fun run() {
-            if (mp != null && mp!!.isPlaying) {
-                handler.sendEmptyMessage(0)
-            }
-        }
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         try {
 
@@ -141,11 +109,8 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             newnotification()
             startForeground()
             collectsongdata(s)
-            Home().updateuiwithbutton_home(applicationContext)
-            GeneralPlayer().changeuiwithbutton_general(applicationContext)
-            MusicPlayer().changeUIwithbutton_musicplayer(applicationContext)
             updatenotificationIcon()
-            Log.i("print","again")
+            Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0))
 
 
             Constants.SONG_CHANGE_HANDLER = Handler(object : Handler.Callback {
@@ -169,20 +134,14 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                     } catch (e: Exception) {
                         Constants.SONG_PAUSED = true
                         mp?.pause()
-                        Home().changeButton_Home()
-                        MusicPlayer().changeButton_musicplayer()
-                        GeneralPlayer().changeButton_general()
                         return false
                     }
 
 
 
                     try {
+                        Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                         playSong(songPath, s)
-                        Home().UpdateUI(applicationContext)
-                        GeneralPlayer().update_favourite()
-                        MusicPlayer().updateUI_Musicplayer()
-                        GeneralPlayer().updateUI_GeneralPlayer(applicationContext)
                     } catch (e: Exception) {
                         Log.e("ERROR", e.message)
                     }
@@ -222,10 +181,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         }
                         mp!!.pause()
                     }
-
-                    Home().changeButton_Home()
-                    MusicPlayer().changeButton_musicplayer()
-                    GeneralPlayer().changeButton_general()
+                    Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                     updatenotificationIcon()
                     startNotify()
                     return true
@@ -237,10 +193,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             Constants.SHUFFLE_REPEAT = Handler(object : Handler.Callback {
 
                 override fun handleMessage(msg: Message?): Boolean {
-
-                    Home().changeButton_Home()
-                    MusicPlayer().changeButton_musicplayer()
-                    GeneralPlayer().changeButton_general()
+                    Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                     return true
 
                 }
@@ -251,6 +204,36 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             Controls.createToast(this, e.message!!,Toast.LENGTH_SHORT)
         }
 
+    }
+
+    val handler = Handler(object : Handler.Callback {
+        override fun handleMessage(p0: Message?): Boolean {
+            if (mp != null) {
+                val progress = mp!!.getCurrentPosition() * 100 / mp!!.getDuration()
+                val i = arrayOfNulls<Int>(4)
+                i[0] = mp!!.currentPosition
+                i[1] = mp!!.getDuration()
+
+                try {
+                    Constants.PROGRESSBAR_HANDLER!!.sendMessage(Constants.PROGRESSBAR_HANDLER!!.obtainMessage(0, i))
+                } catch (e: Exception) {
+                }
+
+            }
+            return false
+        }
+    })
+
+
+    private inner class MainTask : TimerTask() {
+        override fun run() {
+            if (mp != null && mp!!.isPlaying) {
+                handler.sendEmptyMessage(0)
+            }
+        }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         return START_NOT_STICKY
     }
@@ -451,7 +434,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
             val timer: Timer = Timer(true)
             timer.scheduleAtFixedRate(MainTask(), 0, 100)
         } catch (e: Exception) {
-            Home.filenotsupport()
+            Home.filenotsupport(applicationContext)
             Controls.nextControl(applicationContext)
         }
     }

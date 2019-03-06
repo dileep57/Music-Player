@@ -428,19 +428,19 @@ companion object {
                 for(temp in get_topsong(cntx!!,MediaStore.Audio.Media.DATE_ADDED + " DESC"))
                 {
                     try{Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))}
-                    catch (e:Exception){Home.filenotsupport()}
+                    catch (e:Exception){Home.filenotsupport(cntx)}
                 }
             }
             else if(playlist_name.equals("favourites",ignoreCase = true))
             {
-                for(temp in Home.helper.getalldata_table(playlist_name!!))
+                for(temp in Home().helper!!.getalldata_table(playlist_name!!))
                 {
                     Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
                 }
             }
             else
             {
-                for(temp in Home.helper.getalldata_playlist(playlist_name!!))
+                for(temp in Home().helper!!.getalldata_playlist(playlist_name!!))
                 {
                     Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
                 }
@@ -656,6 +656,7 @@ companion object {
 
     var favourite = false
 
+    var PLAYER_UI: Handler?= null
 
 
 }

@@ -21,7 +21,6 @@ import android.webkit.WebView
 import android.widget.*
 import com.mytech.lab.musicplayer.*
 import com.mytech.lab.musicplayer.Activity.Home
-import com.mytech.lab.musicplayer.Activity.Home.Companion.helper
 
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.sub_sub_fragment.Playlist_single
@@ -168,7 +167,7 @@ class Songs : Fragment() {
 
                         }
 
-                        Home.cardvisible()
+                    Home().cardview?.visibility = View.VISIBLE
 
                 }
                  catch (e: IOException) {

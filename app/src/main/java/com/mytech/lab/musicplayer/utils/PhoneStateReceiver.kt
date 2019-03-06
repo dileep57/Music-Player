@@ -82,8 +82,7 @@ public class PhoneStateReceiver : BroadcastReceiver(){
                     val i = Intent(context, SongService::class.java)
                     context.stopService(i)
                     Constants.SONG_PAUSED = true
-                    Home().changeButton_Home()
-                    GeneralPlayer().changeButton_general()
+                    Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0))
 
                 }
                 else if (intent.getAction() == SongService.NOTIFY_PREVIOUS)

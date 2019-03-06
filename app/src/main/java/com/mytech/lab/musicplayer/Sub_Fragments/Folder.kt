@@ -186,7 +186,7 @@ class Folder : Fragment() {
                     Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,"false"))
                 }
 
-                Home.cardview.visibility = View.VISIBLE
+                Home().cardview?.visibility = View.VISIBLE
             }
 
 

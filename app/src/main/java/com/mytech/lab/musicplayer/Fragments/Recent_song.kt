@@ -118,7 +118,7 @@ class Recent_song : Fragment() {
 
                         }
 
-                        Home.cardview.visibility = View.VISIBLE
+                        Home().cardview?.visibility = View.VISIBLE
 
                     }
 

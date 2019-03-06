@@ -124,7 +124,7 @@ class Album_expand :Fragment() {
 
                     }
 
-                    Home.cardview.visibility = View.VISIBLE
+                    Home().cardview?.visibility = View.VISIBLE
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

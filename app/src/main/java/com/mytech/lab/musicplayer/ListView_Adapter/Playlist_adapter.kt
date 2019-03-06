@@ -75,7 +75,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                         notifyDataSetChanged()
                                         Playlist.playlist_name_array.remove(nameofplaylist)
                                         Playlist().notifychange()
-                                        Home.helper.deleteplaylist(nameofplaylist)
+                                        Home().helper?.deleteplaylist(nameofplaylist)
                                     }
                                     else
                                     {
@@ -167,8 +167,8 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
     private fun forPlaySong(nameofplaylist:String)
     {
 
-        var base =  Home.helper.getalldata_playlist(nameofplaylist)
-        if(base.size>0)
+        var base =  Home().helper?.getalldata_playlist(nameofplaylist)
+        if(base != null && base!!.size>0)
         {
             val actual_song_pos = Home.Songname_position.get(base.get(0).song_name)!!
             Constants.servicearray("popup_playlist",base.get(0).album_name,base.get(0).artist,nameofplaylist,false,context)
@@ -207,7 +207,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
 
             }
 
-           Home.cardvisible()
+            Home().cardview?.visibility = View.VISIBLE
 
         }
         else

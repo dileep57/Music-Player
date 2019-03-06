@@ -1,5 +1,6 @@
 package com.mytech.lab.musicplayer.sub_sub_fragment
 
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -113,10 +114,10 @@ class Playlist_single : Fragment() {
 
                         }
 
-                        Home.cardview.visibility = View.VISIBLE
+                        Home().cardview?.visibility = View.VISIBLE
 
                 } catch (e: Exception) {
-                    Home.filenotsupport()
+                    Home.filenotsupport(cntx!!)
                 }
             }
 

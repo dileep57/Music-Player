@@ -140,7 +140,7 @@ class Song_library_Act : AppCompatActivity() {
 
 
 
-                    Home.cardview.visibility = View.VISIBLE
+                    Home().cardview?.visibility = View.VISIBLE
 
                 }
                 catch (e: IOException) {

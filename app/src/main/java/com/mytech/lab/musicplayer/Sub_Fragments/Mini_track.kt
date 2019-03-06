@@ -121,7 +121,7 @@ class Mini_track : Fragment() {
                             Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg));
                         }
 
-                    Home.cardvisible()
+                    Home().cardview?.visibility = View.VISIBLE
 
 
                 } catch (e: IOException) {

@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.*
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.util.Log
@@ -17,17 +16,34 @@ import android.view.View
 import android.widget.*
 import com.mytech.lab.musicplayer.*
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
+import com.mytech.lab.musicplayer.utils.PlayerAbstractClass
 import com.mytech.lab.musicplayer.utils.Song_base
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
 
 import java.io.IOException
 
-class MusicPlayer : AppCompatActivity(), View.OnClickListener {
+class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
-    internal lateinit var toolbar: Toolbar
+    private lateinit var toolbar: Toolbar
 
-    internal var query: String? = null
+    private var query: String? = null
+    private var playandpause: LinearLayout?=null
+    private var prev: LinearLayout?=null
+    private var next: LinearLayout?=null
+
+    var oncurrentactivity : Boolean = false
+
+
+    private lateinit var runnable: Runnable
+    private lateinit var handler: Handler
+    private var db: SQLiteDatabase? = null
+
+    private var song_position: Int = 0
+    private var playeropenfirsttime: String? = "no"
+
+    private lateinit var recyclerView: FastScrollRecyclerView
+    private var adapter: Song_Adapter?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,49 +60,62 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
         handler = Handler()
         oncurrentactivity = true
 
-        cntx = this
+        Thread {
+            adapter = Song_Adapter(Home.all_songs, applicationContext)
+            recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+            recyclerView.adapter = adapter
+            commmunicationAdapter()
+        }.start()
+
+        initiliseUIHandler()
 
 
-        recyclerView = findViewById(R.id.recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.setItemViewCacheSize(20)
-        recyclerView.isDrawingCacheEnabled = true
-        recyclerView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-
-
-        if (savedInstanceState == null) {
-            val tsk = Backtask()
-            tsk.execute()
-        }
-
-        val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
-        if (isServiceRunning) {
-            forward.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                    if(b) {
-                        SongService.mp!!.seekTo(i)
-                    }
-
-
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
-                    SongService.mp!!.pause()
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    SongService.mp!!.start()
-
-                }
-            })
-        }
+       updateSeekbar()
+//
+//        Constants.PLAYER_UI = Handler(object : Handler.Callback {
+//                override fun handleMessage(msg: Message?): Boolean {
+//                    Log.i("MusicPlayer ","call")
+//                    try {
+//                        val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
+//
+//                        artist_name?.text = s.first.artist
+//                        song_name?.text = s.first.song_name
+//
+//                        loadimage(200, s.first.albumId)
+//                    }
+//                    catch (e:Exception){}
+//
+//
+//
+//                    return true
+//                }
+//            })
 
 
     }
 
+    override fun updateButtonUI() {
+        try {
+            if (Constants.SONG_PAUSED) { playandpause_image?.setImageResource(R.drawable.album_play) }
 
-    private fun commm() {
+            else { playandpause_image?.setImageResource(R.drawable.album_pause) }
+
+
+            if(Constants.SONG_SHUFFLE ==true) {
+                shuffle_image?.setImageResource(R.drawable.ic_shuffle_click_24dp)}
+
+            else {
+                shuffle_image?.setImageResource(R.drawable.ic_shuffle_black_24dp)}
+
+            if(Constants.SONG_REPEAT ==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_click_24dp)}
+
+            else {
+                repeat_image?.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
+
+        }catch (e:Exception){Log.e("Error",e.message)}
+    }
+
+    private fun commmunicationAdapter() {
 
         adapter?.setCommnicator(object : Song_Adapter.Communicator {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
@@ -104,21 +133,21 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
                         messagearg = "true"
                     }
 
-                    Constants.mediaAfterprepared(null, cntx, s, position, position,
+                    Constants.mediaAfterprepared(null, applicationContext, s, position, position,
                             "general", "only_song")
 
                     Constants.SONG_NUMBER = position
-                    val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
+                    val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
 
                     if (!isServiceRunning)
                     {
-                        val i = Intent(cntx, SongService::class.java)
-                       // cntx.startService(i)
+                        val i = Intent(applicationContext, SongService::class.java)
+                        // cntx.startService(i)
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            cntx.startForegroundService(i);
+                            applicationContext.startForegroundService(i);
                         } else {
-                            cntx.startService(i);
+                            applicationContext.startService(i);
                         }
 
 
@@ -131,7 +160,6 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
 
                     }
 
-                    Home.cardview.visibility = View.VISIBLE
                 }
                 catch (e: IOException) { }
 
@@ -148,11 +176,11 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
 
     fun playwithpopmenu(pop: LinearLayout, temp: Song_base, position: Int)
     {
-        val popup = PopupMenu(cntx, pop)
+        val popup = PopupMenu(applicationContext, pop)
         popup.inflate(R.menu.pop_menu_song)
 
         var inflater1:LayoutInflater? = null
-        inflater1 = LayoutInflater.from(cntx)
+        inflater1 = LayoutInflater.from(applicationContext)
 
         if(Build.VERSION.SDK_INT>=23)
         {
@@ -164,33 +192,33 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
             override fun onMenuItemClick(item: MenuItem): Boolean {
                 when (item.getItemId()){
 
-                    R.id.play -> { SongAdapter_Functionality(pop,temp,position,cntx).play()}
+                    R.id.play -> { SongAdapter_Functionality(pop,temp,position,applicationContext).play()}
 
-                    R.id.play_next -> { SongAdapter_Functionality(pop,temp,position,cntx).play_next()}
+                    R.id.play_next -> { SongAdapter_Functionality(pop,temp,position,applicationContext).play_next()}
 
                     R.id.add_to_queue -> {
-                        SongAdapter_Functionality(pop,temp,position,cntx).addToQueue() }
+                        SongAdapter_Functionality(pop,temp,position,applicationContext).addToQueue() }
 
                     R.id.delete -> {
-                        SongAdapter_Functionality(pop,temp,position,cntx).delete( adapter, Home.all_songs) }
+                        SongAdapter_Functionality(pop,temp,position,applicationContext).delete( adapter, Home.all_songs) }
 
                     R.id.send -> {
-                        SongAdapter_Functionality(pop,temp,position,cntx).send()}
+                        SongAdapter_Functionality(pop,temp,position,applicationContext).send()}
 
                     R.id.set_ringtone -> {
-                        SongAdapter_Functionality(pop,temp,position, cntx).setRingtone() }
+                        SongAdapter_Functionality(pop,temp,position, applicationContext).setRingtone() }
 
                     R.id.add_to_playlistt -> {
-                        SongAdapter_Functionality(pop,temp,position, cntx).addToPlaylist(inflater1) }
+                        SongAdapter_Functionality(pop,temp,position, applicationContext).addToPlaylist(inflater1) }
 
                     R.id.detail -> {
-                        SongAdapter_Functionality(pop,temp,position, cntx).detail(inflater1)}
+                        SongAdapter_Functionality(pop,temp,position, applicationContext).detail(inflater1)}
 
                     R.id.add_favrioute -> {
-                        SongAdapter_Functionality(pop,temp,position, cntx).addToFavrioute() }
+                        SongAdapter_Functionality(pop,temp,position, applicationContext).addToFavrioute() }
 
                     R.id.search -> {
-                        SongAdapter_Functionality(pop,temp,position, cntx).search() }
+                        SongAdapter_Functionality(pop,temp,position, applicationContext).search() }
 
                 }
                 return true
@@ -203,26 +231,36 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
     private fun getview()
     {
         forward = findViewById(R.id.forward)
-        forward.progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        forward!!.progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
         song_name = findViewById(R.id.song_name)
-        song_name.text = "Song Name"
-        artist_title = findViewById(R.id.artist)
-        artist_title.text = "Artist"
+        song_name!!.text = "Song Name"
+        artist_name = findViewById(R.id.artist)
+        artist_name!!.text = "Artist"
         starttime = findViewById(R.id.starttime)
-        starttime.text = "start"
-        totaltime = findViewById(R.id.totaltime)
-        totaltime.text = "End"
-        gallery = findViewById(R.id.gallery)
+        starttime!!.text = "start"
+        endtime = findViewById(R.id.totaltime)
+        endtime!!.text = "End"
+        banner = findViewById(R.id.gallery)
         playandpause = findViewById(R.id.playandpause)
-        playandpause.setOnClickListener(this)
+        playandpause!!.setOnClickListener(this)
+        playandpause_image = findViewById(R.id.playandpause_image)
         prev = findViewById(R.id.prev)
-        prev.setOnClickListener(this)
-        nxt = findViewById(R.id.next)
-        nxt.setOnClickListener(this)
+        prev!!.setOnClickListener(this)
+        next = findViewById(R.id.next)
+        next!!.setOnClickListener(this)
         repeat = findViewById(R.id.repeat)
-        repeat.setOnClickListener(this)
+        repeat!!.setOnClickListener(this)
+        repeat_image = findViewById(R.id.repeat_image)
         shuffle = findViewById(R.id.shuffle)
-        shuffle.setOnClickListener(this)
+        shuffle!!.setOnClickListener(this)
+        shuffle_image = findViewById(R.id.shuffle_image)
+
+        recyclerView = findViewById(R.id.recycler)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.setItemViewCacheSize(20)
+        recyclerView.isDrawingCacheEnabled = true
+        recyclerView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
     }
 
 
@@ -242,211 +280,66 @@ class MusicPlayer : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.next -> {
-                val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
+                val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
                 if (!isServiceRunning)
                 {
-                    val i = Intent(cntx, SongService::class.java)
-                    cntx.startService(i)
+                    val i = Intent(applicationContext, SongService::class.java)
+                    applicationContext.startService(i)
 
                 }
-                Controls.nextControl(cntx)
+                Controls.nextControl(applicationContext)
 
             }
 
             R.id.prev -> {
-                val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
+                val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
                 if (!isServiceRunning)
                 {
-                    val i = Intent(cntx, SongService::class.java)
-                    cntx.startService(i)
+                    val i = Intent(applicationContext, SongService::class.java)
+                    applicationContext.startService(i)
                 }
-                Controls.previousControl(cntx)
+                Controls.previousControl(applicationContext)
 
             }
 
             R.id.shuffle -> {
-                Constants.change_shuffle(cntx)
+                Constants.change_shuffle(applicationContext)
             }
 
             R.id.repeat -> {
-                Constants.change_repeat(cntx)
+                Constants.change_repeat(applicationContext)
             }
         }
 
 
     }
 
-     private object inner class Backtask : AsyncTask<Void, Void, Boolean>() {
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-        }
-
-        override fun doInBackground(vararg voids: Void): Boolean? {
-            adapter = Song_Adapter(Home.all_songs, cntx)
-            recyclerView.layoutManager = LinearLayoutManager(cntx)
-            recyclerView.adapter = adapter
-            return true
-        }
-
-        override fun onPostExecute(aBoolean: Boolean?) {
-            super.onPostExecute(aBoolean)
-            MusicPlayer().commm()
-        }
-    }
-
-
-    companion object {
-
-        var oncurrentactivity : Boolean = false
-        internal lateinit var forward: SeekBar
-        internal lateinit var song_name: TextView
-        internal lateinit var artist_title: TextView
-        internal lateinit var starttime: TextView
-        internal lateinit var totaltime: TextView
-        internal var playstatus: Boolean? = false
-        internal var shuffle_status: Boolean? = false
-        internal var repeat_status: Boolean? = false
-        internal lateinit var playandpause: ImageView
-        internal lateinit var prev: ImageView
-        internal lateinit var nxt: ImageView
-        internal lateinit var repeat: ImageView
-        internal lateinit var shuffle: ImageView
-        internal lateinit var runnable: Runnable
-        internal lateinit var handler: Handler
-        internal var db: SQLiteDatabase? = null
-
-        internal var song_position: Int = 0
-        internal var playeropenfirsttime: String? = "no"
-
-        internal lateinit var cntx: Context
-        internal lateinit var gallery: ImageView
-
-        internal lateinit var recyclerView: FastScrollRecyclerView
-        internal var adapter: Song_Adapter?=null
-
-    }
-
-    fun loadimage(delay:Long,albumId:Long?)
-    {
-        Handler().postDelayed({
-            val albumArt = Constants.getAlbumart(cntx, albumId)
-            if (albumArt != null) {
-                gallery.setImageBitmap(albumArt)
-
-            } else {
-                gallery.setImageResource(R.drawable.default_general_player_albumart)
-
-            }
-        },delay)
-    }
+//    fun loadimage(delay:Long,albumId:Long?)
+//    {
+//        Handler().postDelayed({
+//            val albumArt = Constants.getAlbumart(cntx, albumId)
+//            if (albumArt != null) {
+//                gallery.setImageBitmap(albumArt)
+//
+//            } else {
+//                gallery.setImageResource(R.drawable.default_general_player_albumart)
+//
+//            }
+//        },delay)
+//    }
 
 
     private fun buttonclick(res:Boolean)
     {
-        playandpause.isClickable = res
-        prev.isClickable = res
-        nxt.isClickable = res
+        playandpause?.isClickable = res
+        prev?.isClickable = res
+        next?.isClickable = res
     }
-
-    fun updateUI_Musicplayer()
-    {
-        try {
-            val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
-
-            artist_title.text = s.first.artist
-            song_name.text = s.first.song_name
-
-            loadimage(200, s.first.albumId)
-        }
-        catch (e:Exception){}
-
-
-    }
-
-    fun changeButton_musicplayer()
-    {
-        runOnUiThread {
-            try {
-                if (Constants.SONG_PAUSED) { playandpause.setImageResource(R.drawable.album_play) }
-
-                else { playandpause.setImageResource(R.drawable.album_pause) }
-
-
-                if(Constants.SONG_SHUFFLE ==true) {
-                    shuffle.setImageResource(R.drawable.ic_shuffle_click_24dp)}
-
-                else {
-                    shuffle.setImageResource(R.drawable.ic_shuffle_black_24dp)}
-
-                if(Constants.SONG_REPEAT ==true) { repeat.setImageResource(R.drawable.ic_repeat_click_24dp)}
-
-                else {
-                    repeat.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
-
-            }catch (e:Exception){Log.e("Error",e.message)}
-        }
-    }
-
-    fun changeUIwithbutton_musicplayer(cntx:Context)
-    {
-        updateUI_Musicplayer()
-        changeButton_musicplayer()
-    }
-
-
-
 
 
     override fun onResume() {
         super.onResume()
-        try {
-            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
-            if (isServiceRunning) {
-                Handler().postDelayed({
-                    updateUI_Musicplayer()
-                },100)
-
-
-            }
-            else
-            {
-
-                val current = Home.shared.getString("current_album","alb")
-
-                if(!current.equals("alb",ignoreCase = true))
-                {
-
-                    val songname = Home.shared.getString("song_name","alb")
-                    val artistname = Home.shared.getString("artist_name","alb")
-                    val sub_song = Home.shared.getInt("sub_song_position",0)
-                    val album_name = Home.shared.getString("album_name","alb")
-                    val playlistname = Home.shared.getString("popup_playlist","popup_playlist")
-
-                    song_name.text = songname
-                    artist_title.text = artistname
-                    changeUIwithbutton_musicplayer(cntx)
-                    Constants.SONG_NUMBER = sub_song
-                    Constants.servicearray(current, album_name, artistname, playlistname)
-
-                }
-            }
-            changeButton_musicplayer()
-            Handler().postDelayed({
-                Constants.PROGRESSBAR_HANDLER = Handler(object : Handler.Callback {
-                    override fun handleMessage(msg: Message?): Boolean {
-                        val i = msg?.obj as Array<Int>
-                        starttime.setText(Constants.calculatetime(i[0]))
-                        totaltime.setText(Constants.calculatetime(i[1]))
-                        forward.setProgress(i[0])
-                        forward.max = i[1]
-
-                        return true
-                    }
-                })
-            },300)
-
-        } catch (e: Exception) { }
+        inilitiseUIOnResume()
     }
 
     override fun onBackPressed() {

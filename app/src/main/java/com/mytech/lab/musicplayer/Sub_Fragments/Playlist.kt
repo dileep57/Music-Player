@@ -288,7 +288,7 @@ class Playlist : Fragment() {
 
             }
 
-            Home.cardvisible()
+            Home().cardview?.visibility = View.VISIBLE
 
         }
         else

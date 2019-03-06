@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.mytech.lab.musicplayer.Activity.Home;
 import com.mytech.lab.musicplayer.R;
 import com.mytech.lab.musicplayer.utils.Song_base;
-import com.mytech.lab.musicplayer.Activity.Home;
-import com.mytech.lab.musicplayer.utils.Song_base;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;

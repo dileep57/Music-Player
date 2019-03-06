@@ -24,6 +24,7 @@ import com.mytech.lab.musicplayer.utils.Song_base
 import java.io.File
 import android.support.v4.content.ContextCompat.startActivity
 
+.
 
 
 class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var position: Int,var cntxt:Context) {

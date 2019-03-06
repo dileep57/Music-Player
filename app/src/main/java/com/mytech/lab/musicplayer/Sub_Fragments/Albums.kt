@@ -26,7 +26,8 @@ class Albums : Fragment() {
 
     internal lateinit var recyclerView: FastScrollRecyclerView
     internal  var cntxt: Context? = null
-
+    internal var album_adapter: Album_adapter? = null
+    private var cntx : Context? = null
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.cntxt = context
@@ -143,9 +144,7 @@ class Albums : Fragment() {
     }
 
     companion object {
-        internal var album_adapter: Album_adapter? = null
         var album_number: Int = 0
-        private var cntx : Context? = null
 
     }
 

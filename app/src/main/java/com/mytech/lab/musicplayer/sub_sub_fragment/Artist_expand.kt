@@ -98,8 +98,6 @@ class Artist_expand : Fragment() {
                                 messagearg = "true"
                             }
 
-
-
                         }
                         else
                         {

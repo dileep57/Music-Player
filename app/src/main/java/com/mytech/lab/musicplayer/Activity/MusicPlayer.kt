@@ -48,6 +48,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_musicplayer)
+        getview()
 
         toolbar = findViewById(R.id.toolbar_player2)
 
@@ -56,7 +57,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
         shuffle_status = Home.shared.getBoolean("shuffle", false)
         repeat_status = Home.shared.getBoolean("repeat", false)
 
-        getview()
         handler = Handler()
         oncurrentactivity = true
 

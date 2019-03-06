@@ -16,7 +16,9 @@ import android.content.Intent
 import android.net.Uri
 import java.io.FileDescriptor
 import android.net.ConnectivityManager
+import android.os.Build
 import android.provider.MediaStore
+import android.support.v4.content.ContextCompat.startForegroundService
 import android.widget.Toast
 import com.mytech.lab.musicplayer.Activity.Home
 import com.mytech.lab.musicplayer.Activity.Wel
@@ -612,7 +614,11 @@ companion object {
             Constants.SONG_NUMBER = sub_song
 
             val i = Intent(context, SongService::class.java)
-            context.startService(i)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(i)
+            } else {
+                context.startService(i);
+            }
         }
         else
         {

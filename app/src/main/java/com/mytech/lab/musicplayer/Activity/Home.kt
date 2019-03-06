@@ -3,17 +3,14 @@ package com.mytech.lab.musicplayer.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.provider.MediaStore
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -21,13 +18,11 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.CardView
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.ShareActionProvider
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.util.Pair
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,7 +35,6 @@ import com.mytech.lab.musicplayer.Fragments.Settings
 import com.mytech.lab.musicplayer.ListView_Adapter.SearchView_Adapter
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.R
-import com.mytech.lab.musicplayer.R.id.cardview
 import com.mytech.lab.musicplayer.utils.*
 import petrov.kristiyan.colorpicker.ColorPicker
 import java.io.File
@@ -59,14 +53,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     var ratingPreferences:SharedPreferences? = null
     var remindmelater:Boolean = false
 
-    private lateinit var card_songart: ImageView
-
-    private lateinit var card_songicon: ImageView
-
-    private lateinit var card_song_name: TextView
-
-    private lateinit var card_artist_name: TextView
-
     private var nav: NavigationView?= null
 
     private var toolbar: Toolbar?= null
@@ -75,6 +61,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i("cycle", "Oncreate")
         if(Wel.colorshared.getInt("themename",-1)!=-1)
         {
 
@@ -83,6 +70,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        getView()
 
         toolbar = findViewById(R.id.toolbar_layout)
         drawer = findViewById(R.id.drawer)
@@ -96,25 +84,12 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
-        cardview = findViewById(R.id.playercard)
-
-        nav = findViewById(R.id.naigation)
-        nav?.itemIconTintList = null
-        nav?.setNavigationItemSelectedListener(this)
-
-        card_song_name = findViewById(R.id.song_name)
-        card_songart = findViewById(R.id.songart)
-        card_artist_name = findViewById(R.id.artist_name)
-        card_songicon = findViewById(R.id.songicon)
-        playorpausecard = findViewById(R.id.playorpause)
 
         playorpausecard.setOnClickListener {
             Constants.playandpause(applicationContext)
         }
 
         shared = getSharedPreferences("current_song", Context.MODE_PRIVATE)
-
-
 
         createfragment(Music_lib_2(), "music_library")
 
@@ -184,6 +159,17 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         }
     }
 
+    fun getView(){
+        cardview = findViewById(R.id.playercard)
+        nav = findViewById(R.id.naigation)
+        nav?.itemIconTintList = null
+        nav?.setNavigationItemSelectedListener(this)
+        song_name = findViewById(R.id.song_name)
+        banner = findViewById(R.id.songart)
+        artist_name = findViewById(R.id.artist_name)
+        card_playPauseIcon = findViewById(R.id.playorpauseicon)
+        playorpausecard = findViewById(R.id.playorpause)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
@@ -345,23 +331,17 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             {
                 supportFragmentManager.popBackStack()
             }
-
-            if (shared.getString("song_name", null) != null) {
-                cardview?.visibility = View.VISIBLE
-            }
+//
+//            if (shared.getString("song_name", null) != null) {
+//                cardview?.visibility = View.VISIBLE
+//            }
         }
-
-
 
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED)
         toggle.isDrawerIndicatorEnabled = true
         toggle.syncState()
-
-        if(shakePreferences.getString("song_name", null) != null) {
-            callUpdateUIHandler()
-        }
 
     }
 
@@ -467,7 +447,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
             }
 
-            cardview?.visibility = View.VISIBLE
+//            cardview?.visibility = View.VISIBLE
 
         }
         catch (e: IOException) {
@@ -476,43 +456,20 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     }
 
-    fun callUpdateUIHandler(){
-        try {
-            Constants.PLAYER_UI!!.sendMessage(Constants.PLAYER_UI!!.obtainMessage(0))
-        }catch (e:Exception){Log.i("Error", "null playUI handler")}
-    }
-
 
     override fun onResume() {
         super.onResume()
+        Log.i("cycle", "OnResume")
         try{
             Constants.SONG_SHUFFLE = Home.shared.getBoolean("shuffle",false)
             Constants.SONG_REPEAT  = Home.shared.getBoolean("repeat",false)
-            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
-            if (isServiceRunning) {
+            if(shakePreferences.getString("song_name", null) != null){
                 cardview?.visibility = View.VISIBLE
-
             }
-            else
-            {
-                cardview?.visibility = View.INVISIBLE
-                val current = shared.getString("current_album","alb")
-                if(!current.equals("alb",ignoreCase = true))
-                {
-                    val song_name = shared.getString("song_name","alb")
-                    val artist_name = shared.getString("artist_name","alb")
+            initiliseUIHandler()
+            inilitiseUIOnResume()
 
-                    card_song_name.text = song_name
-                    card_artist_name.text = artist_name
-                    Song_Adapter.getimageart(shared.getLong("albumid", 0), applicationContext, card_songart, R.drawable.music_song_icon_crimson)
-                    cardview?.visibility = View.VISIBLE
 
-                }
-                if(shakePreferences.getString("song_name", null) != null) {
-                    callUpdateUIHandler()
-                }
-
-            }
         }
         catch (e:Exception){}
 
@@ -536,7 +493,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         {
 
 
-            var res:String = shakePreferences!!.getString("action_text","No Action")
+            var res:String = shakePreferences?.getString("action_text","No Action")
 
             if(res.equals("Next Song"))
             {
@@ -552,6 +509,109 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             }
 
         }
+    }
+
+
+
+    override fun updateButtonUI() {
+
+        Log.i("Updata Crad UI", "CARD")
+        try {
+            if(Constants.SONG_PAUSED)
+            {
+                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
+            }
+            else
+            {
+                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
+            }
+
+            val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
+
+            Song_Adapter.getimageart(s.albumId, applicationContext, banner!!, R.drawable.music_song_icon_crimson)
+
+            song_name?.text = s.song_name
+
+            artist_name?.text = s.artist
+
+            if(Constants.SONG_PAUSED){
+                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
+            } else{
+                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
+            }
+
+            cardview?.visibility = View.VISIBLE
+        } catch (e: Exception){
+            Log.i("Error",e.message)
+        }
+
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+
+
+    }
+
+    public override fun onStop() {
+        super.onStop()
+
+    }
+
+    fun setActionBarTitle(title: String) {
+        supportActionBar!!.title = title
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        Log.i("cycle", "OnDestroy")
+        if (AccelerometerManager.isListening)
+        {
+            AccelerometerManager.stopListening()
+        }
+//        unregisterphonestate()
+
+    }
+
+    public override fun onRestart() {
+        super.onRestart()
+        Log.i("cycle", "OnRestart")
+    }
+
+    private fun ratingDialog()
+    {
+        val detail = AlertDialog.Builder(this)
+        val dt = layoutInflater.inflate(R.layout.dialog_rating,null)
+        detail.setView(dt)
+        val sub_detail = detail.create()
+        sub_detail.show()
+
+        val no:LinearLayout = dt.findViewById(R.id.no)
+        val now:LinearLayout = dt.findViewById(R.id.now)
+        val later:LinearLayout = dt.findViewById(R.id.later)
+
+
+        no.setOnClickListener {
+            ratingPreferences?.edit()!!.putString("status","no").apply()
+            sub_detail.dismiss()
+        }
+
+        now.setOnClickListener {
+            ratingPreferences?.edit()!!.putString("status","now").apply()
+            val i = Intent(Intent.ACTION_VIEW)
+            sub_detail.dismiss()
+            i.data = Uri.parse("https://play.google.com/store/apps/details?id=com.mytech.lab.musicplayer")
+            startActivity(i)
+        }
+
+        later.setOnClickListener {
+            ratingPreferences?.edit()!!.putString("status","later").apply()
+            remindmelater = true
+            sub_detail.dismiss()
+        }
+
+
     }
 
 
@@ -742,106 +802,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         {
             Toast.makeText(contx,"File not Support, Refresh Player",Toast.LENGTH_SHORT).show()
         }
-
-    }
-
-
-    override fun updateButtonUI() {
-
-        Log.i("Updata Crad UI", "CARD")
-        try {
-            if(Constants.SONG_PAUSED)
-            {
-                card_songicon.setImageResource(R.drawable.play_icon_black)
-            }
-            else
-            {
-                card_songicon.setImageResource(R.drawable.pause_icon_black)
-            }
-
-            val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
-
-            Song_Adapter.getimageart(s.albumId, applicationContext, card_songart, R.drawable.music_song_icon_crimson)
-
-            card_song_name.text = s.song_name
-
-            card_artist_name.text = s.artist
-
-            if(Constants.SONG_PAUSED){
-                card_songicon.setImageResource(R.drawable.play_icon_black)
-            } else{
-                card_songicon.setImageResource(R.drawable.pause_icon_black)
-            }
-
-            cardview?.visibility = View.VISIBLE
-        } catch (e: Exception){
-            Log.i("Error",e.message)
-        }
-
-    }
-
-
-
-
-
-
-    override fun onPause() {
-        super.onPause()
-
-
-    }
-
-    public override fun onStop() {
-        super.onStop()
-
-    }
-
-    fun setActionBarTitle(title: String) {
-        supportActionBar!!.title = title
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        if (AccelerometerManager.isListening)
-        {
-            AccelerometerManager.stopListening()
-        }
-//        unregisterphonestate()
-
-    }
-
-    private fun ratingDialog()
-    {
-        val detail = AlertDialog.Builder(this)
-        val dt = layoutInflater.inflate(R.layout.dialog_rating,null)
-        detail.setView(dt)
-        val sub_detail = detail.create()
-        sub_detail.show()
-
-        val no:LinearLayout = dt.findViewById(R.id.no)
-        val now:LinearLayout = dt.findViewById(R.id.now)
-        val later:LinearLayout = dt.findViewById(R.id.later)
-
-
-        no.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","no").apply()
-            sub_detail.dismiss()
-        }
-
-        now.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","now").apply()
-            val i = Intent(Intent.ACTION_VIEW)
-            sub_detail.dismiss()
-            i.data = Uri.parse("https://play.google.com/store/apps/details?id=com.mytech.lab.musicplayer")
-            startActivity(i)
-        }
-
-        later.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","later").apply()
-            remindmelater = true
-            sub_detail.dismiss()
-        }
-
 
     }
 

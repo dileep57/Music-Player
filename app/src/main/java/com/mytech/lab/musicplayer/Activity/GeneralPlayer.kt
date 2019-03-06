@@ -228,9 +228,4 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
     }
 
 
-
-    companion object {
-
-    }
-
 }

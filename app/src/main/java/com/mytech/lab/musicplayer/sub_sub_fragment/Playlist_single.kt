@@ -1,6 +1,5 @@
 package com.mytech.lab.musicplayer.sub_sub_fragment
 
-import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -23,7 +22,7 @@ import java.util.ArrayList
 /**
  * Created by lnx on 13/3/18.
  */
-class Playlist_single : Fragment() {
+class Playlist_single : android.support.v4.app.Fragment() {
 
 
     internal var cntx: Context? = null

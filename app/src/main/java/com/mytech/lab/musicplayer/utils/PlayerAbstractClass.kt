@@ -1,8 +1,10 @@
 package com.mytech.lab.musicplayer.utils
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.util.Log
@@ -39,14 +41,23 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
     protected var repeat: LinearLayout?=null
 
+    protected var card_playPauseIcon: ImageView?= null
+
     public var cardview: CardView?= null
 
     public val helper: DatabaseHelperAdapter =  DatabaseHelperAdapter(this)
+
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+
+    }
 
     protected fun initiliseUIHandler(){
 
         Constants.PLAYER_UI = Handler(object : Handler.Callback {
             override fun handleMessage(msg: Message?): Boolean {
+                Log.i("General", "Common UI Handler")
                 updateButtonUI()
                 updatePlayerUI()
                 return true
@@ -81,11 +92,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
         try {
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
-            if (isServiceRunning) {
-
-            }
-            else
-            {
+            if (!isServiceRunning) {
                 val current = Home.shared.getString("current_album","alb")
 
                 if(!current.equals("alb",ignoreCase = true))
@@ -122,7 +129,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
     }
 
 
-    fun loadimage(delay:Long,albumId:Long,cntx: Context)
+   private fun loadimage(delay:Long,albumId:Long,cntx: Context)
     {
         Handler().postDelayed({
 

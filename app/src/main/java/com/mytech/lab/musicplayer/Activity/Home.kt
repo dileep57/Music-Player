@@ -530,16 +530,16 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
 
             Song_Adapter.getimageart(s.albumId, applicationContext, banner!!, R.drawable.music_song_icon_crimson)
-
-            song_name?.text = s.song_name
-
-            artist_name?.text = s.artist
-
-            if(Constants.SONG_PAUSED){
-                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
-            } else{
-                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
-            }
+//
+//            song_name?.text = s.song_name
+//
+//            artist_name?.text = s.artist
+//
+//            if(Constants.SONG_PAUSED){
+//                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
+//            } else{
+//                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
+//            }
 
             cardview?.visibility = View.VISIBLE
         } catch (e: Exception){

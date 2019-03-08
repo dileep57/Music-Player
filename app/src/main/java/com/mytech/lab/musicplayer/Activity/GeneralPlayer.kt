@@ -55,9 +55,9 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(Wel.colorshared.getInt("themename",-1)!=-1)
+        if(Wel.colorshared.getInt(Constants.THEMENAME,-1)!=-1)
         {
-            setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
+            setTheme(Wel.colorshared.getInt(Constants.THEMENAME, R.style.AppFullScreenTheme))
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_player_ui)
@@ -119,19 +119,19 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
         try {
             if (Constants.SONG_PAUSED)
                 playandpause_image?.setImageResource(R.drawable.ic_play)
+            else
+                playandpause_image?.setImageResource(R.drawable.ic_pause)
 
-            else {
-                playandpause_image?.setImageResource(R.drawable.ic_pause)}
 
+            if(Constants.SONG_SHUFFLE==true)
+                shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)
+            else
+                shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)
 
-            if(Constants.SONG_SHUFFLE==true) {
-                shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)}
-
-            else {shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)}
-
-            if(Constants.SONG_REPEAT==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_orange)}
-
-            else {repeat_image?.setImageResource(R.drawable.ic_repeat_black)}
+            if(Constants.SONG_REPEAT==true)
+                repeat_image?.setImageResource(R.drawable.ic_repeat_orange)
+            else
+                repeat_image?.setImageResource(R.drawable.ic_repeat_black)
 
         }catch (e:Exception){
             Log.i("Error",e.message)}
@@ -141,8 +141,8 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
         when (v.id) {
             R.id.playandpause -> {
-                Constants.playandpause(applicationContext)}
-
+                Constants.playandpause(applicationContext)
+            }
             R.id.next -> {
                 val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
                 if (!isServiceRunning)
@@ -156,7 +156,6 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
                 }
                 Controls.nextControl(applicationContext)
-
             }
 
             R.id.prev -> {
@@ -180,7 +179,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
                 {
                     val s: Song_base = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
                     val position = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
-                    if (helper.checkexists_for_song_in_table(s.song_name, "favourites") <= 0) {
+                    if (helper.checkexists_for_song_in_table(s.song_name, Constants.PLAYLIST_FAV) <= 0) {
                         val check: Long = helper.insert_in_any_table(s.song_name, s.artist, s.url, s.albumId.toString(), s.album_name, position, s.duration, 2, "favourites", null)
 
                         if (check > 0)
@@ -191,7 +190,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
                     }
                     else
                     {
-                        helper.deletesong_for_table(s.song_name, "favourites")
+                        helper.deletesong_for_table(s.song_name, Constants.PLAYLIST_FAV)
                         Toast.makeText(applicationContext, "Remove From Favourite", Toast.LENGTH_SHORT).show()
                     }
 
@@ -208,10 +207,7 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         update_favourite()
-//        Home.cardview.visibility = View.GONE
         inilitiseUIOnResume()
-
-
     }
 
 

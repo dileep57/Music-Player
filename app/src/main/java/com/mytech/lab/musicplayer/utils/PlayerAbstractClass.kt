@@ -54,7 +54,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
         Constants.PLAYER_UI = Handler(object : Handler.Callback {
             override fun handleMessage(msg: Message?): Boolean {
-                Log.i("General", "Common UI Handler")
+//                Log.i("General", "Common UI Handler")
                 updateButtonUI()
                 updatePlayerUI()
                 return true
@@ -70,6 +70,8 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             val delay:Long = 0
             song_name?.text = s.first.song_name
             artist_name?.text = s.first.artist
+            Constants.SONG_SHUFFLE = Home.shared.getBoolean("shuffle",false)
+            Constants.SONG_REPEAT  = Home.shared.getBoolean("repeat",false)
             loadimage(delay, s.first.albumId!!,applicationContext)
         }
         catch (e:Exception){
@@ -80,7 +82,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
     protected abstract fun updateButtonUI()
 
 
-    protected fun inilitseUIHandlerOnResume(){
+    protected fun sendMessageToUIHandler(){
         Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0))
     }
 
@@ -90,25 +92,24 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
         try {
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
             if (!isServiceRunning) {
-                val current = Home.shared.getString("current_album","alb")
+                val current = Home.shared.getString(Constants.CURRENT_ALBUM,"alb")
 
                 if(!current.equals("alb",ignoreCase = true))
                 {
-                    val songname = Home.shared.getString("song_name","alb")
-                    val artistname = Home.shared.getString("artist_name","alb")
-                    val sub_song = Home.shared.getInt("sub_song_position",0)
-                    val album_name = Home.shared.getString("album_name","alb")
-                    val playlistname = Home.shared.getString("popup_playlist","popup_playlist")
+                    val songname = Home.shared.getString(Constants.SONG_NAME,"alb")
+                    val artistname = Home.shared.getString(Constants.ARTIST_NAME,"alb")
+                    val sub_song = Home.shared.getInt(Constants.SUB_SUB_POSITION,0)
+                    val album_name = Home.shared.getString(Constants.ALBUM_NAME,"alb")
+                    val playlistname = Home.shared.getString(Constants.PLAYLIST_NAME,"empty")
 
                     song_name?.text = songname
                     artist_name?.text = artistname
                     Constants.SONG_NUMBER = sub_song
-                    Constants.servicearray(current,album_name,artistname,playlistname)
+                    Constants.servicearray(current,album_name,artistname,playlistname,true, cntx = applicationContext)
 
                 }
             }
 
-            inilitseUIHandlerOnResume()
             Handler().postDelayed({
                 Constants.PROGRESSBAR_HANDLER = Handler(object : Handler.Callback {
                     override fun handleMessage(msg: Message?): Boolean {
@@ -122,13 +123,13 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
                 })
             },50)
 
-        } catch (e: Exception) { }
+        } catch (e: Exception) {Log.i("Error",e.message) }
     }
 
 
    private fun loadimage(delay:Long,albumId:Long,cntx: Context)
     {
-        Handler().postDelayed({
+//        Handler().postDelayed({
 
             val albumArt = Constants.getAlbumart(cntx, albumId)
             if (albumArt != null) {
@@ -140,7 +141,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
                 songImage?.setImageResource(R.drawable.default_general_player_albumart)
 
             }
-        },delay)
+//        },delay)
     }
 
     protected fun updateSeekbar(){

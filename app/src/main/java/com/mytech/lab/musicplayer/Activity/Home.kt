@@ -64,7 +64,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     override fun onCreate(savedInstanceState: Bundle?) {
         if(Wel.colorshared.getInt("themename",-1)!=-1)
         {
-
             setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
         }
 
@@ -92,8 +91,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         shared = getSharedPreferences("current_song", Context.MODE_PRIVATE)
 
         createfragment(Music_lib_2(), "music_library")
-
-        initiliseUIHandler()
 
         backstackChangeListner()
     }
@@ -458,22 +455,17 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     override fun onResume() {
         super.onResume()
         try{
-            Constants.SONG_SHUFFLE = Home.shared.getBoolean("shuffle",false)
-            Constants.SONG_REPEAT  = Home.shared.getBoolean("repeat",false)
-            if(shakePreferences.getString("song_name", null) != null){
-                cardview?.visibility = View.VISIBLE
-            }
-            initiliseUIHandler()
-            inilitiseUIOnResume()
-
             if (shared.getString("song_name", null) != null) {
                 cardview?.visibility = View.VISIBLE
             }else{
                 cardview?.visibility = View.INVISIBLE
             }
 
+            inilitiseUIOnResume()
+            initiliseUIHandler()
+            sendMessageToUIHandler()
         }
-        catch (e:Exception){}
+        catch (e:Exception){Log.e("Error",e.message)}
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -528,18 +520,8 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             }
 
             val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
-
             Song_Adapter.getimageart(s.albumId, applicationContext, banner!!, R.drawable.music_song_icon_crimson)
-//
-//            song_name?.text = s.song_name
-//
-//            artist_name?.text = s.artist
-//
-//            if(Constants.SONG_PAUSED){
-//                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
-//            } else{
-//                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
-//            }
+
 
             cardview?.visibility = View.VISIBLE
         } catch (e: Exception){

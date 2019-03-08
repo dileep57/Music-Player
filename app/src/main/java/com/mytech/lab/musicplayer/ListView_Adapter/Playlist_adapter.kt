@@ -151,7 +151,6 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
 
                         }
 
-
                     }
                     return true
                 }
@@ -197,9 +196,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
             if (!isServiceRunning)
             {
-                val i = Intent(context, SongService::class.java)
-                context!!.startService(i)
-
+              Constants.startService(context)
 
             } else {
 

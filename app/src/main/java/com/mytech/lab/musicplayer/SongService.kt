@@ -242,8 +242,10 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     fun collectsongdata(s: Song_base) {
         val lambda1=Thread{
             val actual_pos = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
+            Log.i("curr_alb", Home.shared.getString(Constants.CURRENT_ALBUM, "alb"))
+            Log.i("curr_play", Home.shared.getString(Constants.PLAYLIST_NAME, "alb"))
             Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
-                    "general", Home.shared.getString("current_album", "alb"), Home.shared.getString("playlist_name", "alb"))
+                    "general", Home.shared.getString(Constants.CURRENT_ALBUM, "alb"), Home.shared.getString(Constants.PLAYLIST_NAME, "alb"))
             Constants.databasedata(s, applicationContext, actual_pos, "RecentSong")
             Recent_song().updaterecentsong(applicationContext)
             Recent_song().setvisibility()

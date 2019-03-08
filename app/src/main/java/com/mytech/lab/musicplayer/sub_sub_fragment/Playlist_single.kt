@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import com.mytech.lab.musicplayer.*
@@ -104,19 +105,16 @@ class Playlist_single : android.support.v4.app.Fragment() {
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx!!)
                         if (!isServiceRunning)
                         {
-                            val i = Intent(cntx, SongService::class.java)
-                            cntx!!.startService(i)
-
-
+                            Constants.startService(cntx!!)
                         } else {
-
-                            Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg));
+                            Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg))
 
                         }
 
-                        Home().cardview?.visibility = View.VISIBLE
+//                        Home().cardview?.visibility = View.VISIBLE
 
                 } catch (e: Exception) {
+                    Log.e("Error",e.message)
                     Home.filenotsupport(cntx!!)
                 }
             }

@@ -83,8 +83,8 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             val delay:Long = 0
             song_name?.text = s.first.song_name
             artist_name?.text = s.first.artist
-            Constants.SONG_SHUFFLE = Home.shared.getBoolean("shuffle",false)
-            Constants.SONG_REPEAT  = Home.shared.getBoolean("repeat",false)
+            Constants.SONG_SHUFFLE = Home.shared.getBoolean(Constants.SHUFFLE,false)
+            Constants.SONG_REPEAT  = Home.shared.getBoolean(Constants.REPEAT,false)
             loadimage(delay, s.first.albumId!!,applicationContext)
         }
         catch (e:Exception){
@@ -135,27 +135,27 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
                 })
             },50)
 
-        } catch (e: Exception) {Log.i("Error",e.message) }
+        } catch (e: Exception) {Log.i(Constants.ERROR,e.message) }
     }
 
 
    private fun loadimage(delay:Long,albumId:Long,cntx: Context)
     {
-//        Handler().postDelayed({
+        Handler().postDelayed({
 
             val albumArt = Constants.getAlbumart(cntx, albumId)
             if (albumArt != null) {
                 banner?.setImageBitmap(albumArt)
                 songImage?.setImageBitmap(albumArt)
-//                val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
-//                val newArtDrawable = BitmapDrawable(resources, albumArt)
-//                oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
+                val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
+                val newArtDrawable = BitmapDrawable(resources, albumArt)
+                oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
             } else {
                 banner?.setImageResource(R.drawable.default_general_player_albumart)
                 songImage?.setImageResource(R.drawable.default_general_player_albumart)
 
             }
-//        },0)
+        },0)
     }
 
     protected fun updateSeekbar(){

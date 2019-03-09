@@ -94,14 +94,10 @@ class Recent_song : Fragment() {
                 try {
                         Constants.servicearray(Constants.SONG_FROM_RECENT_SONG,album_name = null,artist_name = null,playlist_name = null,firstopen = false,cntx = context)
 
-                        var messagearg:String = ""
+                        var messagearg:String = "true"
 
                         if(Constants.SONG_FROM_RECENT_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true)) {
                             messagearg = "false"
-
-                        }
-                        else {
-                            messagearg = "true"
                         }
 
                         val actual_song_pos = Home.Songname_position.get(s.song_name)!!
@@ -112,8 +108,7 @@ class Recent_song : Fragment() {
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
                         if (!isServiceRunning) {
 
-                            val i = Intent(context, SongService::class.java)
-                            context.startService(i)
+                          Constants.startService(context)
                         } else {
                             Constants.SONG_CHANGE_HANDLER!!.sendMessage(Constants.SONG_CHANGE_HANDLER!!.obtainMessage(0,messagearg));
                         }

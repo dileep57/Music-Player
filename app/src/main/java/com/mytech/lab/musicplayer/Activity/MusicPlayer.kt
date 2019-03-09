@@ -27,7 +27,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
 
-    private var query: String? = null
     private var playandpause: LinearLayout?=null
     private var prev: LinearLayout?=null
     private var next: LinearLayout?=null
@@ -38,9 +37,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
     private lateinit var runnable: Runnable
     private lateinit var handler: Handler
     private var db: SQLiteDatabase? = null
-
-    private var song_position: Int = 0
-    private var playeropenfirsttime: String? = "no"
 
     private lateinit var recyclerView: FastScrollRecyclerView
     private var adapter: Song_Adapter?=null
@@ -100,14 +96,10 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
                 try {
                     Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
 
-                    var messagearg:String = ""
+                    var messagearg:String = "true"
                     if(Constants.SONG_FROM_ONLY_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
                         messagearg = "false"
-                    }
-                    else
-                    {
-                        messagearg = "true"
                     }
 
                     Constants.mediaAfterprepared(null, applicationContext, s, position, position,
@@ -277,13 +269,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
         }
 
 
-    }
-
-    private fun buttonclick(res:Boolean)
-    {
-        playandpause?.isClickable = res
-        prev?.isClickable = res
-        next?.isClickable = res
     }
 
 

@@ -465,7 +465,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             initiliseUIHandler()
             sendMessageToUIHandler()
         }
-        catch (e:Exception){Log.e("Error",e.message)}
+        catch (e:Exception){Log.e(Constants.ERROR,e.message)}
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -510,12 +510,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     override fun updateButtonUI() {
 
         try {
-            if(Constants.SONG_PAUSE)
-            {
+            if(Constants.SONG_PAUSED) {
                 card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
             }
-            else
-            {
+            else {
                 card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
             }
 

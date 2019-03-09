@@ -33,8 +33,7 @@ import java.io.File
  * Created by lnx on 25/2/18.
  */
 
-class Constants
-{
+class Constants {
 
     companion object {
 
@@ -93,7 +92,36 @@ class Constants
 
         const val RATING_STATUS = "status"
 
+        var SONG_PAUSED = true
 
+        var SONG_SHUFFLE = false
+
+        var SONG_REPEAT = false
+
+        var SONG_NUMBER = 0
+
+        var SONG_CHANGED = false
+
+        var SONG_CHANGE_HANDLER: Handler? = null
+
+        var SHUFFLE_REPEAT: Handler? = null
+
+        var CHECK_SONG_ARRAY_HANDLER: Handler? = null
+
+        var PLAY_PAUSE_HANDLER: Handler? = null
+
+        var PROGRESSBAR_HANDLER: Handler? = null
+
+        var SELF_CHANGE: Boolean = false
+
+        var SONGS_LIST = ArrayList<Pair<Song_base, Int>>()
+
+        @JvmStatic
+        val current_directory_array = ArrayList<String>()
+
+        var favourite = false
+
+        var PLAYER_UI: Handler? = null
 
 
         val coloHexlist = arrayListOf<String>("#0000FF", "#8A2BE2", "#A52A2A", "#5F9EA0", "#D2691E",
@@ -106,7 +134,7 @@ class Constants
                 "#9370DB", "#3CB371", "#7B68EE", "#00FA9A", "#C71585", "#191970", "#000080",
                 "#FFA500", "#FF4500", "#DA70D6", "#DB7093", "#FFC0CB", "#DDA0DD", "#800080",
                 "#663399", "#FF0000", "#4169E1", "#2E8B57", "#C0C0C0", "#6A5ACD", "#708090",
-                "#00FF7F", "#4682B4", "#008080", "#FF6347", "#EE82EE", "#FFFF00", "#9ACD32","#3C515C")
+                "#00FF7F", "#4682B4", "#008080", "#FF6347", "#EE82EE", "#FFFF00", "#9ACD32", "#3C515C")
 
         fun getMediaPlayer(context: Context): MediaPlayer {
 
@@ -197,7 +225,7 @@ class Constants
             edit.putString(Constants.SONG_NAME, s.song_name)
             edit.putString(Constants.ARTIST_NAME, s.artist)
             edit.putString(Constants.ALBUM_NAME, s.album_name)
-            edit.putLong(Constants.DURATION,s.duration.toLong())
+            edit.putLong(Constants.DURATION, s.duration.toLong())
 
             edit.putInt(Constants.ACTUAL_SONG_POSITION, actual_song_pos)
             edit.putInt(Constants.SUB_SUB_POSITION, sub_song_pos)
@@ -213,344 +241,7 @@ class Constants
         }
 
 
-        fun dontrepeatsong(song_position: Int, player: String?): Int
-        {
-            val rand = Random()
-            var p: Int = 0
-
-            if (player != null && !player.equals(SPECIAL_PLAYER, ignoreCase = false))
-            {
-                if (Home.song_array_general.size == 1)
-                {
-                    return 0
-                } else
-                {
-                    while (true)
-                    {
-                        p = rand.nextInt(Home.song_array_general.size)
-                        if (p != song_position)
-                        {
-
-                            break
-                        }
-                    }
-
-                    return p
-                }
-            }
-
-            return p
-        }
-
-        fun shuffle_song(position:Int):Int
-        {
-            val rand = Random()
-            var p: Int = 0
-
-            if(p==0 && Constants.SONGS_LIST.size==1)
-            {
-                return 0
-            }
-
-            while(true)
-            {
-                p = rand.nextInt(Constants.SONGS_LIST.size)
-                if (p != position)
-                {
-
-                    break
-                }
-            }
-
-            return p
-        }
-
-
-
-
-        fun setcolortheme(num: Int) {
-            when (num) {
-                0 ->  Wel.colorshared.edit().putInt("themename",R.style.Blue).apply()
-                1 ->  Wel.colorshared.edit().putInt("themename",R.style.BlueViolet).apply()
-                2 ->  Wel.colorshared.edit().putInt("themename",R.style.Brown).apply()
-                3 ->  Wel.colorshared.edit().putInt("themename",R.style.CadetBlue).apply()
-                4 ->  Wel.colorshared.edit().putInt("themename",R.style.Chocolate).apply()
-                5 ->  Wel.colorshared.edit().putInt("themename",R.style.CornflowerBlue).apply()
-                6 ->  Wel.colorshared.edit().putInt("themename",R.style.Crimson).apply()
-                7 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkBlue).apply()
-                8 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkCyan).apply()
-                9 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkGray).apply()
-                10 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkGrey).apply()
-                11 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkGreen).apply()
-                12 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkMagenta).apply()
-                13 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkOrange).apply()
-                14 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkOrchid).apply()
-                15 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkRed).apply()
-                16 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkSlateBlue).apply()
-                17 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkSlateGray).apply()
-                18 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkSlateGrey).apply()
-                19 ->  Wel.colorshared.edit().putInt("themename",R.style.DarkViolet).apply()
-                20 ->  Wel.colorshared.edit().putInt("themename",R.style.DeepPink).apply()
-                21 ->  Wel.colorshared.edit().putInt("themename",R.style.DimGray).apply()
-                22 ->  Wel.colorshared.edit().putInt("themename",R.style.DodgerBlue).apply()
-                23 ->  Wel.colorshared.edit().putInt("themename",R.style.FireBrick).apply()
-                24 ->  Wel.colorshared.edit().putInt("themename",R.style.ForestGreen).apply()
-                25 ->  Wel.colorshared.edit().putInt("themename",R.style.Fuchsia).apply()
-                26 ->  Wel.colorshared.edit().putInt("themename",R.style.GoldenRod).apply()
-                27 ->  Wel.colorshared.edit().putInt("themename",R.style.Gray).apply()
-                28 ->  Wel.colorshared.edit().putInt("themename",R.style.Green).apply()
-                29 ->  Wel.colorshared.edit().putInt("themename",R.style.GreenYellow).apply()
-                30 ->  Wel.colorshared.edit().putInt("themename",R.style.HotPink).apply()
-                31 ->  Wel.colorshared.edit().putInt("themename",R.style.IndianRed ).apply()
-                32 ->  Wel.colorshared.edit().putInt("themename",R.style.Indigo  ).apply()
-                33 ->  Wel.colorshared.edit().putInt("themename",R.style.LightGrey).apply()
-                34 ->  Wel.colorshared.edit().putInt("themename",R.style.LightGreen).apply()
-                35 ->  Wel.colorshared.edit().putInt("themename",R.style.LightPink).apply()
-                36 ->  Wel.colorshared.edit().putInt("themename",R.style.LightSalmon).apply()
-                37 ->  Wel.colorshared.edit().putInt("themename",R.style.LightSeaGreen).apply()
-                38 ->  Wel.colorshared.edit().putInt("themename",R.style.LightSkyBlue).apply()
-                39 ->  Wel.colorshared.edit().putInt("themename",R.style.LightSlateGray).apply()
-                40 ->  Wel.colorshared.edit().putInt("themename",R.style.LightSlateGrey).apply()
-                41 ->  Wel.colorshared.edit().putInt("themename",R.style.Lime).apply()
-                42 ->  Wel.colorshared.edit().putInt("themename",R.style.LimeGreen).apply()
-                43 ->  Wel.colorshared.edit().putInt("themename",R.style.Magenta).apply()
-                44 ->  Wel.colorshared.edit().putInt("themename",R.style.Maroon).apply()
-                45 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumBlue).apply()
-                46 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumOrchid).apply()
-                47 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumPurple).apply()
-                48 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumSeaGreen).apply()
-                49 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumSlateBlue).apply()
-                50 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumSpringGreen).apply()
-                51 ->  Wel.colorshared.edit().putInt("themename",R.style.MediumVioletRed).apply()
-                52 ->  Wel.colorshared.edit().putInt("themename",R.style.MidnightBlue).apply()
-                53 ->  Wel.colorshared.edit().putInt("themename",R.style.Navy).apply()
-                54 ->  Wel.colorshared.edit().putInt("themename",R.style.Orange).apply()
-                55 ->  Wel.colorshared.edit().putInt("themename",R.style.OrangeRed).apply()
-                56 ->  Wel.colorshared.edit().putInt("themename",R.style.Orchid).apply()
-                57 ->  Wel.colorshared.edit().putInt("themename",R.style.PaleVioletRed).apply()
-                58 ->  Wel.colorshared.edit().putInt("themename",R.style.Pink).apply()
-                59 ->  Wel.colorshared.edit().putInt("themename",R.style.Plum).apply()
-                60 ->  Wel.colorshared.edit().putInt("themename",R.style.Purple).apply()
-                61 ->  Wel.colorshared.edit().putInt("themename",R.style.RebeccaPurple).apply()
-                62 ->  Wel.colorshared.edit().putInt("themename",R.style.Red).apply()
-                63 ->  Wel.colorshared.edit().putInt("themename",R.style.RoyalBlue).apply()
-                64 ->  Wel.colorshared.edit().putInt("themename",R.style.SeaGreen).apply()
-                65 ->  Wel.colorshared.edit().putInt("themename",R.style.Silver).apply()
-                66 ->  Wel.colorshared.edit().putInt("themename",R.style.SlateBlue).apply()
-                67 ->  Wel.colorshared.edit().putInt("themename",R.style.SlateGray).apply()
-                68 ->  Wel.colorshared.edit().putInt("themename",R.style.SpringGreen).apply()
-                69 ->  Wel.colorshared.edit().putInt("themename",R.style.SteelBlue).apply()
-                70 ->  Wel.colorshared.edit().putInt("themename",R.style.Teal).apply()
-                71 ->  Wel.colorshared.edit().putInt("themename",R.style.Tomato).apply()
-                72 ->  Wel.colorshared.edit().putInt("themename",R.style.Violet).apply()
-                73 ->  Wel.colorshared.edit().putInt("themename",R.style.Yellow).apply()
-                74 ->  Wel.colorshared.edit().putInt("themename",R.style.YellowGreen).apply()
-                75 ->  Wel.colorshared.edit().putInt("themename",R.style.AppFullScreenTheme).apply()
-            }
-        }
-
-        fun mediaAfterprepared(media:MediaPlayer?=null, context: Context?, s: Song_base,
-                               actual_song_pos:Int, local_position:Int, song_type: String,
-                               current_album:String, playlist: String="None")
-        {
-            Constants.setsharedpreference(s,
-                    song_type,
-                    actual_song_pos, local_position,
-                    Home.shared.getBoolean(Constants.SHUFFLE,false),
-                    Home.shared.getBoolean(Constants.REPEAT,false),
-                    current_album,playlist
-            )
-
-            Constants.databasedata(s, context!!, actual_song_pos,"RecentSong")
-            Recent_song().updaterecentsong(context)
-        }
-
-        fun getDefaultAlbumArt(context: Context): Bitmap? {
-            var bm: Bitmap? = null
-            val options = BitmapFactory.Options()
-            try {
-                bm = BitmapFactory.decodeResource(context.resources, R.drawable.music2, options)
-            } catch (ee: Error) {
-            } catch (e: Exception) {
-            }
-
-            return bm
-        }
-
-        fun getAlbumart(context: Context, album_id: Long?): Bitmap? {
-            var bm: Bitmap? = null
-            val options = BitmapFactory.Options()
-            try {
-                val sArtworkUri = Uri.parse("content://media/external/audio/albumart")
-                val uri = ContentUris.withAppendedId(sArtworkUri, album_id!!)
-                var pfd = context.contentResolver.openFileDescriptor(uri, "r")
-                if (pfd != null)
-                {
-                    var fd: FileDescriptor? = pfd.fileDescriptor
-                    bm = BitmapFactory.decodeFileDescriptor(fd, null, options)
-                    pfd = null
-                    fd = null
-                }
-            } catch (ee: Exception) { }
-
-            return bm
-        }
-
-        @JvmOverloads
-        fun servicearray(section:String,album_name:String?=null,artist_name:String?=null,playlist_name: String?=null,firstopen:Boolean=false,cntx:Context?=null)
-        {
-
-
-            if(section.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true) && !firstopen) {
-                if(section.equals("artist",ignoreCase = true))
-                {
-                    if(Home.shared.getString(Constants.ARTIST_NAME,"alb").equals(artist_name,ignoreCase = true))
-                    {
-                        return
-                    }
-                }
-                else if(section.equals("album",ignoreCase = true))
-                {
-                    if(Home.shared.getString(Constants.ALBUM_NAME,"alb").equals(album_name,ignoreCase = true))
-                    {
-                        return
-                    }
-                }
-                else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
-                {
-                    if(Home.shared.getString("playlist","alb").equals(playlist_name,ignoreCase = true))
-                    {
-                        return
-                    }
-                }
-                else
-                {
-                    return
-                }
-            }
-
-            Home.servicearraylist.clear()
-            if(section.equals(Constants.SONG_FROM_ONLY_SONG,ignoreCase = true))
-            {
-
-                for(inc in Home.all_songs.indices)
-                {
-                    Home.servicearraylist.add(Pair(Home.all_songs.get(inc),inc))
-                }
-
-            }
-            else if(section.equals(Constants.MINI_TRACK,ignoreCase = true))
-            {
-                for(temp in Home.mini_track)
-                {
-                    Home.servicearraylist.add(Pair(temp.first,temp.second))
-                }
-            }
-            else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
-            {
-                val helper:DatabaseHelperAdapter = DatabaseHelperAdapter(cntx!!)
-                if(playlist_name.equals(PLAYLIST_RECENT_SONG,ignoreCase = true))
-                {
-                    for(temp in get_topsong(cntx!!,MediaStore.Audio.Media.DATE_ADDED + " DESC"))
-                    {
-                        try{Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))}
-                        catch (e:Exception){Home.filenotsupport(cntx)}
-                    }
-                }
-                else if(playlist_name.equals(PLAYLIST_FAV,ignoreCase = true))
-                {
-                    for(temp in helper.getalldata_table(playlist_name!!))
-                    {
-                        Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
-                    }
-                }
-                else
-                {
-                    for(temp in helper.getalldata_playlist(playlist_name!!))
-                    {
-                        Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
-                    }
-                }
-
-            }
-            else if(section.equals(SONG_FROM_ALBUM,ignoreCase = true))
-            {
-                for(temp in Home.albummap.get(album_name)!!)
-                {
-                    Home.servicearraylist.add(Pair(temp.first,temp.second))
-                }
-            }
-            else if(section.equals(SONG_FROM_ARTIST,ignoreCase = true))
-            {
-                for(temp in Home.artistmap.get(artist_name)!!)
-                {
-                    Home.servicearraylist.add(Pair(temp.first,temp.second))
-                }
-            }
-            else if(section.equals(SONG_FROM_RECENT_SONG,ignoreCase = true))
-            {
-                val helper = DatabaseHelperAdapter(cntx!!)
-                for(temp in helper.getalldata_table("RecentSong"))
-                {
-                    Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
-                }
-            }
-            else if(section.equals(SONG_FROM_FOLDER,ignoreCase = true))
-            {
-
-                val song_name = Home.shared.getString(Constants.SONG_NAME,null)
-                val artist_name = Home.shared.getString(Constants.ARTIST_NAME,null)
-                val url = Home.shared.getString(Constants.URL,null)
-                val albumId = Home.shared.getLong(Constants.ALBUM_ID,0)
-                val act_pos = Home.shared.getInt(Constants.ACTUAL_SONG_POSITION,0)
-                val album_name = Home.shared.getString(Constants.ALBUM_NAME,null)
-                val duration = Home.shared.getLong(Constants.DURATION,0)
-                val composer = Home.shared.getString("Composer","Composer")
-
-                val s: Song_base = Song_base(song_name, artist_name, url, albumId, album_name, duration.toString(), composer, 0, cntx!!)
-
-                if(Home.Songname_position.get(Home.shared.getString(Constants.SONG_NAME,null))!=null)
-                {
-                    Home.servicearraylist.add(Pair(s,act_pos))
-                }
-            }
-
-            for (i in Home.servicearraylist.indices) {
-                Constants.SONGS_LIST.add(Pair(Home.servicearraylist[i].first, Home.servicearraylist[i].second))
-            }
-        }
-
-
-
-        }
-
-
-        fun isServiceRunning(serviceName: String, context: Context): Boolean {
-            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (serviceName == service.service.className) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        fun isNetworkConnected(context: Context): Boolean {
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
-        }
-
-        fun currentVersionSupportBigNotification(): Boolean {
-            val sdkVersion = android.os.Build.VERSION.SDK_INT
-            return sdkVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN
-        }
-
-        fun currentVersionSupportLockScreenControls(): Boolean {
-            val sdkVersion = android.os.Build.VERSION.SDK_INT
-            return sdkVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH
-        }
-
-        fun get_topsong(context: Context,sorting_by:String):ArrayList<Song_base> {
+        fun get_topsong(context: Context, sorting_by: String): ArrayList<Song_base> {
             val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             val selection = MediaStore.Audio.Media.IS_MUSIC + "!=0"
 
@@ -581,7 +272,7 @@ class Constants
                         }
 
                         ++inc
-                        if(inc==30)
+                        if (inc == 30)
                             break
 
                     } while (cursor.moveToNext())
@@ -593,69 +284,355 @@ class Constants
             return topsong
         }
 
-        fun change_shuffle(context: Context?)
-        {
-            if (Constants.SONG_SHUFFLE == true) {
-                Controls.createToast(context!!, SHUFFLE_OFF,Toast.LENGTH_SHORT)
-                Constants.SONG_SHUFFLE = false }
+        fun dontrepeatsong(song_position: Int, player: String?): Int {
+            val rand = Random()
+            var p: Int = 0
 
-            else {  Constants.SONG_SHUFFLE = true
-                Controls.createToast(context!!, SHUFFLE_ON,Toast.LENGTH_SHORT)
-                if (Constants.SONG_REPEAT == true) { Constants.SONG_REPEAT = false }
-            }
-            Controls.shuffle_repeat()
-            Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
-            Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
-        }
+            if (player != null && !player.equals(SPECIAL_PLAYER, ignoreCase = false)) {
+                if (Home.song_array_general.size == 1) {
+                    return 0
+                } else {
+                    while (true) {
+                        p = rand.nextInt(Home.song_array_general.size)
+                        if (p != song_position) {
 
-        fun change_repeat(context: Context?)
-        {
-            if (Constants.SONG_REPEAT == true)
-            {
-                Controls.createToast(context!!, REPEAT_OFF,Toast.LENGTH_SHORT)
-                Constants.SONG_REPEAT = false
-            }
+                            break
+                        }
+                    }
 
-            else
-            {
-                Constants.SONG_REPEAT = true
-                Controls.createToast(context!!, REPEAT_ON,Toast.LENGTH_SHORT)
-                if (Constants.SONG_SHUFFLE == true) { Constants.SONG_SHUFFLE = false }
-            }
-            Controls.shuffle_repeat()
-            Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
-            Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
-        }
-
-        fun playandpause(context: Context?)
-        {
-            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
-            if (!isServiceRunning)
-            {
-                val current = Home.shared.getString(Constants.CURRENT_ALBUM,"alb")
-                val playlist_name = Home.shared.getString(Constants.PLAYLIST_NAME,Constants.POPUP_PLAYLIST)
-                val album_name = Home.shared.getString(Constants.ALBUM_NAME,"alb")
-                val artist_name = Home.shared.getString(Constants.ARTIST_NAME,"alb")
-                val sub_song = Home.shared.getInt(Constants.SUB_SUB_POSITION,0)
-                Constants.servicearray(current,album_name,artist_name,playlist_name,true,context)
-                Constants.SONG_NUMBER = sub_song
-
-                startService(context)
-            }
-            else
-            {
-                if(Constants.SONG_PAUSED)
-                {
-                    Controls.playPauseControl("play")
+                    return p
                 }
-                else
-                {
+            }
+
+            return p
+        }
+
+        fun shuffle_song(position: Int): Int {
+            val rand = Random()
+            var p: Int = 0
+
+            if (p == 0 && Constants.SONGS_LIST.size == 1) {
+                return 0
+            }
+
+            while (true) {
+                p = rand.nextInt(Constants.SONGS_LIST.size)
+                if (p != position) {
+
+                    break
+                }
+            }
+
+            return p
+        }
+
+
+        fun setcolortheme(num: Int) {
+            when (num) {
+                0 -> Wel.colorshared.edit().putInt("themename", R.style.Blue).apply()
+                1 -> Wel.colorshared.edit().putInt("themename", R.style.BlueViolet).apply()
+                2 -> Wel.colorshared.edit().putInt("themename", R.style.Brown).apply()
+                3 -> Wel.colorshared.edit().putInt("themename", R.style.CadetBlue).apply()
+                4 -> Wel.colorshared.edit().putInt("themename", R.style.Chocolate).apply()
+                5 -> Wel.colorshared.edit().putInt("themename", R.style.CornflowerBlue).apply()
+                6 -> Wel.colorshared.edit().putInt("themename", R.style.Crimson).apply()
+                7 -> Wel.colorshared.edit().putInt("themename", R.style.DarkBlue).apply()
+                8 -> Wel.colorshared.edit().putInt("themename", R.style.DarkCyan).apply()
+                9 -> Wel.colorshared.edit().putInt("themename", R.style.DarkGray).apply()
+                10 -> Wel.colorshared.edit().putInt("themename", R.style.DarkGrey).apply()
+                11 -> Wel.colorshared.edit().putInt("themename", R.style.DarkGreen).apply()
+                12 -> Wel.colorshared.edit().putInt("themename", R.style.DarkMagenta).apply()
+                13 -> Wel.colorshared.edit().putInt("themename", R.style.DarkOrange).apply()
+                14 -> Wel.colorshared.edit().putInt("themename", R.style.DarkOrchid).apply()
+                15 -> Wel.colorshared.edit().putInt("themename", R.style.DarkRed).apply()
+                16 -> Wel.colorshared.edit().putInt("themename", R.style.DarkSlateBlue).apply()
+                17 -> Wel.colorshared.edit().putInt("themename", R.style.DarkSlateGray).apply()
+                18 -> Wel.colorshared.edit().putInt("themename", R.style.DarkSlateGrey).apply()
+                19 -> Wel.colorshared.edit().putInt("themename", R.style.DarkViolet).apply()
+                20 -> Wel.colorshared.edit().putInt("themename", R.style.DeepPink).apply()
+                21 -> Wel.colorshared.edit().putInt("themename", R.style.DimGray).apply()
+                22 -> Wel.colorshared.edit().putInt("themename", R.style.DodgerBlue).apply()
+                23 -> Wel.colorshared.edit().putInt("themename", R.style.FireBrick).apply()
+                24 -> Wel.colorshared.edit().putInt("themename", R.style.ForestGreen).apply()
+                25 -> Wel.colorshared.edit().putInt("themename", R.style.Fuchsia).apply()
+                26 -> Wel.colorshared.edit().putInt("themename", R.style.GoldenRod).apply()
+                27 -> Wel.colorshared.edit().putInt("themename", R.style.Gray).apply()
+                28 -> Wel.colorshared.edit().putInt("themename", R.style.Green).apply()
+                29 -> Wel.colorshared.edit().putInt("themename", R.style.GreenYellow).apply()
+                30 -> Wel.colorshared.edit().putInt("themename", R.style.HotPink).apply()
+                31 -> Wel.colorshared.edit().putInt("themename", R.style.IndianRed).apply()
+                32 -> Wel.colorshared.edit().putInt("themename", R.style.Indigo).apply()
+                33 -> Wel.colorshared.edit().putInt("themename", R.style.LightGrey).apply()
+                34 -> Wel.colorshared.edit().putInt("themename", R.style.LightGreen).apply()
+                35 -> Wel.colorshared.edit().putInt("themename", R.style.LightPink).apply()
+                36 -> Wel.colorshared.edit().putInt("themename", R.style.LightSalmon).apply()
+                37 -> Wel.colorshared.edit().putInt("themename", R.style.LightSeaGreen).apply()
+                38 -> Wel.colorshared.edit().putInt("themename", R.style.LightSkyBlue).apply()
+                39 -> Wel.colorshared.edit().putInt("themename", R.style.LightSlateGray).apply()
+                40 -> Wel.colorshared.edit().putInt("themename", R.style.LightSlateGrey).apply()
+                41 -> Wel.colorshared.edit().putInt("themename", R.style.Lime).apply()
+                42 -> Wel.colorshared.edit().putInt("themename", R.style.LimeGreen).apply()
+                43 -> Wel.colorshared.edit().putInt("themename", R.style.Magenta).apply()
+                44 -> Wel.colorshared.edit().putInt("themename", R.style.Maroon).apply()
+                45 -> Wel.colorshared.edit().putInt("themename", R.style.MediumBlue).apply()
+                46 -> Wel.colorshared.edit().putInt("themename", R.style.MediumOrchid).apply()
+                47 -> Wel.colorshared.edit().putInt("themename", R.style.MediumPurple).apply()
+                48 -> Wel.colorshared.edit().putInt("themename", R.style.MediumSeaGreen).apply()
+                49 -> Wel.colorshared.edit().putInt("themename", R.style.MediumSlateBlue).apply()
+                50 -> Wel.colorshared.edit().putInt("themename", R.style.MediumSpringGreen).apply()
+                51 -> Wel.colorshared.edit().putInt("themename", R.style.MediumVioletRed).apply()
+                52 -> Wel.colorshared.edit().putInt("themename", R.style.MidnightBlue).apply()
+                53 -> Wel.colorshared.edit().putInt("themename", R.style.Navy).apply()
+                54 -> Wel.colorshared.edit().putInt("themename", R.style.Orange).apply()
+                55 -> Wel.colorshared.edit().putInt("themename", R.style.OrangeRed).apply()
+                56 -> Wel.colorshared.edit().putInt("themename", R.style.Orchid).apply()
+                57 -> Wel.colorshared.edit().putInt("themename", R.style.PaleVioletRed).apply()
+                58 -> Wel.colorshared.edit().putInt("themename", R.style.Pink).apply()
+                59 -> Wel.colorshared.edit().putInt("themename", R.style.Plum).apply()
+                60 -> Wel.colorshared.edit().putInt("themename", R.style.Purple).apply()
+                61 -> Wel.colorshared.edit().putInt("themename", R.style.RebeccaPurple).apply()
+                62 -> Wel.colorshared.edit().putInt("themename", R.style.Red).apply()
+                63 -> Wel.colorshared.edit().putInt("themename", R.style.RoyalBlue).apply()
+                64 -> Wel.colorshared.edit().putInt("themename", R.style.SeaGreen).apply()
+                65 -> Wel.colorshared.edit().putInt("themename", R.style.Silver).apply()
+                66 -> Wel.colorshared.edit().putInt("themename", R.style.SlateBlue).apply()
+                67 -> Wel.colorshared.edit().putInt("themename", R.style.SlateGray).apply()
+                68 -> Wel.colorshared.edit().putInt("themename", R.style.SpringGreen).apply()
+                69 -> Wel.colorshared.edit().putInt("themename", R.style.SteelBlue).apply()
+                70 -> Wel.colorshared.edit().putInt("themename", R.style.Teal).apply()
+                71 -> Wel.colorshared.edit().putInt("themename", R.style.Tomato).apply()
+                72 -> Wel.colorshared.edit().putInt("themename", R.style.Violet).apply()
+                73 -> Wel.colorshared.edit().putInt("themename", R.style.Yellow).apply()
+                74 -> Wel.colorshared.edit().putInt("themename", R.style.YellowGreen).apply()
+                75 -> Wel.colorshared.edit().putInt("themename", R.style.AppFullScreenTheme).apply()
+            }
+        }
+
+        fun mediaAfterprepared(media: MediaPlayer? = null, context: Context?, s: Song_base,
+                               actual_song_pos: Int, local_position: Int, song_type: String,
+                               current_album: String, playlist: String = "None") {
+            Constants.setsharedpreference(s,
+                    song_type,
+                    actual_song_pos, local_position,
+                    Home.shared.getBoolean(Constants.SHUFFLE, false),
+                    Home.shared.getBoolean(Constants.REPEAT, false),
+                    current_album, playlist
+            )
+
+            Constants.databasedata(s, context!!, actual_song_pos, "RecentSong")
+            Recent_song().updaterecentsong(context)
+        }
+
+        fun getDefaultAlbumArt(context: Context): Bitmap? {
+            var bm: Bitmap? = null
+            val options = BitmapFactory.Options()
+            try {
+                bm = BitmapFactory.decodeResource(context.resources, R.drawable.music2, options)
+            } catch (ee: Error) {
+            } catch (e: Exception) {
+            }
+
+            return bm
+        }
+
+        fun getAlbumart(context: Context, album_id: Long?): Bitmap? {
+            var bm: Bitmap? = null
+            val options = BitmapFactory.Options()
+            try {
+                val sArtworkUri = Uri.parse("content://media/external/audio/albumart")
+                val uri = ContentUris.withAppendedId(sArtworkUri, album_id!!)
+                var pfd = context.contentResolver.openFileDescriptor(uri, "r")
+                if (pfd != null) {
+                    var fd: FileDescriptor? = pfd.fileDescriptor
+                    bm = BitmapFactory.decodeFileDescriptor(fd, null, options)
+                    pfd = null
+                    fd = null
+                }
+            } catch (ee: Exception) {
+            }
+
+            return bm
+        }
+
+        @JvmOverloads
+        fun servicearray(section: String, album_name: String? = null, artist_name: String? = null, playlist_name: String? = null, firstopen: Boolean = false, cntx: Context? = null) {
+
+
+            if (section.equals(Home.shared.getString(Constants.CURRENT_ALBUM, "alb"), ignoreCase = true) && !firstopen) {
+                if (section.equals("artist", ignoreCase = true)) {
+                    if (Home.shared.getString(Constants.ARTIST_NAME, "alb").equals(artist_name, ignoreCase = true)) {
+                        return
+                    }
+                } else if (section.equals("album", ignoreCase = true)) {
+                    if (Home.shared.getString(Constants.ALBUM_NAME, "alb").equals(album_name, ignoreCase = true)) {
+                        return
+                    }
+                } else if (section.equals(Constants.POPUP_PLAYLIST, ignoreCase = true)) {
+                    if (Home.shared.getString("playlist", "alb").equals(playlist_name, ignoreCase = true)) {
+                        return
+                    }
+                } else {
+                    return
+                }
+            }
+
+            Home.servicearraylist.clear()
+            if (section.equals(Constants.SONG_FROM_ONLY_SONG, ignoreCase = true)) {
+
+                for (inc in Home.all_songs.indices) {
+                    Home.servicearraylist.add(Pair(Home.all_songs.get(inc), inc))
+                }
+
+            } else if (section.equals(Constants.MINI_TRACK, ignoreCase = true)) {
+                for (temp in Home.mini_track) {
+                    Home.servicearraylist.add(Pair(temp.first, temp.second))
+                }
+
+            } else if (section.equals(Constants.POPUP_PLAYLIST, ignoreCase = true)) {
+                val helper: DatabaseHelperAdapter = DatabaseHelperAdapter(cntx!!)
+                if (playlist_name.equals(PLAYLIST_RECENT_SONG, ignoreCase = true)) {
+                    for (temp in get_topsong(cntx!!, MediaStore.Audio.Media.DATE_ADDED + " DESC")) {
+                        try {
+                            Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
+                        } catch (e: Exception) {
+                            Home.filenotsupport(cntx)
+                        }
+                    }
+
+                } else if (playlist_name.equals(PLAYLIST_FAV, ignoreCase = true)) {
+                    for (temp in helper.getalldata_table(playlist_name!!)) {
+                        Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
+                    }
+
+                } else {
+                    for (temp in helper.getalldata_playlist(playlist_name!!)) {
+                        Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
+                    }
+                }
+
+            } else if (section.equals(SONG_FROM_ALBUM, ignoreCase = true)) {
+                for (temp in Home.albummap.get(album_name)!!) {
+                    Home.servicearraylist.add(Pair(temp.first, temp.second))
+                }
+
+            } else if (section.equals(SONG_FROM_ARTIST, ignoreCase = true)) {
+                for (temp in Home.artistmap.get(artist_name)!!) {
+                    Home.servicearraylist.add(Pair(temp.first, temp.second))
+                }
+
+            } else if (section.equals(SONG_FROM_RECENT_SONG, ignoreCase = true)) {
+                val helper = DatabaseHelperAdapter(cntx!!)
+                for (temp in helper.getalldata_table("RecentSong")) {
+                    Home.servicearraylist.add(Pair(temp, Home.Songname_position.get(temp.song_name)!!))
+                }
+
+            } else if (section.equals(SONG_FROM_FOLDER, ignoreCase = true)) {
+
+                val song_name = Home.shared.getString(Constants.SONG_NAME, null)
+                val artist_name = Home.shared.getString(Constants.ARTIST_NAME, null)
+                val url = Home.shared.getString(Constants.URL, null)
+                val albumId = Home.shared.getLong(Constants.ALBUM_ID, 0)
+                val act_pos = Home.shared.getInt(Constants.ACTUAL_SONG_POSITION, 0)
+                val album_name = Home.shared.getString(Constants.ALBUM_NAME, null)
+                val duration = Home.shared.getLong(Constants.DURATION, 0)
+                val composer = Home.shared.getString("Composer", "Composer")
+
+                val s: Song_base = Song_base(song_name, artist_name, url, albumId, album_name, duration.toString(), composer, 0, cntx!!)
+
+                if (Home.Songname_position.get(Home.shared.getString(Constants.SONG_NAME, null)) != null) {
+                    Home.servicearraylist.add(Pair(s, act_pos))
+                }
+            }
+
+            if(CollectionUtils.isEmpty(Constants.SONGS_LIST)){
+                for (i in Home.servicearraylist.indices) {
+                    Constants.SONGS_LIST.add(Pair(Home.servicearraylist[i].first, Home.servicearraylist[i].second))
+                }
+            }
+        }
+
+
+        fun isServiceRunning(serviceName: String, context: Context): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceName == service.service.className) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        fun isNetworkConnected(context: Context): Boolean {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+        }
+
+        fun currentVersionSupportBigNotification(): Boolean {
+            val sdkVersion = android.os.Build.VERSION.SDK_INT
+            return sdkVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN
+        }
+
+        fun currentVersionSupportLockScreenControls(): Boolean {
+            val sdkVersion = android.os.Build.VERSION.SDK_INT
+            return sdkVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH
+        }
+
+
+        fun change_shuffle(context: Context?) {
+            if (Constants.SONG_SHUFFLE == true) {
+                Controls.createToast(context!!, SHUFFLE_OFF, Toast.LENGTH_SHORT)
+                Constants.SONG_SHUFFLE = false
+            } else {
+                Constants.SONG_SHUFFLE = true
+                Controls.createToast(context!!, SHUFFLE_ON, Toast.LENGTH_SHORT)
+                if (Constants.SONG_REPEAT == true) {
+                    Constants.SONG_REPEAT = false
+                }
+            }
+            Controls.shuffle_repeat()
+            Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
+            Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
+        }
+
+        fun change_repeat(context: Context?) {
+            if (Constants.SONG_REPEAT == true) {
+                Controls.createToast(context!!, REPEAT_OFF, Toast.LENGTH_SHORT)
+                Constants.SONG_REPEAT = false
+            } else {
+                Constants.SONG_REPEAT = true
+                Controls.createToast(context!!, REPEAT_ON, Toast.LENGTH_SHORT)
+                if (Constants.SONG_SHUFFLE == true) {
+                    Constants.SONG_SHUFFLE = false
+                }
+            }
+            Controls.shuffle_repeat()
+            Home.shared.edit().putBoolean(Constants.SHUFFLE, Constants.SONG_SHUFFLE).apply()
+            Home.shared.edit().putBoolean(Constants.REPEAT, Constants.SONG_REPEAT).apply()
+        }
+
+
+        fun playandpause(context: Context?) {
+            val isServiceRunning = isServiceRunning(SongService::class.java.getName(), context!!)
+            if (!isServiceRunning) {
+                val current = Home.shared.getString(Constants.CURRENT_ALBUM, "alb")
+                val playlist_name = Home.shared.getString(Constants.PLAYLIST_NAME, Constants.POPUP_PLAYLIST)
+                val album_name = Home.shared.getString(Constants.ALBUM_NAME, "alb")
+                val artist_name = Home.shared.getString(Constants.ARTIST_NAME, "alb")
+                val sub_song = Home.shared.getInt(Constants.SUB_SUB_POSITION, 0)
+                Constants.servicearray(current, album_name, artist_name, playlist_name, true, context)
+                SONG_NUMBER = sub_song
+
+                startService(context!!)
+            } else {
+                if (SONG_PAUSED) {
+                    Controls.playPauseControl("play")
+                } else {
                     Controls.playPauseControl("pause")
                 }
             }
         }
 
-        public fun startService(context:Context){
+        fun startService(context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(Intent(context, SongService::class.java))
             } else {
@@ -663,41 +640,7 @@ class Constants
             }
         }
 
-
-        var SONG_PAUSED = true
-
-        var SONG_SHUFFLE = false
-
-        var SONG_REPEAT = false
-
-        var SONG_NUMBER = 0
-
-        var SONG_CHANGED = false
-
-        var SONG_CHANGE_HANDLER: Handler? = null
-
-        var SHUFFLE_REPEAT: Handler? = null
-
-        var CHECK_SONG_ARRAY_HANDLER: Handler? = null
-
-        var PLAY_PAUSE_HANDLER: Handler? = null
-
-        var PROGRESSBAR_HANDLER: Handler? = null
-
-        var SELF_CHANGE:Boolean = false
-
-        var SONGS_LIST = ArrayList<Pair<Song_base,Int>>()
-
-        @JvmStatic
-        val current_directory_array = ArrayList<String>()
-
-        var favourite = false
-
-        var PLAYER_UI: Handler?= null
-
-
     }
-
 }
 
 

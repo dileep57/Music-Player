@@ -92,37 +92,32 @@ class Recent_song : Fragment() {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                        Constants.servicearray("recent",album_name = null,artist_name = null,playlist_name = null,firstopen = false,cntx = context)
+                        Constants.servicearray(Constants.SONG_FROM_RECENT_SONG,album_name = null,artist_name = null,playlist_name = null,firstopen = false,cntx = context)
 
                         var messagearg:String = ""
 
-                        if("recent".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
-                        {
+                        if(Constants.SONG_FROM_RECENT_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true)) {
                             messagearg = "false"
+
                         }
-                        else
-                        {
+                        else {
                             messagearg = "true"
                         }
 
                         val actual_song_pos = Home.Songname_position.get(s.song_name)!!
                         Constants.mediaAfterprepared(null,context,s,actual_song_pos, position,"general",
-                                "recent")
+                                Constants.SONG_FROM_RECENT_SONG)
                         Constants.SONG_NUMBER = position
+
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
-                        if (!isServiceRunning)
-                        {
+                        if (!isServiceRunning) {
+
                             val i = Intent(context, SongService::class.java)
                             context.startService(i)
-
-
                         } else {
-
                             Constants.SONG_CHANGE_HANDLER!!.sendMessage(Constants.SONG_CHANGE_HANDLER!!.obtainMessage(0,messagearg));
-
                         }
-
-                        Home().cardview?.visibility = View.VISIBLE
+//                        Home().cardview?.visibility = View.VISIBLE
 
                     }
 

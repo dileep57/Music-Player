@@ -21,6 +21,7 @@ import com.mytech.lab.musicplayer.utils.DatabaseHelperAdapter
 import com.mytech.lab.musicplayer.utils.PlayerAbstractClass
 import com.mytech.lab.musicplayer.utils.Song_base
 import de.hdodenhof.circleimageview.CircleImageView
+import org.apache.commons.collections4.CollectionUtils
 
 
 class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
@@ -206,23 +207,22 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        update_favourite()
         inilitiseUIOnResume()
+        update_favourite()
     }
 
 
     fun update_favourite()
     {
+        if(CollectionUtils.isNotEmpty(Constants.SONGS_LIST)){
+            val song_name:String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.song_name
+            if(helper.checkexists_for_song_in_table(song_name,Constants.PLAYLIST_FAV)>0) {
+                fav_Image?.setImageResource(R.drawable.fav_click)
 
-        val song_name:String = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first.song_name
-        if(helper.checkexists_for_song_in_table(song_name,"favourites")>0)
-        {
-            fav_Image?.setImageResource(R.drawable.fav_click)
-        }
-        else
-        {
-            fav_Image?.setImageResource(R.drawable.fav_unclick)
+            } else {
+                fav_Image?.setImageResource(R.drawable.fav_unclick)
 
+            }
         }
     }
 

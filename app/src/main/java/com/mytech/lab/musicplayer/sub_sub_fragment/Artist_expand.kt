@@ -83,13 +83,13 @@ class Artist_expand : Fragment() {
 
                 try {
 
-                        Constants.servicearray("artist",artist_name = s.artist)
+                        Constants.servicearray(Constants.SONG_FROM_ARTIST,artist_name = s.artist)
                         var messagearg:String = ""
 
-                        if("artist".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                        if(Constants.SONG_FROM_ARTIST.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                         {
 
-                            if(Home.shared.getString("artist_name","alb").equals(s.artist,ignoreCase = true))
+                            if(Home.shared.getString(Constants.ARTIST_NAME,"alb").equals(s.artist,ignoreCase = true))
                             {
                                 messagearg = "false"
                             }
@@ -107,7 +107,7 @@ class Artist_expand : Fragment() {
                         val actual_song_pos = Home.artistmap[s.artist]!!.get(position).second
 
                         Constants.mediaAfterprepared(null,context,s,actual_song_pos, position,"general",
-                                "artist")
+                                Constants.SONG_FROM_ARTIST)
 
                         Constants.SONG_NUMBER = position
 

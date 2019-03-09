@@ -78,10 +78,10 @@ class Playlist_single : android.support.v4.app.Fragment() {
 
 
                 try {
-                    Constants.servicearray("popup_playlist",s.album_name,s.artist,playlist,false,context)
+                    Constants.servicearray(Constants.POPUP_PLAYLIST,s.album_name,s.artist,playlist,false,context)
 
                     var messagearg:String = ""
-                    if("popup_playlist".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                    if(Constants.POPUP_PLAYLIST.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
                         if(Home.shared.getString("playlist","alb").equals(playlist,ignoreCase = true))
                         {
@@ -99,7 +99,7 @@ class Playlist_single : android.support.v4.app.Fragment() {
 
                     val actual_song_pos = Home.Songname_position.get(s.song_name)!!
                     Constants.mediaAfterprepared(null,cntx,s,actual_song_pos, position,"general",
-                            "popup_playlist",playlist)
+                            Constants.POPUP_PLAYLIST,playlist)
 
                         Constants.SONG_NUMBER = position
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx!!)

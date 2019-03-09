@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:drawable="@color/colorPrimary"/>
-    <item>
+    <item android:id="@+id/musicPlayerBackGround">
         <bitmap android:src="@drawable/music1"
                 android:gravity="fill"
                 android:alpha="0.5"/>
@@ -10,8 +12,7 @@
     <item android:top="330dp"
         android:bottom="-330dp"
         android:left="0dp"
-        android:right="-330dp"
-         >
+        android:right="-330dp">
         <rotate
             android:fromDegrees="-10"
             android:pivotX="0%"

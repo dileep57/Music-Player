@@ -131,10 +131,9 @@ class Songs : Fragment() {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                        Constants.servicearray("only_song")
-
+                        Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
                         var messagearg:String = ""
-                        if("only_song".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                        if(Constants.SONG_FROM_ONLY_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                         {
                             messagearg = "false"
                         }
@@ -144,7 +143,7 @@ class Songs : Fragment() {
                         }
 
                         Constants.mediaAfterprepared(mediaPlayer,context,s,position, position,
-                                "general", "only_song")
+                                "general", Constants.SONG_FROM_ONLY_SONG)
 
                     Constants.SONG_NUMBER = position
                     val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)

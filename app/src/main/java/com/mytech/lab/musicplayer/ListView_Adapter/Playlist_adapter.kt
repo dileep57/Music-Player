@@ -129,7 +129,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                 {
                                     Constants.SONGS_LIST.add(Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
                         }
 
@@ -142,7 +142,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                 {
                                     Constants.SONGS_LIST.add(Constants.SONG_NUMBER+1,Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
                             else
                             {

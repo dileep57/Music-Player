@@ -1,6 +1,7 @@
 package com.mytech.lab.musicplayer.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -17,6 +18,18 @@ import com.mytech.lab.musicplayer.Constants
 import com.mytech.lab.musicplayer.R
 import com.mytech.lab.musicplayer.SongService
 import de.hdodenhof.circleimageview.CircleImageView
+import android.R.attr.digits
+import android.graphics.drawable.LayerDrawable
+import android.R.attr.bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.R.attr.bitmap
+
+
+
+
+
+
 
 abstract class PlayerAbstractClass() : AppCompatActivity() {
 
@@ -93,7 +106,6 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
             if (!isServiceRunning) {
                 val current = Home.shared.getString(Constants.CURRENT_ALBUM,"alb")
-
                 if(!current.equals("alb",ignoreCase = true))
                 {
                     val songname = Home.shared.getString(Constants.SONG_NAME,"alb")
@@ -109,7 +121,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
                 }
             }
-
+            sendMessageToUIHandler()
             Handler().postDelayed({
                 Constants.PROGRESSBAR_HANDLER = Handler(object : Handler.Callback {
                     override fun handleMessage(msg: Message?): Boolean {
@@ -135,13 +147,15 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             if (albumArt != null) {
                 banner?.setImageBitmap(albumArt)
                 songImage?.setImageBitmap(albumArt)
-
+//                val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
+//                val newArtDrawable = BitmapDrawable(resources, albumArt)
+//                oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
             } else {
                 banner?.setImageResource(R.drawable.default_general_player_albumart)
                 songImage?.setImageResource(R.drawable.default_general_player_albumart)
 
             }
-//        },delay)
+//        },0)
     }
 
     protected fun updateSeekbar(){

@@ -54,8 +54,8 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
 
         setSupportActionBar(toolbar)
-        shuffle_status = Home.shared.getBoolean("shuffle", false)
-        repeat_status = Home.shared.getBoolean("repeat", false)
+        shuffle_status = Home.shared.getBoolean(Constants.SHUFFLE, false)
+        repeat_status = Home.shared.getBoolean(Constants.REPEAT, false)
 
         handler = Handler()
         oncurrentactivity = true
@@ -68,30 +68,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
         }.start()
 
         initiliseUIHandler()
-
-
-       updateSeekbar()
-//
-//        Constants.PLAYER_UI = Handler(object : Handler.Callback {
-//                override fun handleMessage(msg: Message?): Boolean {
-//                    Log.i("MusicPlayer ","call")
-//                    try {
-//                        val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
-//
-//                        artist_name?.text = s.first.artist
-//                        song_name?.text = s.first.song_name
-//
-//                        loadimage(200, s.first.albumId)
-//                    }
-//                    catch (e:Exception){}
-//
-//
-//
-//                    return true
-//                }
-//            })
-
-
+        updateSeekbar()
     }
 
     override fun updateButtonUI() {
@@ -112,7 +89,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
             else {
                 repeat_image?.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
 
-        }catch (e:Exception){Log.e("Error",e.message)}
+        }catch (e:Exception){Log.e(Constants.ERROR,e.message)}
     }
 
     private fun commmunicationAdapter() {
@@ -121,10 +98,10 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                    Constants.servicearray("only_song")
+                    Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
 
                     var messagearg:String = ""
-                    if("only_song".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                    if(Constants.SONG_FROM_ONLY_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
                         messagearg = "false"
                     }
@@ -134,34 +111,22 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
                     }
 
                     Constants.mediaAfterprepared(null, applicationContext, s, position, position,
-                            "general", "only_song")
+                            "general", Constants.SONG_FROM_ONLY_SONG)
 
                     Constants.SONG_NUMBER = position
                     val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
 
-                    if (!isServiceRunning)
-                    {
-                        val i = Intent(applicationContext, SongService::class.java)
-                        // cntx.startService(i)
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            applicationContext.startForegroundService(i);
-                        } else {
-                            applicationContext.startService(i);
-                        }
-
-
+                    if (!isServiceRunning) {
+                        Constants.startService(applicationContext)
 
                     } else {
-
                         val msg = Message.obtain()
                         msg.obj = messagearg
                         Constants.SONG_CHANGE_HANDLER?.sendMessage(msg)
-
                     }
 
                 }
-                catch (e: IOException) { }
+                catch (e: IOException) {Log.e(Constants.ERROR, e.message) }
 
             }
         })
@@ -270,7 +235,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     override fun onClick(v: View) {
 
-        if(Home.shared.getString("current_album",null)==null)
+        if(Home.shared.getString(Constants.CURRENT_ALBUM,null)==null)
         {
             return
         }

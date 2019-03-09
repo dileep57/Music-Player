@@ -62,9 +62,9 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     lateinit var helper: DatabaseHelperAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(Wel.colorshared.getInt("themename",-1)!=-1)
+        if(Wel.colorshared.getInt(Constants.THEMENAME,-1)!=-1)
         {
-            setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
+            setTheme(Wel.colorshared.getInt(Constants.THEMENAME, R.style.AppFullScreenTheme))
         }
 
         super.onCreate(savedInstanceState)
@@ -76,8 +76,8 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         toolbar?.title = "Music Library"
         setSupportActionBar(toolbar)
 
-        shakePreferences = getSharedPreferences("shake",Context.MODE_PRIVATE)
-        ratingPreferences = getSharedPreferences("rating",Context.MODE_PRIVATE)
+        shakePreferences = getSharedPreferences(Constants.PREFERENCE_SHAKE,Context.MODE_PRIVATE)
+        ratingPreferences = getSharedPreferences(Constants.PREFERENCE_RATING,Context.MODE_PRIVATE)
 
 
         toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -88,7 +88,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             Constants.playandpause(applicationContext)
         }
 
-        shared = getSharedPreferences("current_song", Context.MODE_PRIVATE)
+        shared = getSharedPreferences(Constants.PREFERENCE_CURRENT_SONG, Context.MODE_PRIVATE)
 
         createfragment(Music_lib_2(), "music_library")
 
@@ -178,7 +178,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
             R.id.shuffle_all -> shuffle_all()
 
-            R.id.settings -> createfragment(Settings(), "settings")
+            R.id.settings -> createfragment(Settings(), Constants.FRAGMENT_SETTING)
 
         }
         return false
@@ -190,10 +190,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         when (item.itemId) {
 
 
-            R.id.home -> createfragment(Recent_song(), "recent_song")
+            R.id.home -> createfragment(Recent_song(), Constants.FRAGMENT_RECENT_SONG)
 
             R.id.music_library -> {
-                createfragment(Music_lib_2(), "music_library")
+                createfragment(Music_lib_2(), Constants.FRAGMENT_MUSIC_LIB)
             }
 
             R.id.equilizer -> {
@@ -217,7 +217,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             }
 
             R.id.settings -> {
-                createfragment(Settings(), "settings")
+                createfragment(Settings(), Constants.FRAGMENT_SETTING)
             }
 
             R.id.invite -> {
@@ -234,14 +234,14 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
 
-        if(str.equals("music_library")) {
+        if(str.equals(Constants.FRAGMENT_MUSIC_LIB)) {
             transaction.replace(R.id.replaceable_layout, fragment, str)
         }
         else {
             transaction.add(R.id.replaceable_layout, fragment, str)
         }
 
-        if (str != "music_library") {
+        if (str != Constants.FRAGMENT_MUSIC_LIB) {
 
             if(manager.getBackStackEntryCount()>0)
             {
@@ -321,7 +321,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         if (supportFragmentManager.backStackEntryCount > 0) {
 
-            if(getFragmentTag() == "music_library")
+            if(getFragmentTag() == Constants.FRAGMENT_MUSIC_LIB)
             {
                 activity_finish()
             }
@@ -359,15 +359,15 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     {
         supportFragmentManager!!.addOnBackStackChangedListener {
 
-            if(getFragmentTag() == "settings")
+            if(getFragmentTag() == Constants.FRAGMENT_SETTING)
             {
                 toolbar?.setTitle("Settings")
             }
-            if(getFragmentTag() == "recent_song")
+            if(getFragmentTag() == Constants.FRAGMENT_RECENT_SONG)
             {
                 toolbar?.setTitle("Recent Songs")
             }
-            if(getFragmentTag() == "music_library")
+            if(getFragmentTag() == Constants.FRAGMENT_MUSIC_LIB)
             {
                 toolbar?.setTitle("Music Library")
             }
@@ -411,10 +411,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         try {
 
-            Constants.servicearray("only_song")
+            Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
 
             var messagearg:String
-            if("only_song".equals(shared.getString("current_album","alb"),ignoreCase = true))
+            if(Constants.SONG_FROM_ONLY_SONG.equals(shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
             {
                 messagearg = "false"
             }
@@ -426,7 +426,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             Constants.SONG_SHUFFLE = true
 
             Constants.mediaAfterprepared(null, applicationContext, all_songs.get(0), 0, 0,
-                    "general", "only_song")
+                    "general", Constants.SONG_FROM_ONLY_SONG)
 
             Constants.SONG_NUMBER = 0
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
@@ -455,7 +455,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     override fun onResume() {
         super.onResume()
         try{
-            if (shared.getString("song_name", null) != null) {
+            if (shared.getString(Constants.SONG_NAME, null) != null) {
                 cardview?.visibility = View.VISIBLE
             }else{
                 cardview?.visibility = View.INVISIBLE
@@ -499,7 +499,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             }
             else if(res.equals("Pause Song"))
             {
-                Controls.playPauseControl("pause")
+                Controls.playPauseControl(Constants.PAUSE)
             }
 
         }
@@ -510,7 +510,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
     override fun updateButtonUI() {
 
         try {
-            if(Constants.SONG_PAUSED)
+            if(Constants.SONG_PAUSE)
             {
                 card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
             }
@@ -525,22 +525,11 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
             cardview?.visibility = View.VISIBLE
         } catch (e: Exception){
-            Log.i("Error",e.message)
+            Log.i(Constants.ERROR, e.message)
         }
 
     }
 
-
-    override fun onPause() {
-        super.onPause()
-
-
-    }
-
-    public override fun onStop() {
-        super.onStop()
-
-    }
 
     fun setActionBarTitle(title: String) {
         supportActionBar!!.title = title
@@ -552,7 +541,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         {
             AccelerometerManager.stopListening()
         }
-//        unregisterphonestate()
 
     }
 
@@ -571,12 +559,12 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
 
         no.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","no").apply()
+            ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"no").apply()
             sub_detail.dismiss()
         }
 
         now.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","now").apply()
+            ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"now").apply()
             val i = Intent(Intent.ACTION_VIEW)
             sub_detail.dismiss()
             i.data = Uri.parse("https://play.google.com/store/apps/details?id=com.mytech.lab.musicplayer")
@@ -584,7 +572,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         }
 
         later.setOnClickListener {
-            ratingPreferences?.edit()!!.putString("status","later").apply()
+            ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"later").apply()
             remindmelater = true
             sub_detail.dismiss()
         }
@@ -687,7 +675,11 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
             }
 
             val edit = Home.shared.edit()
-            try{ edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString("song_name","alb"))!!).apply()}catch (e:Exception){e.printStackTrace()}
+            try{
+                edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString(Constants.SONG_NAME,"alb"))!!).apply()
+            }catch (e:Exception) {
+                Log.e(Constants.ERROR, e.message)
+            }
 
         }
 

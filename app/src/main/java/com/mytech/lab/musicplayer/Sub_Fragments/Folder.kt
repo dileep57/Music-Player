@@ -173,7 +173,7 @@ class Folder : Fragment() {
                 Constants.SONG_NUMBER = 0
 //                Log.i("FileName ",file.name)
                 Constants.mediaAfterprepared(null,context,s,position, position,
-                        "general", "folder")
+                        "general", Constants.SONG_FROM_FOLDER)
 
                 val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
                 if (!isServiceRunning)

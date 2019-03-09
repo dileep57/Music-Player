@@ -30,6 +30,7 @@ import com.mytech.lab.musicplayer.Activity.MusicPlayer
 import com.mytech.lab.musicplayer.Fragments.Recent_song
 import com.mytech.lab.musicplayer.utils.PhoneStateReceiver
 import com.mytech.lab.musicplayer.utils.Song_base
+import org.apache.commons.collections4.CollectionUtils
 import java.util.concurrent.TimeUnit
 
 
@@ -93,7 +94,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         try {
 
-            if (Constants.SONGS_LIST.size <= 0) {
+            if (CollectionUtils.isEmpty(Constants.SONGS_LIST)) {
                 for (i in Home.servicearraylist.indices) {
                     Constants.SONGS_LIST.add(Pair(Home.servicearraylist[i].first, Home.servicearraylist[i].second))
                 }
@@ -242,8 +243,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     fun collectsongdata(s: Song_base) {
         val lambda1=Thread{
             val actual_pos = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
-            Log.i("curr_alb", Home.shared.getString(Constants.CURRENT_ALBUM, "alb"))
-            Log.i("curr_play", Home.shared.getString(Constants.PLAYLIST_NAME, "alb"))
             Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
                     "general", Home.shared.getString(Constants.CURRENT_ALBUM, "alb"), Home.shared.getString(Constants.PLAYLIST_NAME, "alb"))
             Constants.databasedata(s, applicationContext, actual_pos, "RecentSong")

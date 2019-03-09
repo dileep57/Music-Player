@@ -4,7 +4,6 @@ package com.mytech.lab.musicplayer
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
-import android.util.Log
 import com.mytech.lab.musicplayer.Fragments.Recent_song
 
 import java.util.Random
@@ -18,12 +17,12 @@ import java.io.FileDescriptor
 import android.net.ConnectivityManager
 import android.os.Build
 import android.provider.MediaStore
-import android.support.v4.content.ContextCompat.startForegroundService
 import android.widget.Toast
 import com.mytech.lab.musicplayer.Activity.Home
 import com.mytech.lab.musicplayer.Activity.Wel
 import com.mytech.lab.musicplayer.utils.DatabaseHelperAdapter
 import com.mytech.lab.musicplayer.utils.Song_base
+import org.apache.commons.collections4.CollectionUtils
 import java.io.File
 
 
@@ -41,6 +40,7 @@ class Constants
 
 
         var tint = "hello"
+        const val ERROR = "Error"
         const val PLAY = "play"
         const val PAUSE = "pause"
         const val HEADPHONE = "Headphone"
@@ -64,17 +64,17 @@ class Constants
 
         const val SHUFFLE = "shuffle"
         const val REPEAT = "repeat"
-        const val ONLY_SONG = "only_song"
         const val MINI_TRACK = "mini_track"
         const val PLAYLIST_RECENT_SONG = "Recent_add_song"
         const val PLAYLIST_FAV = "favourites"
-
         const val SONG_FROM_PLAYLIST = "playlist"
+
         const val SONG_FROM_ARTIST = "artist"
         const val SONG_FROM_ALBUM = "album"
         const val SONG_FROM_FOLDER = "folder"
-        const val SONG_FROM_SONG = ""
+        const val SONG_FROM_ONLY_SONG = "only_song"
         const val SONG_FROM_RECENT_SONG = "recent"
+        const val SONG_FROM_MINI_TRACK = "mini_track"
 
         const val SHUFFLE_ON = "Shuffle On"
         const val SHUFFLE_OFF = "Shuffle Off"
@@ -83,6 +83,15 @@ class Constants
         const val REPEAT_OFF = "Repeat Off"
 
         const val THEMENAME = "themename"
+        const val PREFERENCE_SHAKE = "shake"
+        const val PREFERENCE_RATING = "rating"
+        const val PREFERENCE_CURRENT_SONG = "current_song"
+
+        const val FRAGMENT_RECENT_SONG = "recent_song"
+        const val FRAGMENT_MUSIC_LIB = "music_library"
+        const val FRAGMENT_SETTING = "setting"
+
+        const val RATING_STATUS = "status"
 
 
 
@@ -393,11 +402,35 @@ class Constants
 
 
             if(section.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true) && !firstopen) {
-                return
+                if(section.equals("artist",ignoreCase = true))
+                {
+                    if(Home.shared.getString(Constants.ARTIST_NAME,"alb").equals(artist_name,ignoreCase = true))
+                    {
+                        return
+                    }
+                }
+                else if(section.equals("album",ignoreCase = true))
+                {
+                    if(Home.shared.getString(Constants.ALBUM_NAME,"alb").equals(album_name,ignoreCase = true))
+                    {
+                        return
+                    }
+                }
+                else if(section.equals(Constants.POPUP_PLAYLIST,ignoreCase = true))
+                {
+                    if(Home.shared.getString("playlist","alb").equals(playlist_name,ignoreCase = true))
+                    {
+                        return
+                    }
+                }
+                else
+                {
+                    return
+                }
             }
 
             Home.servicearraylist.clear()
-            if(section.equals(Constants.ONLY_SONG,ignoreCase = true))
+            if(section.equals(Constants.SONG_FROM_ONLY_SONG,ignoreCase = true))
             {
 
                 for(inc in Home.all_songs.indices)
@@ -481,6 +514,13 @@ class Constants
                     Home.servicearraylist.add(Pair(s,act_pos))
                 }
             }
+
+            for (i in Home.servicearraylist.indices) {
+                Constants.SONGS_LIST.add(Pair(Home.servicearraylist[i].first, Home.servicearraylist[i].second))
+            }
+        }
+
+
 
         }
 

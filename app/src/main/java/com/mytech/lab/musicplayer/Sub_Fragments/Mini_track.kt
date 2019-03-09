@@ -43,7 +43,7 @@ class Mini_track : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-         super.onCreateOptionsMenu(menu, inflater)
+        super.onCreateOptionsMenu(menu, inflater)
 
 
     }
@@ -89,37 +89,36 @@ class Mini_track : Fragment() {
 
                 try {
 //
-                        Constants.servicearray("mini_track")
+                    Constants.servicearray(Constants.SONG_FROM_MINI_TRACK)
 
-                        var messagearg:String = ""
-                        if("mini_track".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
-                        {
-                            messagearg = "false"
-                        }
-                        else
-                        {
-                            messagearg = "true"
+                    var messagearg:String = ""
+                    if(Constants.SONG_FROM_MINI_TRACK.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true)) {
+                        messagearg = "false"
 
-                        }
+                    }
+                    else {
+                        messagearg = "true"
 
-                        val actual_song_position = Home.mini_track[position].second
-                        Constants.setsharedpreference(s,
-                                "general",
-                                actual_song_position, position,
-                                Home.shared.getBoolean("shuffle",false),
-                                Home.shared.getBoolean("repeat",false),
-                                "mini_track"
-                        )
+                    }
 
-                        Constants.SONG_NUMBER = position
-                        val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
-                        if (!isServiceRunning) {
-                            val i = Intent(context, SongService::class.java)
-                            context!!.startService(i)
-                        } else {
+                    val actual_song_position = Home.mini_track[position].second
+                    Constants.setsharedpreference(s,
+                            "general",
+                            actual_song_position, position,
+                            Home.shared.getBoolean(Constants.SHUFFLE,false),
+                            Home.shared.getBoolean(Constants.REPEAT,false),
+                            Constants.SONG_FROM_MINI_TRACK
+                    )
 
-                            Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg));
-                        }
+                    Constants.SONG_NUMBER = position
+                    val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
+                    if (!isServiceRunning) {
+                        val i = Intent(context, SongService::class.java)
+                        context!!.startService(i)
+                    } else {
+
+                        Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg));
+                    }
 
                     Home().cardview?.visibility = View.VISIBLE
 

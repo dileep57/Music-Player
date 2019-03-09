@@ -24,9 +24,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat.PRIORITY_MAX
 import android.util.Log
 import android.widget.Toast
-import com.mytech.lab.musicplayer.Activity.GeneralPlayer
 import com.mytech.lab.musicplayer.Activity.Home
-import com.mytech.lab.musicplayer.Activity.MusicPlayer
 import com.mytech.lab.musicplayer.Fragments.Recent_song
 import com.mytech.lab.musicplayer.utils.PhoneStateReceiver
 import com.mytech.lab.musicplayer.utils.Song_base
@@ -47,7 +45,6 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     lateinit var mVqualizer: Visualizer
     private var remoteComponentName: ComponentName? = null
     val CHANNEL_ID: String = "my_musicPlayer"
-
     private var remoteControlClient: RemoteControlClient? = null
     internal var mDummyAlbumArt: Bitmap? = null
     var maxvol: Int = 0
@@ -56,7 +53,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
 
     companion object {
-        var mp: MediaPlayer? = null
+        var mPlayer: MediaPlayer? = null
         var NOTIFICATION_ID = 1111
         lateinit var notification: Notification
 
@@ -76,14 +73,14 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     override fun onCreate() {
 
-        mp = MediaPlayer()
+        mPlayer = MediaPlayer()
 
         audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         maxvol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         currentvol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         duck_volume = currentvol.toDouble()
 
-        mp!!.setOnCompletionListener {
+        mPlayer!!.setOnCompletionListener {
             Controls.nextControl(getApplicationContext())
         }
 
@@ -134,7 +131,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         songPath = s.url
                     } catch (e: Exception) {
                         Constants.SONG_PAUSED = true
-                        mp?.pause()
+                        mPlayer?.pause()
                         return false
                     }
 
@@ -163,7 +160,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     var message: String = msg!!.obj as String
 
-                    if (mp == null)
+                    if (mPlayer == null)
                         return false
 
                     if (message.equals(Constants.PLAY)) {
@@ -172,7 +169,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         if (currentVersionSupportLockScreenControls) {
                             remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING)
                         }
-                        mp!!.start()
+                        mPlayer!!.start()
 
                     } else if (message.equals(Constants.PAUSE)) {
                         Constants.SELF_CHANGE = true
@@ -180,7 +177,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                         if (currentVersionSupportLockScreenControls) {
                             remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED)
                         }
-                        mp!!.pause()
+                        mPlayer!!.pause()
                     }
                     Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                     updatenotificationIcon()
@@ -207,13 +204,17 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     }
 
+    fun stopOtherMusic(){
+
+    }
+
     val handler = Handler(object : Handler.Callback {
         override fun handleMessage(p0: Message?): Boolean {
-            if (mp != null) {
-                val progress = mp!!.getCurrentPosition() * 100 / mp!!.getDuration()
+            if (mPlayer != null) {
+                val progress = mPlayer!!.getCurrentPosition() * 100 / mPlayer!!.getDuration()
                 val i = arrayOfNulls<Int>(4)
-                i[0] = mp!!.currentPosition
-                i[1] = mp!!.getDuration()
+                i[0] = mPlayer!!.currentPosition
+                i[1] = mPlayer!!.getDuration()
 
                 try {
                     Constants.PROGRESSBAR_HANDLER!!.sendMessage(Constants.PROGRESSBAR_HANDLER!!.obtainMessage(0, i))
@@ -228,7 +229,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private inner class MainTask : TimerTask() {
         override fun run() {
-            if (mp != null && mp!!.isPlaying) {
+            if (mPlayer != null && mPlayer!!.isPlaying) {
                 handler.sendEmptyMessage(0)
             }
         }
@@ -411,9 +412,9 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     override fun onDestroy() {
-        if (mp != null) {
-            mp!!.stop()
-            mp = null
+        if (mPlayer != null) {
+            mPlayer!!.stop()
+            mPlayer = null
         }
         super.onDestroy()
     }
@@ -425,11 +426,11 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
                 UpdateMetadata(s, applicationContext)
                 remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING)
             }
-            mp?.reset()
-            mp?.setDataSource(songPath)
-            mp?.prepare()
-            mp?.start()
-            mEqualizer = Equalizer(0, mp!!.audioSessionId)
+            mPlayer?.reset()
+            mPlayer?.setDataSource(songPath)
+            mPlayer?.prepare()
+            mPlayer?.start()
+            mEqualizer = Equalizer(0, mPlayer!!.audioSessionId)
 
             mEqualizer.setEnabled(true)
             val timer: Timer = Timer(true)
@@ -483,7 +484,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     override fun onAudioFocusChange(p0: Int) {
 
-        if (SongService.mp != null && !Constants.SELF_CHANGE) {
+        if (SongService.mPlayer != null && !Constants.SELF_CHANGE) {
             when (p0) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
                     Constants.SONG_PAUSED = false
@@ -509,6 +510,7 @@ class SongService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
 
     }
+
 
 }
 

@@ -1,7 +1,6 @@
 package com.mytech.lab.musicplayer.utils
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -18,17 +17,8 @@ import com.mytech.lab.musicplayer.Constants
 import com.mytech.lab.musicplayer.R
 import com.mytech.lab.musicplayer.SongService
 import de.hdodenhof.circleimageview.CircleImageView
-import android.R.attr.digits
 import android.graphics.drawable.LayerDrawable
-import android.R.attr.bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.R.attr.bitmap
-
-
-
-
-
 
 
 abstract class PlayerAbstractClass() : AppCompatActivity() {
@@ -67,7 +57,6 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
 
         Constants.PLAYER_UI = Handler(object : Handler.Callback {
             override fun handleMessage(msg: Message?): Boolean {
-//                Log.i("General", "Common UI Handler")
                 updateButtonUI()
                 updatePlayerUI()
                 return true
@@ -88,7 +77,7 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             loadimage(delay, s.first.albumId!!,applicationContext)
         }
         catch (e:Exception){
-            Log.e("Error",e.message)}
+            Log.e(Constants.ERROR, e.message)}
     }
 
 
@@ -147,15 +136,19 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             if (albumArt != null) {
                 banner?.setImageBitmap(albumArt)
                 songImage?.setImageBitmap(albumArt)
-                val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
-                val newArtDrawable = BitmapDrawable(resources, albumArt)
-                oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
+                Thread{
+                    runOnUiThread {
+                        val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
+                        val newArtDrawable = BitmapDrawable(resources, albumArt)
+                        oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
+                    }
+                }.start()
             } else {
                 banner?.setImageResource(R.drawable.default_general_player_albumart)
                 songImage?.setImageResource(R.drawable.default_general_player_albumart)
 
             }
-        },0)
+        },delay)
     }
 
     protected fun updateSeekbar(){
@@ -164,17 +157,17 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             forward?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                     if (b) {
-                        SongService.mp!!.seekTo(i)
+                        SongService.mPlayer!!.seekTo(i)
                     }
 
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
-                    SongService.mp!!.pause()
+                    SongService.mPlayer!!.pause()
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    SongService.mp!!.start()
+                    SongService.mPlayer!!.start()
 
                 }
             })

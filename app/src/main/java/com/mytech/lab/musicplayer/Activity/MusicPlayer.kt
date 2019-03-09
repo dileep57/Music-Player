@@ -5,6 +5,8 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.*
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
@@ -84,6 +86,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
             else {
                 repeat_image?.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
+
 
         }catch (e:Exception){Log.e(Constants.ERROR,e.message)}
     }

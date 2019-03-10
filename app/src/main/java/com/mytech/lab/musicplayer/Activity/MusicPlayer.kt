@@ -1,12 +1,9 @@
 package com.mytech.lab.musicplayer.Activity
 
-import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.LayerDrawable
 import android.os.*
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
@@ -25,6 +22,7 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
 
 import java.io.IOException
 
+@Suppress("DEPRECATION")
 class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
@@ -52,8 +50,6 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
 
         setSupportActionBar(toolbar)
-        shuffle_status = Home.shared.getBoolean(Constants.SHUFFLE, false)
-        repeat_status = Home.shared.getBoolean(Constants.REPEAT, false)
 
         handler = Handler()
         oncurrentactivity = true
@@ -71,21 +67,20 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
 
     override fun updateButtonUI() {
         try {
-            if (Constants.SONG_PAUSED) { playandpause_image?.setImageResource(R.drawable.album_play) }
+            if (Constants.SONG_PAUSED) { playAndPauseImage?.setImageResource(R.drawable.album_play) }
 
-            else { playandpause_image?.setImageResource(R.drawable.album_pause) }
+            else { playAndPauseImage?.setImageResource(R.drawable.album_pause) }
 
 
-            if(Constants.SONG_SHUFFLE ==true) {
-                shuffle_image?.setImageResource(R.drawable.ic_shuffle_click_24dp)}
+            if(Constants.SONG_SHUFFLE)
+                shuffleImage?.setImageResource(R.drawable.ic_shuffle_click_24dp)
+            else
+                shuffleImage?.setImageResource(R.drawable.ic_shuffle_black_24dp)
 
-            else {
-                shuffle_image?.setImageResource(R.drawable.ic_shuffle_black_24dp)}
-
-            if(Constants.SONG_REPEAT ==true) { repeat_image?.setImageResource(R.drawable.ic_repeat_click_24dp)}
-
-            else {
-                repeat_image?.setImageResource(R.drawable.ic_repeat_one_black_24dp)}
+            if(Constants.SONG_REPEAT)
+                repeatImage?.setImageResource(R.drawable.ic_repeat_click_24dp)
+            else
+                repeatImage?.setImageResource(R.drawable.ic_repeat_one_black_24dp)
 
 
         }catch (e:Exception){Log.e(Constants.ERROR,e.message)}
@@ -150,7 +145,7 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
         popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
 
             override fun onMenuItemClick(item: MenuItem): Boolean {
-                when (item.getItemId()){
+                when (item.itemId){
 
                     R.id.play -> { SongAdapter_Functionality(pop,temp,position,applicationContext).play()}
 
@@ -192,28 +187,28 @@ class MusicPlayer : PlayerAbstractClass(), View.OnClickListener {
     {
         forward = findViewById(R.id.forward)
         forward!!.progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
-        song_name = findViewById(R.id.song_name)
-        song_name!!.text = "Song Name"
-        artist_name = findViewById(R.id.artist)
-        artist_name!!.text = "Artist"
-        starttime = findViewById(R.id.starttime)
-        starttime!!.text = "start"
+        songName = findViewById(R.id.song_name)
+        songName!!.text = "Song Name"
+        artistName = findViewById(R.id.artist)
+        artistName!!.text = "Artist"
+        startTime = findViewById(R.id.starttime)
+        startTime!!.text = "start"
         endtime = findViewById(R.id.totaltime)
         endtime!!.text = "End"
         banner = findViewById(R.id.gallery)
         playandpause = findViewById(R.id.playandpause)
         playandpause!!.setOnClickListener(this)
-        playandpause_image = findViewById(R.id.playandpause_image)
+        playAndPauseImage = findViewById(R.id.playandpause_image)
         prev = findViewById(R.id.prev)
         prev!!.setOnClickListener(this)
         next = findViewById(R.id.next)
         next!!.setOnClickListener(this)
         repeat = findViewById(R.id.repeat)
         repeat!!.setOnClickListener(this)
-        repeat_image = findViewById(R.id.repeat_image)
+        repeatImage = findViewById(R.id.repeat_image)
         shuffle = findViewById(R.id.shuffle)
         shuffle!!.setOnClickListener(this)
-        shuffle_image = findViewById(R.id.shuffle_image)
+        shuffleImage = findViewById(R.id.musicPlayerShuffleImage)
 
         recyclerView = findViewById(R.id.recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)

@@ -40,7 +40,7 @@ class Artist_expand : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.sub_sub_fragment_artist_expand, container, false)
 
-        artist_name = arguments!!.getString("artist_name")
+        artist_name = arguments!!.getString("artistName")
 
         recyclerView = v.findViewById(R.id.recycler)
         recyclerView?.layoutManager = LinearLayoutManager(v.context)

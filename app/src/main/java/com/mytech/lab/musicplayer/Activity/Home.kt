@@ -3,6 +3,7 @@ package com.mytech.lab.musicplayer.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.graphics.Color
@@ -19,8 +20,8 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.ShareActionProvider
 import android.support.v7.widget.Toolbar
+import android.telephony.PhoneStateListener
 import android.util.Log
 import android.util.Pair
 import android.view.Menu
@@ -44,20 +45,16 @@ import kotlin.collections.ArrayList
 
 class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListener, AccelerometerManager.OnShakeListener {
 
-    internal var cardchange: Boolean? = false
     private var doubleBackToExitPressedOnce = false
-    private var phoneStateReceiver:PhoneStateReceiver?= null
-    private val mShareActionProvider: ShareActionProvider? = null
-    internal var editor: SharedPreferences.Editor? = null
-    var libraryFragmentnumber:String = "temp"
-    var ratingPreferences:SharedPreferences? = null
-    var remindmelater:Boolean = false
+    private var ratingPreferences:SharedPreferences? = null
+    private var remindmelater:Boolean = false
+    private var myReceiver: PhoneStateListener? = null
 
     private var nav: NavigationView?= null
 
     private var toolbar: Toolbar?= null
 
-    lateinit internal var playorpausecard:LinearLayout
+    internal lateinit var playorpausecard:LinearLayout
     lateinit var drawer: DrawerLayout
     lateinit var helper: DatabaseHelperAdapter
 
@@ -69,6 +66,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        myReceiver = PhoneStateListener()
         getView()
 
         toolbar = findViewById(R.id.toolbar_layout)
@@ -107,7 +105,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         val newsAdapter: SearchView_Adapter = SearchView_Adapter(applicationContext, dataArr)
 
         var item:MenuItem = menu.findItem(R.id.search)
-        menu.findItem(R.id.sort).setVisible(false)
+        menu.findItem(R.id.sort).isVisible = false
         val search:android.support.v7.widget.SearchView = item.actionView as SearchView
 
         val searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text) as SearchView.SearchAutoComplete
@@ -119,13 +117,13 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
             val queryString= adapterView.getItemAtPosition(i) as String
 
-            val act_pos = Songname_position.get(queryString)!!
-            val temp: Song_base = all_songs.get(act_pos)
+            val actualPosition = Songname_position.get(queryString)!!
+            val temp: Song_base = all_songs.get(actualPosition)
 
             Constants.SONGS_LIST.clear()
-            Constants.SONGS_LIST.add(kotlin.Pair(temp, act_pos))
+            Constants.SONGS_LIST.add(kotlin.Pair(temp, actualPosition))
             Constants.SONG_NUMBER = 0
-            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
+            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.name, applicationContext)
             if (!isServiceRunning)
             {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -147,7 +145,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         return true
     }
 
-    fun hidesoftkeyboard()
+    private fun hidesoftkeyboard()
     {
         val view = this.currentFocus
         if (view != null) {
@@ -161,10 +159,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         nav = findViewById(R.id.naigation)
         nav?.itemIconTintList = null
         nav?.setNavigationItemSelectedListener(this)
-        song_name = findViewById(R.id.song_name)
+        songName = findViewById(R.id.song_name)
         banner = findViewById(R.id.songart)
-        artist_name = findViewById(R.id.artist_name)
-        card_playPauseIcon = findViewById(R.id.playorpauseicon)
+        artistName = findViewById(R.id.artist_name)
+        cardPlayPauseIcon = findViewById(R.id.playorpauseicon)
         playorpausecard = findViewById(R.id.playorpause)
         helper = DatabaseHelperAdapter(applicationContext)
     }
@@ -229,7 +227,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         return true
     }
 
-    fun createfragment(fragment: Fragment, str: String) {
+    private fun createfragment(fragment: Fragment, str: String) {
 
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
@@ -243,7 +241,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         if (str != Constants.FRAGMENT_MUSIC_LIB) {
 
-            if(manager.getBackStackEntryCount()>0)
+            if(manager.backStackEntryCount >0)
             {
 
                 if(getFragmentTag().equals(str,ignoreCase = true)) {
@@ -256,7 +254,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         }
         else {
 
-            if(manager.getBackStackEntryCount()>0) {
+            if(manager.backStackEntryCount >0) {
 
                 if(getFragmentTag().equals(str,ignoreCase = true)) {
                     close_drawer()
@@ -340,19 +338,13 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     }
 
-    private fun setToolbarTitle()
-    {
-
-
-    }
 
     private fun getFragmentTag() :String
     {
         val manager = supportFragmentManager
-//        Log.i("GETTAG",manager.getBackStackEntryCount().toString())
-        val index = manager.getBackStackEntryCount() - 1
+        val index = manager.backStackEntryCount - 1
         val backentry:FragmentManager.BackStackEntry = manager.getBackStackEntryAt(index)
-        return backentry.getName()
+        return backentry.name
     }
 
     private fun backstackChangeListner()
@@ -361,15 +353,15 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
             if(getFragmentTag() == Constants.FRAGMENT_SETTING)
             {
-                toolbar?.setTitle("Settings")
+                toolbar?.title = "Settings"
             }
             if(getFragmentTag() == Constants.FRAGMENT_RECENT_SONG)
             {
-                toolbar?.setTitle("Recent Songs")
+                toolbar?.title = "Recent Songs"
             }
             if(getFragmentTag() == Constants.FRAGMENT_MUSIC_LIB)
             {
-                toolbar?.setTitle("Music Library")
+                toolbar?.title = "Music Library"
             }
         }
     }
@@ -395,14 +387,13 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
     private fun sendapp() {
 
-        var applicationInfo : ApplicationInfo = getApplicationInfo()
+        var applicationInfo : ApplicationInfo = applicationInfo
 
-        var filePath:String = applicationInfo.sourceDir;
 
-        var intent:Intent = Intent(Intent.ACTION_SEND);
-        intent.setType("*/*");
-        intent.setType("text/html");
-        intent.putExtra(Intent.EXTRA_SUBJECT,"MusicPlayer");
+        var intent = Intent(Intent.ACTION_SEND)
+        intent.type = "*/*"
+        intent.type = "text/html"
+        intent.putExtra(Intent.EXTRA_SUBJECT,"MusicPlayer")
         intent.putExtra(Intent.EXTRA_TEXT, "Share link : "+"https://play.google.com/store/apps/details?id=com.mytech.lab.musicplayer")
         startActivity(Intent.createChooser(intent, "Share app"))
     }
@@ -429,7 +420,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
                     "general", Constants.SONG_FROM_ONLY_SONG)
 
             Constants.SONG_NUMBER = 0
-            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
+            val isServiceRunning = Constants.isServiceRunning(SongService::class.java.name, applicationContext)
 
             if (!isServiceRunning)
             {
@@ -441,9 +432,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
                 Constants.SONG_CHANGE_HANDLER!!.sendMessage(Constants.SONG_CHANGE_HANDLER!!.obtainMessage(0,messagearg))
 
             }
-
-//            cardview?.visibility = View.VISIBLE
-
         }
         catch (e: IOException) {
             e.printStackTrace()
@@ -487,7 +475,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         {
 
 
-            var res:String = shakePreferences?.getString("action_text","No Action")
+            var res:String = shakePreferences.getString("action_text","No Action")
 
             if(res.equals("Next Song"))
             {
@@ -511,10 +499,10 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         try {
             if(Constants.SONG_PAUSED) {
-                card_playPauseIcon?.setImageResource(R.drawable.play_icon_black)
+                cardPlayPauseIcon?.setImageResource(R.drawable.play_icon_black)
             }
             else {
-                card_playPauseIcon?.setImageResource(R.drawable.pause_icon_black)
+                cardPlayPauseIcon?.setImageResource(R.drawable.pause_icon_black)
             }
 
             val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).first
@@ -548,8 +536,8 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         val detail = AlertDialog.Builder(this)
         val dt = layoutInflater.inflate(R.layout.dialog_rating,null)
         detail.setView(dt)
-        val sub_detail = detail.create()
-        sub_detail.show()
+        val subDetail = detail.create()
+        subDetail.show()
 
         val no:LinearLayout = dt.findViewById(R.id.no)
         val now:LinearLayout = dt.findViewById(R.id.now)
@@ -558,13 +546,13 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         no.setOnClickListener {
             ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"no").apply()
-            sub_detail.dismiss()
+            subDetail.dismiss()
         }
 
         now.setOnClickListener {
             ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"now").apply()
             val i = Intent(Intent.ACTION_VIEW)
-            sub_detail.dismiss()
+            subDetail.dismiss()
             i.data = Uri.parse("https://play.google.com/store/apps/details?id=com.mytech.lab.musicplayer")
             startActivity(i)
         }
@@ -572,7 +560,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         later.setOnClickListener {
             ratingPreferences?.edit()!!.putString(Constants.RATING_STATUS,"later").apply()
             remindmelater = true
-            sub_detail.dismiss()
+            subDetail.dismiss()
         }
 
 
@@ -583,7 +571,7 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
 
         lateinit var toggle: ActionBarDrawerToggle
 
-        var localimage = intArrayOf(R.drawable.music1, R.drawable.music2)
+//        var localimage = intArrayOf(R.drawable.music1, R.drawable.music2)
 
         var i:Int = 0
 
@@ -600,8 +588,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
         var album_song_number = ArrayList<Song_base>()
 
         lateinit var artistmap: MutableMap<String, ArrayList<Pair<Song_base, Int>>>
-
-//        lateinit var genresmap: MutableMap<String,ArrayList<Pair<Song_base,Int>>>
 
         lateinit var artist_to_album: MutableMap<String, Int>
 
@@ -629,7 +615,6 @@ class Home : PlayerAbstractClass(), NavigationView.OnNavigationItemSelectedListe
                 sorting_by = MediaStore.Audio.Media.DISPLAY_NAME
             else
                 sorting_by = sorting
-//            Log.i("String ",sorting_by.toString())
             all_songs.clear()
             val cursor = context.contentResolver.query(uri, null, selection, null, sorting_by)
             if (cursor != null) {

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 
 @Suppress("DEPRECATION")
-class SongService : Service(){
+class SongService : Service(), AudioManager.OnAudioFocusChangeListener{
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -40,7 +40,7 @@ class SongService : Service(){
     lateinit var mEqualizer: Equalizer
     lateinit var mVqualizer: Visualizer
     private var remoteComponentName: ComponentName? = null
-    private var mOnAudioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
+//    private var mOnAudioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
     private var remoteControlClient: RemoteControlClient? = null
     internal var mDummyAlbumArt: Bitmap? = null
 
@@ -104,14 +104,11 @@ class SongService : Service(){
             NotificationService.updatenotificationIcon(applicationContext)
             Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0))
 
-            songChangeHandler(applicationContext)
+            this.songChangeHandler(this)
 
-            playPauseHandler(applicationContext)
+            this.playPauseHandler(this)
 
-            shuffleRepeatHandler(applicationContext)
-
-            initiliseAudioFocusChangeListner()
-
+            this.shuffleRepeatHandler(this)
 
         } catch (e: Exception) {
             Controls.createToast(this, e.message!!,Toast.LENGTH_SHORT)
@@ -119,7 +116,7 @@ class SongService : Service(){
 
     }
 
-    public  fun songChangeHandler(applicationContext: Context) {
+    private fun songChangeHandler(applicationContext: Context) {
 
         Constants.SONG_CHANGE_HANDLER = Handler(object : Handler.Callback {
 
@@ -149,7 +146,7 @@ class SongService : Service(){
                     Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                     playSong(songPath, s, applicationContext)
                 } catch (e: Exception) {
-                    Log.e("ERROR", e.message)
+                    Log.e(Constants.ERROR, e.message)
                 }
                 collectsongdata(s, applicationContext)
                 NotificationService.updateNotificationData(applicationContext)
@@ -162,7 +159,7 @@ class SongService : Service(){
         })
     }
 
-    fun playSong(songPath: String, s: Song_base, applicationContext: Context) {
+    private fun playSong(songPath: String, s: Song_base, applicationContext: Context) {
         try {
             if (SongService.currentVersionSupportLockScreenControls) {
                 updateMetadata(s, applicationContext)
@@ -172,9 +169,9 @@ class SongService : Service(){
             SongService.mPlayer?.setDataSource(songPath)
             SongService.mPlayer?.prepare()
             SongService.mPlayer?.start()
-            mEqualizer = Equalizer(0, SongService.mPlayer!!.audioSessionId)
-
-            mEqualizer.setEnabled(true)
+//            mEqualizer = Equalizer(0, SongService.mPlayer!!.audioSessionId)
+//
+//            mEqualizer.setEnabled(true)
             val timer: Timer = Timer(true)
             timer.scheduleAtFixedRate(MainTask(), 0, 100)
         } catch (e: Exception) {
@@ -183,8 +180,8 @@ class SongService : Service(){
         }
     }
 
-    fun registerRemoteClient() {
-        remoteComponentName = ComponentName(applicationContext, PhoneStateReceiver().ComponentName())
+    private fun registerRemoteClient() {
+        remoteComponentName = ComponentName(applicationContext, PhoneStateReceiver().componentName())
         try {
             if (remoteControlClient == null) {
                 audioManager.registerMediaButtonEventReceiver(remoteComponentName)
@@ -205,11 +202,11 @@ class SongService : Service(){
         }
     }
 
-    fun startNotificationService(applicationContext: Context) {
+    private fun startNotificationService(applicationContext: Context) {
         startForeground(NotificationService.NOTIFICATION_ID, NotificationService.notification)
     }
 
-    fun updateMetadata(data: Song_base, cntx: Context) {
+    private fun updateMetadata(data: Song_base, cntx: Context) {
         if (remoteControlClient == null)
             return
         val metadataEditor = remoteControlClient?.editMetadata(true)
@@ -222,10 +219,10 @@ class SongService : Service(){
         }
         metadataEditor?.putBitmap(RemoteControlClient.MetadataEditor.BITMAP_KEY_ARTWORK, mDummyAlbumArt)
         metadataEditor?.apply()
-        audioManager.requestAudioFocus(mOnAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
+        audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
     }
 
-    public fun collectsongdata(s: Song_base, applicationContext:Context) {
+    private fun collectsongdata(s: Song_base, applicationContext:Context) {
         val lambda1=Thread{
             val actual_pos = Constants.SONGS_LIST.get(Constants.SONG_NUMBER).second
             Constants.mediaAfterprepared(null, applicationContext, s, actual_pos, Constants.SONG_NUMBER,
@@ -235,10 +232,9 @@ class SongService : Service(){
             Recent_song().setvisibility()
         }
         lambda1.start()
-
     }
 
-    public fun playPauseHandler(applicationContext: Context) {
+    private fun playPauseHandler(applicationContext: Context) {
 
         Constants.PLAY_PAUSE_HANDLER = Handler(object : Handler.Callback {
 
@@ -246,7 +242,7 @@ class SongService : Service(){
 
                 var message: String = msg!!.obj as String
 
-                if (SongService.mPlayer == null)
+                if (mPlayer == null)
                     return false
 
                 if (message.equals(Constants.PLAY)) {
@@ -255,7 +251,7 @@ class SongService : Service(){
                     if (SongService.currentVersionSupportLockScreenControls) {
                         remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING)
                     }
-                    SongService.mPlayer!!.start()
+                    mPlayer!!.start()
 
                 } else if (message.equals(Constants.PAUSE)) {
                     Constants.SELF_CHANGE = true
@@ -263,7 +259,7 @@ class SongService : Service(){
                     if (SongService.currentVersionSupportLockScreenControls) {
                         remoteControlClient?.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED)
                     }
-                    SongService.mPlayer!!.pause()
+                    mPlayer!!.pause()
                 }
                 Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0, null))
                 NotificationService.updatenotificationIcon(applicationContext)
@@ -285,39 +281,6 @@ class SongService : Service(){
 
             }
         })
-
-    }
-
-
-    fun initiliseAudioFocusChangeListner(){
-
-        mOnAudioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-            if (SongService.mPlayer?.isPlaying != null && !Constants.SELF_CHANGE) {
-
-                when (focusChange) {
-                    AudioManager.AUDIOFOCUS_GAIN -> {
-                        Constants.SONG_PAUSED = false
-                        Controls.playPauseControl(Constants.PLAY)
-                    }
-
-                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                        Controls.playPauseControl(Constants.PAUSE)
-                    }
-
-                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                        Controls.playPauseControl(Constants.PAUSE)
-                        Handler().postDelayed({
-                            Controls.playPauseControl(Constants.PLAY)
-                        }, TimeUnit.SECONDS.toMillis(2))
-                    }
-
-                    AudioManager.AUDIOFOCUS_LOSS -> {
-                        Controls.playPauseControl(Constants.PAUSE)
-
-                    }
-                }
-            }
-        }
 
     }
 
@@ -362,7 +325,33 @@ class SongService : Service(){
         super.onDestroy()
     }
 
+    override fun onAudioFocusChange(p0: Int) {
 
+        if (mPlayer != null && mPlayer!!.isPlaying) {
+            when (p0) {
+                AudioManager.AUDIOFOCUS_GAIN -> {
+                    Constants.SONG_PAUSED = false
+                    Controls.playPauseControl(Constants.PLAY)
+                }
+
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                    Controls.playPauseControl(Constants.PAUSE)
+                }
+
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                    Controls.playPauseControl(Constants.PAUSE)
+                    Handler().postDelayed({
+                        Controls.playPauseControl(Constants.PLAY)
+                    }, TimeUnit.SECONDS.toMillis(2))
+                }
+
+                AudioManager.AUDIOFOCUS_LOSS -> {
+                    Controls.playPauseControl(Constants.PAUSE)
+
+                }
+            }
+        }
+    }
 
 }
 

@@ -1,84 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mytech.lab.musicplayer.Activity.Wel">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.mytech.lab.musicplayer.Activity.Wel">
 
     <RelativeLayout
-        android:id="@+id/background"
-        android:layout_height="330dp"
-        android:layout_width="match_parent"
-        android:background="@drawable/shape">
+            android:id="@+id/background"
+            android:layout_height="330dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/shape">
 
         <TextView
-            android:id="@+id/song_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="79dp"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:singleLine="true"
-            android:text="Song Name"
-            android:textAlignment="center"
-            android:textColor="@color/White" />
+                android:id="@+id/song_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="79dp"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:singleLine="true"
+                android:text="Song Name"
+                android:textAlignment="center"
+                android:textColor="@color/White" />
 
         <LinearLayout
-            android:id="@+id/threeinone"
-            android:layout_below="@id/song_name"
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
+                android:id="@+id/threeinone"
+                android:layout_below="@id/song_name"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:weightSum="100"
-                android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:id="@+id/shuffle"
-                    android:layout_weight="30"
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="100"
+                    android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:id="@+id/shuffle"
+                        android:layout_weight="30"
+                        android:layout_height="wrap_content">
+
                     <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/ic_shuffle_black_24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="30"/>
+                            android:id="@+id/musicPlayerShuffleImage"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:src="@drawable/ic_shuffle_black_24dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="30"/>
                 </LinearLayout>
 
 
                 <TextView
-                    android:id="@+id/artist"
-                    android:layout_width="0dp"
-                    android:text="asas"
-                    android:singleLine="true"
-                    android:textColor="@color/White"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="40"/>
+                        android:id="@+id/artist"
+                        android:layout_width="0dp"
+                        android:text="asas"
+                        android:singleLine="true"
+                        android:textColor="@color/White"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="40"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:id="@+id/repeat"
-                    android:layout_weight="30"
-                    android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:id="@+id/repeat"
+                        android:layout_weight="30"
+                        android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/repeat_image"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_repeat_one_black_24dp"
-                        android:layout_weight="30"/>
+                            android:id="@+id/repeat_image"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_repeat_one_black_24dp"
+                            android:layout_weight="30"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -87,105 +88,105 @@
         </LinearLayout>
 
         <SeekBar
-            android:layout_below="@+id/threeinone"
-            android:layout_marginTop="5dp"
-            android:id="@+id/forward"
-            android:thumbTint="@color/White"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                android:layout_below="@+id/threeinone"
+                android:layout_marginTop="5dp"
+                android:id="@+id/forward"
+                android:thumbTint="@color/White"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/starttime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/forward"
-            android:textColor="@color/White"
-            android:layout_marginStart="18dp"
-            android:text="Start" />
+                android:id="@+id/starttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/forward"
+                android:textColor="@color/White"
+                android:layout_marginStart="18dp"
+                android:text="Start" />
 
         <TextView
-            android:id="@+id/totaltime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/White"
-            android:layout_alignBottom="@+id/starttime"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="18dp"
-            android:text="End" />
+                android:id="@+id/totaltime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/White"
+                android:layout_alignBottom="@+id/starttime"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="18dp"
+                android:text="End" />
 
         <RelativeLayout
-            android:layout_below="@id/totaltime"
-            android:layout_width="match_parent"
-            android:elevation="5dp"
-            android:layout_marginTop="-20dp"
-            android:layout_height="wrap_content">
+                android:layout_below="@id/totaltime"
+                android:layout_width="match_parent"
+                android:elevation="5dp"
+                android:layout_marginTop="-20dp"
+                android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/playandpause"
-                android:layout_centerHorizontal="true">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/playandpause"
+                    android:layout_centerHorizontal="true">
 
                 <ImageView
-                    android:id="@+id/playandpause_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:src="@drawable/album_play"
-                    android:layout_centerHorizontal="true"
-                    android:text="Button" />
+                        android:id="@+id/playandpause_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:src="@drawable/album_play"
+                        android:layout_centerHorizontal="true"
+                        android:text="Button" />
 
             </LinearLayout>
 
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/prev"
-                android:layout_toStartOf="@+id/playandpause">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prev"
+                    android:layout_toStartOf="@+id/playandpause">
 
                 <ImageView
-                    android:id="@+id/prev_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_skip_previous_black_24dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Button" />
+                        android:id="@+id/prev_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/ic_skip_previous_black_24dp"
+                        android:layout_marginRight="20dp"
+                        android:text="Button" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/next"
-                android:layout_toEndOf="@+id/playandpause">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/next"
+                    android:layout_toEndOf="@+id/playandpause">
 
                 <ImageView
-                    android:id="@+id/next_image"
-                    android:layout_width="40dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/ic_skip_next_black_24dp" />
+                        android:id="@+id/next_image"
+                        android:layout_width="40dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/ic_skip_next_black_24dp" />
 
             </LinearLayout>
 
 
             <!--<ImageView-->
-                <!--android:id="@+id/next"-->
-                <!--android:layout_width="40dp"-->
-                <!--android:background="?android:attr/selectableItemBackground"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:src="@drawable/ic_skip_next_black_24dp"-->
-                <!--android:layout_toEndOf="@+id/playandpause" />-->
+            <!--android:id="@+id/next"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:src="@drawable/ic_skip_next_black_24dp"-->
+            <!--android:layout_toEndOf="@+id/playandpause" />-->
         </RelativeLayout>
 
     </RelativeLayout>
@@ -193,33 +194,33 @@
 
 
     <LinearLayout
-        android:id="@+id/circleimage"
-        android:elevation="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="245dp">
+            android:id="@+id/circleimage"
+            android:elevation="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="245dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/gallery"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/musical"
-            app:civ_border_color="@color/semiTransparentWhite"
-            app:civ_border_width="3dp" />
+                android:id="@+id/gallery"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/musical"
+                app:civ_border_color="@color/semiTransparentWhite"
+                app:civ_border_width="3dp" />
 
 
     </LinearLayout>
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_player2"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layout_marginTop="24dp"
-        app:theme="@style/TransparentBar">
+            android:id="@+id/toolbar_player2"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_marginTop="24dp"
+            app:theme="@style/TransparentBar">
 
         <!--<TextView-->
         <!--android:layout_width="match_parent"-->
@@ -233,26 +234,26 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
-        android:layout_below="@id/background"
-        android:layout_width="match_parent"
-        android:background="#232327"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
+            android:layout_below="@id/background"
             android:layout_width="match_parent"
+            android:background="#232327"
             android:layout_height="match_parent">
 
-            <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-                android:id="@+id/recycler"
-                android:scrollbars="vertical"
-                android:scrollbarSize="3dp"
-                app:fastScrollAutoHide="true"
-                app:fastScrollPopupBgColor="@color/Themecolor"
-                app:fastScrollPopupBackgroundSize="60dp"
-                app:fastScrollPopupTextSize="40sp"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                app:fastScrollThumbColor="@color/fastScrollThumbColor"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+            <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+                    android:id="@+id/recycler"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="3dp"
+                    app:fastScrollAutoHide="true"
+                    app:fastScrollPopupBgColor="@color/Themecolor"
+                    app:fastScrollPopupBackgroundSize="60dp"
+                    app:fastScrollPopupTextSize="40sp"
+                    android:layout_width="match_parent"
+                    app:fastScrollThumbColor="@color/fastScrollThumbColor"
+                    android:layout_height="match_parent" />
         </RelativeLayout>
 
 

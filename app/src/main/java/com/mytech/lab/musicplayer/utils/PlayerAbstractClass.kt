@@ -1,10 +1,6 @@
 package com.mytech.lab.musicplayer.utils
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.util.Log
@@ -19,46 +15,39 @@ import com.mytech.lab.musicplayer.SongService
 import de.hdodenhof.circleimageview.CircleImageView
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.BitmapDrawable
+import android.os.*
 
 
 abstract class PlayerAbstractClass() : AppCompatActivity() {
 
 
-    protected  var song_name: TextView?=null
-    protected var artist_name: TextView?=null
-    protected  var starttime: TextView?=null
+    protected  var songName: TextView?=null
+    protected var artistName: TextView?=null
+    protected  var startTime: TextView?=null
     protected  var endtime: TextView?=null
     protected  var forward: SeekBar? = null
 
-    protected var shuffle_image: ImageView? = null
-    protected var playandpause_image: ImageView? = null
-    protected var repeat_image: ImageView?=null
+    protected var shuffleImage: ImageView? = null
+    protected var playAndPauseImage: ImageView? = null
+    protected var repeatImage: ImageView?=null
     protected var banner: ImageView? = null
     protected var songImage: CircleImageView?= null
-
-    protected var playstatus = true
-    protected var shuffle_status:Boolean = false
-    protected var repeat_status:Boolean = false
 
     protected  var shuffle: LinearLayout?=null
 
     protected var repeat: LinearLayout?=null
 
-    protected var card_playPauseIcon: ImageView?= null
+    protected var cardPlayPauseIcon: ImageView?= null
 
-    public var cardview: CardView?= null
+    var cardview: CardView?= null
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-
-    }
 
     protected fun initiliseUIHandler(){
 
         Constants.PLAYER_UI = Handler(object : Handler.Callback {
             override fun handleMessage(msg: Message?): Boolean {
-                updateButtonUI()
                 updatePlayerUI()
+                updateButtonUI()
                 return true
             }
         })
@@ -70,8 +59,8 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             val s = Constants.SONGS_LIST.get(Constants.SONG_NUMBER)
 
             val delay:Long = 0
-            song_name?.text = s.first.song_name
-            artist_name?.text = s.first.artist
+            songName?.text = s.first.song_name
+            artistName?.text = s.first.artist
             Constants.SONG_SHUFFLE = Home.shared.getBoolean(Constants.SHUFFLE,false)
             Constants.SONG_REPEAT  = Home.shared.getBoolean(Constants.REPEAT,false)
             loadimage(delay, s.first.albumId!!,applicationContext)
@@ -103,8 +92,8 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
                     val album_name = Home.shared.getString(Constants.ALBUM_NAME,"alb")
                     val playlistname = Home.shared.getString(Constants.PLAYLIST_NAME,"empty")
 
-                    song_name?.text = songname
-                    artist_name?.text = artistname
+                    songName?.text = songname
+                    artistName?.text = artistname
                     Constants.SONG_NUMBER = sub_song
                     Constants.servicearray(current,album_name,artistname,playlistname,true, cntx = applicationContext)
 
@@ -115,9 +104,9 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
                 Constants.PROGRESSBAR_HANDLER = Handler(object : Handler.Callback {
                     override fun handleMessage(msg: Message?): Boolean {
                         val i = msg?.obj as Array<Int>
-                        starttime?.setText(Constants.calculatetime(i[0]))
-                        endtime?.setText(Constants.calculatetime(i[1]))
-                        forward?.setProgress(i[0])
+                        startTime?.text = Constants.calculatetime(i[0])
+                        endtime?.text = Constants.calculatetime(i[1])
+                        forward?.progress = i[0]
                         forward?.max = i[1]
                         return true
                     }
@@ -136,13 +125,14 @@ abstract class PlayerAbstractClass() : AppCompatActivity() {
             if (albumArt != null) {
                 banner?.setImageBitmap(albumArt)
                 songImage?.setImageBitmap(albumArt)
-                Thread{
-                    runOnUiThread {
-                        val oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
-                        val newArtDrawable = BitmapDrawable(resources, albumArt)
-                        oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
-                    }
-                }.start()
+//                Thread{
+//                    runOnUiThread {
+//                        var oldArtDrawable:LayerDrawable? = null
+//                        oldArtDrawable = resources.getDrawable(R.drawable.shape) as LayerDrawable
+//                        val newArtDrawable = BitmapDrawable(resources, albumArt)
+//                        oldArtDrawable.setDrawableByLayerId(R.id.musicPlayerBackGround, newArtDrawable)
+//                    }
+//                }.start()
             } else {
                 banner?.setImageResource(R.drawable.default_general_player_albumart)
                 songImage?.setImageResource(R.drawable.default_general_player_albumart)

@@ -50,8 +50,8 @@ class Constants {
         const val RECENT_ADD_SONG = "Recent_add_song"
         const val SONG_TYPE = "song_type"
 
-        const val SONG_NAME = "song_name"
-        const val ARTIST_NAME = "artist_name"
+        const val SONG_NAME = "songName"
+        const val ARTIST_NAME = "artistName"
         const val ALBUM_NAME = "album_name"
         const val DURATION = "duration"
         const val ACTUAL_SONG_POSITION = "actual_song_position"
@@ -112,7 +112,7 @@ class Constants {
 
         var PROGRESSBAR_HANDLER: Handler? = null
 
-        var SELF_CHANGE: Boolean = false
+        var SELF_CHANGE: Boolean = true
 
         var SONGS_LIST = ArrayList<Pair<Song_base, Int>>()
 
@@ -423,17 +423,17 @@ class Constants {
             Recent_song().updaterecentsong(context)
         }
 
-        fun getDefaultAlbumArt(context: Context): Bitmap? {
-            var bm: Bitmap? = null
-            val options = BitmapFactory.Options()
-            try {
-                bm = BitmapFactory.decodeResource(context.resources, R.drawable.music2, options)
-            } catch (ee: Error) {
-            } catch (e: Exception) {
-            }
-
-            return bm
-        }
+//        fun getDefaultAlbumArt(context: Context): Bitmap? {
+//            var bm: Bitmap? = null
+//            val options = BitmapFactory.Options()
+//            try {
+//                bm = BitmapFactory.decodeResource(context.resources, R.drawable.music2, options)
+//            } catch (ee: Error) {
+//            } catch (e: Exception) {
+//            }
+//
+//            return bm
+//        }
 
         fun getAlbumart(context: Context, album_id: Long?): Bitmap? {
             var bm: Bitmap? = null

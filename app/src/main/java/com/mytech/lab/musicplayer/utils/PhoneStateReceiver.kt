@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.AudioManager
 import android.os.Handler
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import com.mytech.lab.musicplayer.Constants
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by lnx on 26/3/18.
  */
-public class PhoneStateReceiver : BroadcastReceiver(), AudioManager.OnAudioFocusChangeListener{
+public class PhoneStateReceiver : BroadcastReceiver(){
 
     var mgr:TelephonyManager? = null
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -26,16 +27,28 @@ public class PhoneStateReceiver : BroadcastReceiver(), AudioManager.OnAudioFocus
             val state = intent?.getStringExtra(TelephonyManager.EXTRA_STATE)
             mgr = context!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-                if (intent!!.getAction() == Intent.ACTION_MEDIA_BUTTON)
+            if (intent!!.action == Intent.ACTION_HEADSET_PLUG) {
+                val state = intent.getIntExtra("state", -1)
+                when (state) {
+                    0 -> {
+                        Controls.playPauseControl(Constants.PAUSE)
+                        Log.i("TAG", "Headset is unplugged")
+                    }
+                    1 -> Log.i("TAG","HEADSET PLUGIN")
+                    else -> Log.d("TAG", "I have no idea what the headset state is")
+                }
+
+            }
+                if (intent!!.action == Intent.ACTION_MEDIA_BUTTON)
                 {
-                    val keyEvent = intent.getExtras()!!.get(Intent.EXTRA_KEY_EVENT) as KeyEvent
+                    val keyEvent = intent.extras!!.get(Intent.EXTRA_KEY_EVENT) as KeyEvent
                     if (keyEvent.action != KeyEvent.ACTION_DOWN)
                         return
 
                     when (keyEvent.keyCode)
                     {
                         KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> if (!Constants.SONG_PAUSED) {
-                            Toast.makeText(context,Constants.HEADPHONE,Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context,Constants.HEADPHONE,Toast.LENGTH_SHORT).show()
                             Controls.playPauseControl(Constants.PAUSE)
 
                         } else {
@@ -51,24 +64,23 @@ public class PhoneStateReceiver : BroadcastReceiver(), AudioManager.OnAudioFocus
                     }
                 }
 
-                if (intent.getAction() == SongService.NOTIFY_PAUSEPLAY)
+                if (intent.action == SongService.NOTIFY_PAUSEPLAY)
                 {
 
-                    var status:String? = null
-
-                    if(Constants.SONG_PAUSED){
-                        status = Constants.PLAY
+                    var status: String = if(Constants.SONG_PAUSED){
+                        Constants.PLAY
                     } else {
-                        status = Constants.PAUSE
+                        Constants.PAUSE
                     }
+
                     Controls.playPauseControl(status)
 
                 }
-                else if (intent.getAction() == SongService.NOTIFY_NEXT) {
+                else if (intent.action == SongService.NOTIFY_NEXT) {
                     Controls.nextControl(context)
 
                 }
-                else if (intent.getAction() == SongService.NOTIFY_DELETE) {
+                else if (intent.action == SongService.NOTIFY_DELETE) {
 
                     val i = Intent(context, SongService::class.java)
                     context.stopService(i)
@@ -76,7 +88,7 @@ public class PhoneStateReceiver : BroadcastReceiver(), AudioManager.OnAudioFocus
                     Constants.PLAYER_UI?.sendMessage(Constants.PLAYER_UI?.obtainMessage(0))
 
                 }
-                else if (intent.getAction() == SongService.NOTIFY_PREVIOUS) {
+                else if (intent.action == SongService.NOTIFY_PREVIOUS) {
                     Controls.previousControl(context)
                 }
 
@@ -87,37 +99,7 @@ public class PhoneStateReceiver : BroadcastReceiver(), AudioManager.OnAudioFocus
 
     }
 
-    override fun onAudioFocusChange(p0: Int) {
-
-        if (SongService.mPlayer != null && !Constants.SELF_CHANGE) {
-            when (p0) {
-                AudioManager.AUDIOFOCUS_GAIN -> {
-                    Constants.SONG_PAUSED = false
-                    Controls.playPauseControl(Constants.PLAY)
-                }
-
-                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                    Controls.playPauseControl(Constants.PAUSE)
-                }
-
-                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                    Controls.playPauseControl(Constants.PAUSE)
-                    Handler().postDelayed({
-                        Controls.playPauseControl(Constants.PLAY)
-                    }, TimeUnit.SECONDS.toMillis(2))
-                }
-
-                AudioManager.AUDIOFOCUS_LOSS -> {
-                    Controls.playPauseControl(Constants.PAUSE)
-
-                }
-            }
-        }
-
-    }
-
-
-    fun ComponentName(): String {
+    fun componentName(): String {
         return this.javaClass.name
     }
 

@@ -74,8 +74,8 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
         val state = Environment.getExternalStorageState()
         val file = File(temp.url)
         var dialog = AlertDialog.Builder(cntxt).create()
-//        Log.i("File to delete",temp.song_name)
-//        Log.i("Song_name ",Home.shared.getString("song_name","name"))
+//        Log.i("File to delete",temp.songName)
+//        Log.i("Song_name ",Home.shared.getString("songName","name"))
         dialog.setMessage("Are you sure you want to delete this song permanently")
         dialog.setTitle("Confirm Delete")
         dialog.setCancelable(true)
@@ -86,7 +86,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
                 try
                 {
 //                    val actual_song_pos = Home.shared.getInt("actual_song_position",-1)
-                    if (Home.shared.getString("song_name","name").equals(temp.song_name)) {
+                    if (Home.shared.getString("songName","name").equals(temp.song_name)) {
                         Controls.nextControl(cntxt)
                     }
                 }
@@ -318,11 +318,11 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
         override fun onPostExecute(aBoolean: Boolean?) {
             super.onPostExecute(aBoolean)
-            val temp_name = Home.shared.getString("song_name", "alb")
+            val temp_name = Home.shared.getString("songName", "alb")
 
             val edit = Home.shared.edit()
 
-            try{ edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString("song_name","alb"))!!).apply()}catch (e:Exception){e.printStackTrace()}
+            try{ edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString("songName","alb"))!!).apply()}catch (e:Exception){e.printStackTrace()}
 
             try{ delete_from_RecentSong(delete_song_name!!) }catch (e:Exception){e.printStackTrace()}
 

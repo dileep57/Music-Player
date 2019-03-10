@@ -59,8 +59,8 @@ class DatabaseHelperAdapter(internal var context: Context) {
                 do {
 
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("song_name"))
-                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artist_name"))
+                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("songName"))
+                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artistName"))
                     val url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
                     val albumid = cursor.getLong(cursor.getColumnIndexOrThrow("album_id"))
                     val albumname = cursor.getString(cursor.getColumnIndexOrThrow("album_name"))
@@ -126,8 +126,8 @@ class DatabaseHelperAdapter(internal var context: Context) {
                 do {
 
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("song_name"))
-                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artist_name"))
+                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("songName"))
+                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artistName"))
                     val url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
                     val albumid = cursor.getLong(cursor.getColumnIndexOrThrow("album_id"))
                     val albumname = cursor.getString(cursor.getColumnIndexOrThrow("album_name"))
@@ -316,8 +316,8 @@ class DatabaseHelperAdapter(internal var context: Context) {
                 do {
 
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("song_name"))
-                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artist_name"))
+                    val song_name = cursor.getString(cursor.getColumnIndexOrThrow("songName"))
+                    val artist_name = cursor.getString(cursor.getColumnIndexOrThrow("artistName"))
                     val url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
                     val albumid = cursor.getLong(cursor.getColumnIndexOrThrow("album_id"))
                     val albumname = cursor.getString(cursor.getColumnIndexOrThrow("album_name"))
@@ -357,7 +357,7 @@ class DatabaseHelperAdapter(internal var context: Context) {
             db = database.readableDatabase
             val col = arrayOf(DataHelper.SONG_NAME)
             val selectionargs = arrayOf(song_name)
-            val cursor = db.rawQuery("SELECT id FROM Playlist WHERE song_name = '" + song_name + "' AND playlist_name = '" + playlist + "' ", null)
+            val cursor = db.rawQuery("SELECT id FROM Playlist WHERE songName = '" + song_name + "' AND playlist_name = '" + playlist + "' ", null)
             return cursor.count
         } catch (e: Exception) {
         } finally {
@@ -406,8 +406,8 @@ class DatabaseHelperAdapter(internal var context: Context) {
             internal val TABLE_NAME2 = "favourites"
             internal val Playlist_name = "playlist_name"
             internal val ID = "id"
-            internal val SONG_NAME = "song_name"
-            internal val ARTIST_NAME = "artist_name"
+            internal val SONG_NAME = "songName"
+            internal val ARTIST_NAME = "artistName"
             internal val URL = "url"
             internal val VERSION = 24
             internal val ALBUM_ID = "album_id"

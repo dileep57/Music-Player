@@ -1,12 +1,9 @@
 package com.mytech.lab.musicplayer.Activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
@@ -20,7 +17,6 @@ import com.mytech.lab.musicplayer.sub_sub_fragment.Playlist_single
 import com.mytech.lab.musicplayer.utils.DatabaseHelperAdapter
 import com.mytech.lab.musicplayer.utils.PlayerAbstractClass
 import com.mytech.lab.musicplayer.utils.Song_base
-import de.hdodenhof.circleimageview.CircleImageView
 import org.apache.commons.collections4.CollectionUtils
 
 
@@ -81,18 +77,18 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
     fun getviews()
     {
         helper =  DatabaseHelperAdapter(applicationContext)
-        song_name = findViewById(R.id.song_name)
+        songName = findViewById(R.id.song_name)
         songImage = findViewById(R.id.songImage)
-        artist_name = findViewById(R.id.artist_name)
+        artistName = findViewById(R.id.artist_name)
         banner = findViewById(R.id.center_banner)
         banner?.isClickable = false
         playandpause = findViewById(R.id.playandpause)
-        starttime = findViewById(R.id.start)
+        startTime = findViewById(R.id.start)
         endtime = findViewById(R.id.end)
         forward = findViewById(R.id.seekbar)
-        shuffle_image = findViewById(R.id.shuffle_image)
-        repeat_image = findViewById(R.id.repeat_image)
-        playandpause_image = findViewById(R.id.playandpause_image)
+        shuffleImage = findViewById(R.id.shuffle_image)
+        repeatImage = findViewById(R.id.repeat_image)
+        playAndPauseImage = findViewById(R.id.playandpause_image)
         shuffle = findViewById(R.id.shuffle)
         fav_head = findViewById(R.id.fav_id)
         fav_Image = findViewById(R.id.fav_image)
@@ -119,20 +115,20 @@ class GeneralPlayer : PlayerAbstractClass(), View.OnClickListener {
     override fun updateButtonUI() {
         try {
             if (Constants.SONG_PAUSED)
-                playandpause_image?.setImageResource(R.drawable.ic_play)
+                playAndPauseImage?.setImageResource(R.drawable.ic_play)
             else
-                playandpause_image?.setImageResource(R.drawable.ic_pause)
+                playAndPauseImage?.setImageResource(R.drawable.ic_pause)
 
 
             if(Constants.SONG_SHUFFLE==true)
-                shuffle_image?.setImageResource(R.drawable.ic_shuffle_orange)
+                shuffleImage?.setImageResource(R.drawable.ic_shuffle_orange)
             else
-                shuffle_image?.setImageResource(R.drawable.ic_shuffle_black)
+                shuffleImage?.setImageResource(R.drawable.ic_shuffle_black)
 
             if(Constants.SONG_REPEAT==true)
-                repeat_image?.setImageResource(R.drawable.ic_repeat_orange)
+                repeatImage?.setImageResource(R.drawable.ic_repeat_orange)
             else
-                repeat_image?.setImageResource(R.drawable.ic_repeat_black)
+                repeatImage?.setImageResource(R.drawable.ic_repeat_black)
 
         }catch (e:Exception){
             Log.i("Error",e.message)}

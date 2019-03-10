@@ -31,7 +31,11 @@ import java.util.ArrayList
 
 class Recent_song : Fragment() {
 //    internal var context: Context? = null
-    internal var helper: DatabaseHelperAdapter? = null
+    private var helper: DatabaseHelperAdapter? = null
+    private var recent_activity:TextView? = null
+    private var upper_card:CardView? = null
+    internal var recent: FastScrollRecyclerView? = null
+    internal var song_adapter: Song_Adapter? = null
 
 
 
@@ -88,37 +92,27 @@ class Recent_song : Fragment() {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                        Constants.servicearray("recent",album_name = null,artist_name = null,playlist_name = null,firstopen = false,cntx = context)
+                        Constants.servicearray(Constants.SONG_FROM_RECENT_SONG,album_name = null,artist_name = null,playlist_name = null,firstopen = false,cntx = context)
 
-                        var messagearg:String = ""
+                        var messagearg:String = "true"
 
-                        if("recent".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
-                        {
+                        if(Constants.SONG_FROM_RECENT_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true)) {
                             messagearg = "false"
-                        }
-                        else
-                        {
-                            messagearg = "true"
                         }
 
                         val actual_song_pos = Home.Songname_position.get(s.song_name)!!
                         Constants.mediaAfterprepared(null,context,s,actual_song_pos, position,"general",
-                                "recent")
+                                Constants.SONG_FROM_RECENT_SONG)
                         Constants.SONG_NUMBER = position
+
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
-                        if (!isServiceRunning)
-                        {
-                            val i = Intent(context, SongService::class.java)
-                            context.startService(i)
+                        if (!isServiceRunning) {
 
-
+                          Constants.startService(context)
                         } else {
-
                             Constants.SONG_CHANGE_HANDLER!!.sendMessage(Constants.SONG_CHANGE_HANDLER!!.obtainMessage(0,messagearg));
-
                         }
-
-                        Home.cardview.visibility = View.VISIBLE
+//                        Home().cardview?.visibility = View.VISIBLE
 
                     }
 
@@ -178,14 +172,10 @@ class Recent_song : Fragment() {
     }
 
     companion object {
-
-        internal var recent: FastScrollRecyclerView? = null
-        internal var song_adapter: Song_Adapter? = null
         internal lateinit var recent_song: ArrayList<Song_base>
-        var recent_activity:TextView? = null
-        var upper_card:CardView? = null
+    }
 
-        fun updaterecentsong(cntx: Context?) {
+       public fun updaterecentsong(cntx: Context?) {
             val helper = DatabaseHelperAdapter(cntx!!)
             recent_song = ArrayList()
             recent_song.clear()
@@ -197,7 +187,7 @@ class Recent_song : Fragment() {
 
         }
 
-        fun setvisibility()
+       public fun setvisibility()
         {
             if(recent_song.size>0)
             {
@@ -205,7 +195,6 @@ class Recent_song : Fragment() {
                 upper_card?.visibility = View.VISIBLE
             }
         }
-    }
 
 
     fun playwithpopmenu(pop: LinearLayout, temp: Song_base, position: Int)

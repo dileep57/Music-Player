@@ -45,7 +45,7 @@ class Album_expand :Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v:View = inflater.inflate(R.layout.sub_sub_fragment_album_expand,container,false);
 
-        album_name = arguments?.getString("album_name")
+        album_name = arguments?.getString(Constants.ALBUM_NAME)
         album_back_image = v.findViewById(R.id.album_image_back)
 
         recyclerView = v.findViewById(R.id.recycler_album_expand)
@@ -88,12 +88,12 @@ class Album_expand :Fragment() {
                 try {
 
 
-                    Constants.servicearray("album",album_name = s.album_name)
+                    Constants.servicearray(Constants.SONG_FROM_ALBUM,album_name = s.album_name)
                     var messagearg:String = ""
 
-                    if("album".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                    if(Constants.SONG_FROM_ALBUM.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
-                        if(Home.shared.getString("album_name","alb").equals(s.album_name,ignoreCase = true))
+                        if(Home.shared.getString(Constants.ALBUM_NAME,"alb").equals(s.album_name,ignoreCase = true))
                         {
                             messagearg = "false"
                         }
@@ -110,7 +110,7 @@ class Album_expand :Fragment() {
                     val actual_song_pos = Home.albummap[s.album_name]!!.get(position).second
 //
                     Constants.mediaAfterprepared(null,context,s,actual_song_pos, position,"general",
-                            "album")
+                            Constants.SONG_FROM_ALBUM)
 
                     Constants.SONG_NUMBER = position
 
@@ -124,7 +124,7 @@ class Album_expand :Fragment() {
 
                     }
 
-                    Home.cardview.visibility = View.VISIBLE
+                    Home().cardview?.visibility = View.VISIBLE
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

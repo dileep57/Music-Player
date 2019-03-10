@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import com.mytech.lab.musicplayer.*
@@ -22,12 +23,14 @@ import java.util.ArrayList
 /**
  * Created by lnx on 13/3/18.
  */
-class Playlist_single : Fragment() {
+class Playlist_single : android.support.v4.app.Fragment() {
 
 
     internal var cntx: Context? = null
     private var playlist_song:ArrayList<Song_base>? = null
     private lateinit var playlist_name:String
+    internal var song_adapter:Song_Adapter?=null
+    lateinit var helper: DatabaseHelperAdapter
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -43,7 +46,7 @@ class Playlist_single : Fragment() {
 
         playlist_name = arguments!!.getString("name")
 
-        val helper = DatabaseHelperAdapter(v.context)
+        helper = DatabaseHelperAdapter(v.context)
 
         if(playlist_name.equals("Recent_add_song",ignoreCase = true))
         {
@@ -62,7 +65,6 @@ class Playlist_single : Fragment() {
         val recyclerView:FastScrollRecyclerView = v.findViewById(R.id.recycler_single)
         recyclerView.layoutManager = LinearLayoutManager(v.context)
         recyclerView.setHasFixedSize(true)
-
         song_adapter = Song_Adapter(playlist_song!!,v.context)
 
         recyclerView.adapter = song_adapter
@@ -76,10 +78,10 @@ class Playlist_single : Fragment() {
 
 
                 try {
-                    Constants.servicearray("popup_playlist",s.album_name,s.artist,playlist,false,context)
+                    Constants.servicearray(Constants.POPUP_PLAYLIST,s.album_name,s.artist,playlist,false,context)
 
                     var messagearg:String = ""
-                    if("popup_playlist".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                    if(Constants.POPUP_PLAYLIST.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
                         if(Home.shared.getString("playlist","alb").equals(playlist,ignoreCase = true))
                         {
@@ -97,26 +99,23 @@ class Playlist_single : Fragment() {
 
                     val actual_song_pos = Home.Songname_position.get(s.song_name)!!
                     Constants.mediaAfterprepared(null,cntx,s,actual_song_pos, position,"general",
-                            "popup_playlist",playlist)
+                            Constants.POPUP_PLAYLIST,playlist)
 
                         Constants.SONG_NUMBER = position
                         val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx!!)
                         if (!isServiceRunning)
                         {
-                            val i = Intent(cntx, SongService::class.java)
-                            cntx!!.startService(i)
-
-
+                            Constants.startService(cntx!!)
                         } else {
-
-                            Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg));
+                            Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,messagearg))
 
                         }
 
-                        Home.cardview.visibility = View.VISIBLE
+//                        Home().cardview?.visibility = View.VISIBLE
 
                 } catch (e: Exception) {
-                    Home.filenotsupport()
+                    Log.e("Error",e.message)
+                    Home.filenotsupport(cntx!!)
                 }
             }
 
@@ -193,13 +192,9 @@ class Playlist_single : Fragment() {
         popup.show()
     }
 
-    companion object {
-        internal var song_adapter:Song_Adapter?=null
-        fun notify_change()
+        public fun notify_change()
         {
             song_adapter?.notifyDataSetChanged()
         }
-    }
-
 
 }

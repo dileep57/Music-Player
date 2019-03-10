@@ -173,7 +173,7 @@ class Folder : Fragment() {
                 Constants.SONG_NUMBER = 0
 //                Log.i("FileName ",file.name)
                 Constants.mediaAfterprepared(null,context,s,position, position,
-                        "general", "folder")
+                        "general", Constants.SONG_FROM_FOLDER)
 
                 val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
                 if (!isServiceRunning)
@@ -186,7 +186,7 @@ class Folder : Fragment() {
                     Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,"false"))
                 }
 
-                Home.cardview.visibility = View.VISIBLE
+                Home().cardview?.visibility = View.VISIBLE
             }
 
 

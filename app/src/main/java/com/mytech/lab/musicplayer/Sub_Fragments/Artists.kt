@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
 import com.mytech.lab.musicplayer.Activity.Home
+import com.mytech.lab.musicplayer.Constants
 import com.mytech.lab.musicplayer.R
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Artist_adapter
 import com.mytech.lab.musicplayer.sub_sub_fragment.Artist_expand
@@ -72,13 +73,13 @@ class Artists : Fragment() {
     fun commm(context: Context?) {
         artist_adapter?.setCommnicator { v, s, position ->
             val bundle = Bundle()
-            bundle.putString("artist_name", s.artist)
+            bundle.putString(Constants.ARTIST_NAME, s.artist)
             val frag = Artist_expand()
             frag.arguments = bundle
             val manager = activity!!.supportFragmentManager
             val transaction = manager.beginTransaction()
             transaction.replace(R.id.root_frame, frag)
-            transaction.addToBackStack("artist")
+            transaction.addToBackStack(Constants.SONG_FROM_ARTIST)
             transaction.commit()
         }
     }

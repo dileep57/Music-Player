@@ -32,10 +32,10 @@ class Song_library_Act : AppCompatActivity() {
     internal lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(Wel.colorshared.getInt("themename",-1)!=-1)
+        if(Wel.colorshared.getInt(Constants.THEMENAME,-1)!=-1)
         {
 
-            setTheme(Wel.colorshared.getInt("themename", R.style.AppFullScreenTheme))
+            setTheme(Wel.colorshared.getInt(Constants.THEMENAME, R.style.AppFullScreenTheme))
         }
 
         super.onCreate(savedInstanceState)
@@ -103,10 +103,10 @@ class Song_library_Act : AppCompatActivity() {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                    Constants.servicearray("only_song")
+                    Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
 
                     var messagearg:String = ""
-                    if("only_song".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                    if(Constants.SONG_FROM_ONLY_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                     {
                         messagearg = "false"
                     }
@@ -117,30 +117,17 @@ class Song_library_Act : AppCompatActivity() {
 
 
                     Constants.mediaAfterprepared(null, context, s, position, position,
-                            "general", "only_song")
+                            "general", Constants.SONG_FROM_ONLY_SONG)
 
                     Constants.SONG_NUMBER = position
                     val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), applicationContext)
 
-                    if (!isServiceRunning)
-                    {
-                        val i = Intent(applicationContext, SongService::class.java)
-                        //startService(i)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            startForegroundService(i)
-                        } else {
-                            startService(i)
-                        }
+                    if (!isServiceRunning) {
+                      Constants.startService(applicationContext)
 
                     } else {
-
                         Constants.SONG_CHANGE_HANDLER!!.sendMessage(Constants.SONG_CHANGE_HANDLER!!.obtainMessage(0,messagearg));
-
                     }
-
-
-
-                    Home.cardview.visibility = View.VISIBLE
 
                 }
                 catch (e: IOException) {

@@ -15,7 +15,6 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.*
 import com.mytech.lab.musicplayer.Activity.Home
-import com.mytech.lab.musicplayer.Activity.Home.Companion.helper
 import com.mytech.lab.musicplayer.Fragments.Recent_song
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.Sub_Fragments.Playlist
@@ -26,9 +25,9 @@ import java.io.File
 import android.support.v4.content.ContextCompat.startActivity
 
 
-
 class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var position: Int,var cntxt:Context) {
 
+    private val helper: DatabaseHelperAdapter = DatabaseHelperAdapter(cntxt)
     fun play()
     {
         Constants.SONGS_LIST.clear()
@@ -45,7 +44,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
             Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,"false"))
         }
 
-        Home.cardview.visibility = View.VISIBLE
+        Home().cardview?.visibility = View.VISIBLE
 
         Home.shared.edit().putString("current_album","mixed").apply()
     }
@@ -75,24 +74,24 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
         val state = Environment.getExternalStorageState()
         val file = File(temp.url)
         var dialog = AlertDialog.Builder(cntxt).create()
-//        Log.i("File to delete",temp.song_name)
-//        Log.i("Song_name ",Home.shared.getString("song_name","name"))
+//        Log.i("File to delete",temp.songName)
+//        Log.i("Song_name ",Home.shared.getString("songName","name"))
         dialog.setMessage("Are you sure you want to delete this song permanently")
         dialog.setTitle("Confirm Delete")
         dialog.setCancelable(true)
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", { dialogInterface, i ->
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes") { dialogInterface, i ->
 
             val deleted = file.delete()
             if (deleted) {
                 try
                 {
 //                    val actual_song_pos = Home.shared.getInt("actual_song_position",-1)
-                    if (Home.shared.getString("song_name","name").equals(temp.song_name)) {
+                    if (Home.shared.getString("songName","name").equals(temp.song_name)) {
                         Controls.nextControl(cntxt)
                     }
                 }
 
-                catch (e:Exception){Home.filenotsupport()}
+                catch (e:Exception){Home.filenotsupport(cntxt)}
 
                 song_array?.removeAt(position)
                 Home.all_songs.removeAt(position)
@@ -122,12 +121,12 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
             }
             dialog.dismiss()
-        })
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE,"No",{
+        }
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE,"No") {
             dialogInterface, i ->
             dialog.dismiss()
 
-        })
+        }
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation
         dialog.show()
     }
@@ -180,7 +179,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
     fun removeFromPlaylist(songName:String,playListName:String,song_adapter:Song_Adapter?=null,playlist_ar:ArrayList<Song_base>?=null)
     {
-        helper.deletesong_for_playlist(songName,playListName)
+        helper?.deletesong_for_playlist(songName,playListName)
         playlist_ar!!.removeAt(position)
         song_adapter?.notifyItemRemoved(position)
         song_adapter?.notifyItemRangeChanged(position,playlist_ar.size)
@@ -193,7 +192,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
             Toast.makeText(cntxt,"No Playlist",Toast.LENGTH_SHORT).show()
             return
         }
-        helper = DatabaseHelperAdapter(cntxt)
+
         val detail = AlertDialog.Builder(cntxt)
         val dt = inflater1.inflate(R.layout.dialog_all_playlist, null)
         detail.setView(dt)
@@ -201,7 +200,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
         val lis: ListView = dt.findViewById(R.id.all_playlist)
 
-        val all_lis:ArrayList<String> = helper.fetchdistinctplaylist()
+        val all_lis:ArrayList<String> = helper!!.fetchdistinctplaylist()
 
         var all_list_array: ArrayAdapter<String> = ArrayAdapter(cntxt,android.R.layout.simple_expandable_list_item_1,all_lis)
 
@@ -218,7 +217,7 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
             }
             else
             {
-                var check:Long = helper.insert_in_any_table(temp.song_name,temp.artist,temp.url,temp.albumId.toString(),temp.album_name,position,temp.duration,0,"Playlist",single_lis_name)
+                var check:Long = helper!!.insert_in_any_table(temp.song_name,temp.artist,temp.url,temp.albumId.toString(),temp.album_name,position,temp.duration,0,"Playlist",single_lis_name)
 
                 if(check>0)
                 {
@@ -266,14 +265,14 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
     fun addToFavrioute()
     {
-        if(Home.helper.checkexists_for_song_in_table(temp.song_name,"favourites")<=0)
+        if(helper!!.checkexists_for_song_in_table(temp.song_name,"favourites")<=0)
         {
             val position = Home.Songname_position.get(temp.song_name)!!
-            var check:Long = Home.helper.insert_in_any_table(temp.song_name,temp.artist,temp.url,temp.albumId.toString(),temp.album_name,position,temp.duration,2,"favourites",null)
+            var check:Long = helper!!.insert_in_any_table(temp.song_name,temp.artist,temp.url,temp.albumId.toString(),temp.album_name,position,temp.duration,2,"favourites",null)
 
             if(check>0)
             {
-                Playlist_single.notify_change()
+                Playlist_single().notify_change()
                 Toast.makeText(cntxt, "1 song added to Favourite Song", Toast.LENGTH_SHORT).show()
             }
         }
@@ -319,11 +318,11 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
 
         override fun onPostExecute(aBoolean: Boolean?) {
             super.onPostExecute(aBoolean)
-            val temp_name = Home.shared.getString("song_name", "alb")
+            val temp_name = Home.shared.getString("songName", "alb")
 
             val edit = Home.shared.edit()
 
-            try{ edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString("song_name","alb"))!!).apply()}catch (e:Exception){e.printStackTrace()}
+            try{ edit.putInt("actual_song_position", Home.Songname_position.get(Home.shared.getString("songName","alb"))!!).apply()}catch (e:Exception){e.printStackTrace()}
 
             try{ delete_from_RecentSong(delete_song_name!!) }catch (e:Exception){e.printStackTrace()}
 
@@ -333,45 +332,45 @@ class SongAdapter_Functionality(var pop: LinearLayout, var temp: Song_base, var 
     }
     private fun delete_from_RecentSong(delete_song_name:String)
     {
-        if (helper.checkexists_for_song_in_table(delete_song_name,"RecentSong") > 0)
+        if (helper!!.checkexists_for_song_in_table(delete_song_name,"RecentSong") > 0)
         {
-            helper.deletesong_for_table(delete_song_name,"RecentSong")
+            helper?.deletesong_for_table(delete_song_name,"RecentSong")
 
-            val lis = helper.getalldata_table("RecentSong")
+            val lis = helper!!.getalldata_table("RecentSong")
 
             for (s in lis) {
-                helper.update_position(s.song_name, Home.Songname_position.get(s.song_name)!!)
+                helper?.update_position(s.song_name, Home.Songname_position.get(s.song_name)!!)
             }
-            Recent_song.updaterecentsong(cntxt)
+            Recent_song().updaterecentsong(cntxt)
         }
-        helper.closedatabase()
+//        helper.closedatabase(null)
     }
 
 
     private fun delete_from_all_playlist(delete_song_name:String)
     {
-        for(playlist_name in helper.fetchdistinctplaylist())
+        for(playlist_name in helper!!.fetchdistinctplaylist())
         {
-            if (helper.checkexistance_of_song_in_playlist(delete_song_name,playlist_name) > 0)
+            if (helper!!.checkexistance_of_song_in_playlist(delete_song_name,playlist_name) > 0)
             {
-                helper.deletesong_for_playlist(delete_song_name,playlist_name)
+                helper!!.deletesong_for_playlist(delete_song_name,playlist_name)
 
-                val lis = helper.getalldata_playlist(playlist_name)
+                val lis = helper!!.getalldata_playlist(playlist_name)
 
                 for (s:Song_base in lis)
                 {
-                    helper.update_position(s.song_name, Home.Songname_position.get(s.song_name)!!)
+                    helper!!.update_position(s.song_name, Home.Songname_position.get(s.song_name)!!)
                 }
 
             }
 
         }
 
-        if (Home.helper.checkexists_for_song_in_table(delete_song_name, "favourites") > 0)
+        if (helper!!.checkexists_for_song_in_table(delete_song_name, "favourites") > 0)
         {
-            Home.helper.deletesong_for_table(delete_song_name, "favourites")
+            helper!!.deletesong_for_table(delete_song_name, "favourites")
         }
-        helper.closedatabase()
+//        helper.closedatabase(null)
 
         Playlist().notifychange()
     }

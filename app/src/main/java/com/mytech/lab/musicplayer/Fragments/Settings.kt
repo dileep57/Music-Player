@@ -253,18 +253,18 @@ class Settings : Fragment() {
                     dialog.setMessage("Below 15 is too low it may hang your device Click Default to set default else ok")
                     dialog.setTitle("Confirm")
                     dialog.setCancelable(true)
-                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Default", { dialogInterface, i ->
+                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Default") { dialogInterface, i ->
 
                         force_right.setText("15")
                         AccelerometerManager.configure(15,1000)
-                    })
+                    }
 
-                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE,"Ok",{ dialogInterface, i ->
+                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE,"Ok") { dialogInterface, i ->
 
                         force_right.setText(seek.progress.toString())
                         AccelerometerManager.configure(seek.progress.toString().toInt(),1000)
 
-                    })
+                    }
 
                     dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation
                     dialog.show()

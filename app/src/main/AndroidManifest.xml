@@ -19,7 +19,7 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -28,7 +28,9 @@
         android:theme="@style/Crimson">
         <activity android:name=".Activity.Wel"
                   android:theme="@style/playertheme"
-                  android:exported="true">
+                  android:exported="true"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,22 +38,30 @@
         </activity>
         <activity
             android:name=".Activity.Song_library_Act"
-            android:parentActivityName=".Activity.Wel" />
+            android:parentActivityName=".Activity.Wel"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
         <activity
             android:name=".Activity.MusicPlayer"
             android:parentActivityName=".Activity.Wel"
-            android:theme="@style/playertheme" />
+            android:theme="@style/playertheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activity.Home" />
+        <activity android:name=".Activity.Home"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation|keyboardHidden"/>
 
         <service
             android:name=".SongService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <receiver android:name=".utils.PhoneStateReceiver">
             <intent-filter>
@@ -81,7 +91,9 @@
 
         </receiver>
 
-        <activity android:name=".Activity.GeneralPlayer"></activity>
+        <activity android:name=".Activity.GeneralPlayer"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation|keyboardHidden"></activity>
     </application>
 
 </manifest>

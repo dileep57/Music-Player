@@ -59,12 +59,10 @@ object Controls {
         if (Constants.SONGS_LIST.size > 0) {
             if (Constants.SONG_NUMBER > 0) {
 
-                if(Constants.SONG_REPEAT)
-                {
+                if(Constants.SONG_REPEAT) {
                     Constants.SONG_NUMBER
                 }
-                else
-                {
+                else {
                     Constants.SONG_NUMBER--
                 }
                 Constants.SONG_CHANGE_HANDLER?.sendMessage(Constants.SONG_CHANGE_HANDLER?.obtainMessage(0,"false"))

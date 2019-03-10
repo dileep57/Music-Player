@@ -21,7 +21,6 @@ import android.webkit.WebView
 import android.widget.*
 import com.mytech.lab.musicplayer.*
 import com.mytech.lab.musicplayer.Activity.Home
-import com.mytech.lab.musicplayer.Activity.Home.Companion.helper
 
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Song_Adapter
 import com.mytech.lab.musicplayer.sub_sub_fragment.Playlist_single
@@ -44,7 +43,7 @@ class Songs : Fragment() {
     internal var handler = Handler()
     internal lateinit var recyclerView: FastScrollRecyclerView
     var mediaPlayer: MediaPlayer? = null
-
+    var adapter: Song_Adapter? = null
 
     lateinit var cntx: Context
 
@@ -65,7 +64,7 @@ class Songs : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val edit = Home.shared.edit()
-        edit.putString("current_album","mixed").apply()
+        edit.putString(Constants.CURRENT_ALBUM, "mixed").apply()
 
         when(item!!.itemId)
         {
@@ -132,43 +131,28 @@ class Songs : Fragment() {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
 
                 try {
-                        Constants.servicearray("only_song")
-
-                        var messagearg:String = ""
-                        if("only_song".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+                        Constants.servicearray(Constants.SONG_FROM_ONLY_SONG)
+                        var messagearg:String = "true"
+                        if(Constants.SONG_FROM_ONLY_SONG.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
                         {
                             messagearg = "false"
                         }
-                        else
-                        {
-                            messagearg = "true"
-                        }
 
                         Constants.mediaAfterprepared(mediaPlayer,context,s,position, position,
-                                "general", "only_song")
+                                "general", Constants.SONG_FROM_ONLY_SONG)
 
                     Constants.SONG_NUMBER = position
                     val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), cntx)
 
-                        if (!isServiceRunning)
-                        {
-                            val i = Intent(cntx, SongService::class.java)
-                            //cntx.startService(i)
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                cntx.startForegroundService(i);
-                            } else {
-                                cntx.startService(i);
-                            }
+                        if (!isServiceRunning) {
+                           Constants.startService(cntx)
 
                         } else {
-
                             val msg = Message.obtain()
                             msg.obj = messagearg
                             Constants.SONG_CHANGE_HANDLER?.sendMessage(msg)
 
                         }
-
-                        Home.cardvisible()
 
                 }
                  catch (e: IOException) {
@@ -237,9 +221,6 @@ class Songs : Fragment() {
 
     }
 
-    companion object {
-        var adapter: Song_Adapter? = null
-    }
 
     override fun onResume() {
         super.onResume()

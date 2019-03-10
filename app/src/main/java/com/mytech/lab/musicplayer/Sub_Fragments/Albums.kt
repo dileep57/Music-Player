@@ -11,6 +11,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import com.mytech.lab.musicplayer.Activity.Home
+import com.mytech.lab.musicplayer.Constants
 import com.mytech.lab.musicplayer.R
 import com.mytech.lab.musicplayer.Recyclerview_adapter.Album_adapter
 import com.mytech.lab.musicplayer.sub_sub_fragment.Album_expand
@@ -26,7 +27,8 @@ class Albums : Fragment() {
 
     internal lateinit var recyclerView: FastScrollRecyclerView
     internal  var cntxt: Context? = null
-
+    internal var album_adapter: Album_adapter? = null
+    private var cntx : Context? = null
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.cntxt = context
@@ -127,13 +129,13 @@ class Albums : Fragment() {
         album_adapter?.setCommnicator(object : Album_adapter.Communicator {
             override fun clickonplaybutton(v: View, s: Song_base, position: Int) {
                 val bundle = Bundle()
-                bundle.putString("album_name", s.album_name)
+                bundle.putString(Constants.ALBUM_NAME, s.album_name)
                 val frag = Album_expand()
                 frag.arguments = bundle
                 val manager = activity!!.supportFragmentManager
                 val transaction = manager.beginTransaction()
                 transaction.replace(R.id.album_root_frame, frag)
-                transaction.addToBackStack("album")
+                transaction.addToBackStack(Constants.SONG_FROM_ALBUM)
                 transaction.commit()
 
 
@@ -143,9 +145,7 @@ class Albums : Fragment() {
     }
 
     companion object {
-        internal var album_adapter: Album_adapter? = null
         var album_number: Int = 0
-        private var cntx : Context? = null
 
     }
 

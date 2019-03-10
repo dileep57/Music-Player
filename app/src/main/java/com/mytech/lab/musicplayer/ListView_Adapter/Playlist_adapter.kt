@@ -75,7 +75,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                         notifyDataSetChanged()
                                         Playlist.playlist_name_array.remove(nameofplaylist)
                                         Playlist().notifychange()
-                                        Home.helper.deleteplaylist(nameofplaylist)
+                                        Home().helper?.deleteplaylist(nameofplaylist)
                                     }
                                     else
                                     {
@@ -129,7 +129,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                 {
                                     Constants.SONGS_LIST.add(Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
                         }
 
@@ -142,7 +142,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                                 {
                                     Constants.SONGS_LIST.add(Constants.SONG_NUMBER+1,Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
                             else
                             {
@@ -150,7 +150,6 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
                             }
 
                         }
-
 
                     }
                     return true
@@ -167,8 +166,8 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
     private fun forPlaySong(nameofplaylist:String)
     {
 
-        var base =  Home.helper.getalldata_playlist(nameofplaylist)
-        if(base.size>0)
+        var base =  Home().helper?.getalldata_playlist(nameofplaylist)
+        if(base != null && base!!.size>0)
         {
             val actual_song_pos = Home.Songname_position.get(base.get(0).song_name)!!
             Constants.servicearray("popup_playlist",base.get(0).album_name,base.get(0).artist,nameofplaylist,false,context)
@@ -197,9 +196,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
             if (!isServiceRunning)
             {
-                val i = Intent(context, SongService::class.java)
-                context!!.startService(i)
-
+              Constants.startService(context)
 
             } else {
 
@@ -207,7 +204,7 @@ class Playlist_adapter(context: Context, playlist_string: ArrayList<String>) : A
 
             }
 
-           Home.cardvisible()
+            Home().cardview?.visibility = View.VISIBLE
 
         }
         else

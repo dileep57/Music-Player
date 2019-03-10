@@ -60,9 +60,9 @@ class Playlist : Fragment() {
         getview(v)
 
         playlist_name_array = helper.fetchdistinctplaylist()
-        if(playlist_name_array.contains("favourites"))
+        if(playlist_name_array.contains(Constants.PLAYLIST_FAV))
         {
-            playlist_name_array.remove("favourites")
+            playlist_name_array.remove(Constants.PLAYLIST_FAV)
         }
 
         fab.setOnClickListener {
@@ -97,7 +97,7 @@ class Playlist : Fragment() {
 
                             R.id.Shuffle_all_playlist ->
                             {
-                                Home.shared.edit().putBoolean("shuffle",true).apply()
+                                Home.shared.edit().putBoolean(Constants.SHUFFLE,true).apply()
                                 forrecent_and_favourite_song("Recent_add_song")
                             }
 
@@ -123,7 +123,7 @@ class Playlist : Fragment() {
                                         Constants.SONGS_LIST.add(Constants.SONG_NUMBER+1,Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                     }
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
 
                         }
@@ -138,7 +138,7 @@ class Playlist : Fragment() {
 
 
         favuorites.setOnClickListener {
-             open_frag("favourites")
+             open_frag(Constants.PLAYLIST_FAV)
         }
 
         fav_side_popup?.setOnClickListener {
@@ -156,16 +156,16 @@ class Playlist : Fragment() {
 
                         R.id.play_playlist ->
                         {
-                            forrecent_and_favourite_song("favourites")
+                            forrecent_and_favourite_song(Constants.PLAYLIST_FAV)
                         }
 
                         R.id.Shuffle_all_playlist ->
                         {
 
-                            if(helper.getalldata_table("favourites").size>0)
+                            if(helper.getalldata_table(Constants.PLAYLIST_FAV).size>0)
                             {
-                                Home.shared.edit().putBoolean("shuffle",true).apply()
-                                forrecent_and_favourite_song("favourites")
+                                Home.shared.edit().putBoolean(Constants.SHUFFLE,true).apply()
+                                forrecent_and_favourite_song(Constants.PLAYLIST_FAV)
                             }
                             else
                             {
@@ -177,7 +177,7 @@ class Playlist : Fragment() {
 
                         R.id.add_to_queue ->
                         {
-                            var base =  helper.getalldata_table("favourites")
+                            var base =  helper.getalldata_table(Constants.PLAYLIST_FAV)
                             if(base.size>0)
                             {
                                 for(temp in base)
@@ -193,14 +193,14 @@ class Playlist : Fragment() {
 
                         R.id.play_next ->{
 
-                            var base =  helper.getalldata_table("favourites")
+                            var base =  helper.getalldata_table(Constants.PLAYLIST_FAV)
                             if(base.size>0)
                             {
                                 for(temp in base)
                                 {
                                     Constants.SONGS_LIST.add(Constants.SONG_NUMBER+1,Pair(temp,Home.Songname_position.get(temp.song_name)!!))
                                 }
-                                Home.shared.edit().putString("current_album","mixup").apply()
+                                Home.shared.edit().putString(Constants.CURRENT_ALBUM,"mixup").apply()
                             }
                             else
                             {
@@ -252,12 +252,12 @@ class Playlist : Fragment() {
         if(base.size>0)
         {
             val actual_song_pos = Home.Songname_position.get(base.get(0).song_name)!!
-            Constants.servicearray("popup_playlist",base.get(0).album_name,base.get(0).artist,table_name,false,context)
+            Constants.servicearray(Constants.POPUP_PLAYLIST,base.get(0).album_name,base.get(0).artist,table_name,false,context)
 
             var messagearg:String = ""
-            if("popup_playlist".equals(Home.shared.getString("current_album","alb"),ignoreCase = true))
+            if(Constants.POPUP_PLAYLIST.equals(Home.shared.getString(Constants.CURRENT_ALBUM,"alb"),ignoreCase = true))
             {
-                if(Home.shared.getString("playlist","alb").equals(table_name,ignoreCase = true))
+                if(Home.shared.getString(Constants.SONG_FROM_PLAYLIST,"alb").equals(table_name,ignoreCase = true))
                 {
                     messagearg = "false"
                 }
@@ -272,7 +272,7 @@ class Playlist : Fragment() {
             }
 
             Constants.mediaAfterprepared(null,context,base.get(0),actual_song_pos,0,"general",
-                    "popup_playlist",table_name)
+                    Constants.POPUP_PLAYLIST,table_name)
             Constants.SONG_NUMBER = 0
 
             val isServiceRunning = Constants.isServiceRunning(SongService::class.java.getName(), context!!)
@@ -288,7 +288,7 @@ class Playlist : Fragment() {
 
             }
 
-            Home.cardvisible()
+            Home().cardview?.visibility = View.VISIBLE
 
         }
         else
@@ -337,14 +337,11 @@ class Playlist : Fragment() {
         var textinput : TextInputLayout = dp.findViewById(R.id.username_textinputlayout);
 
         create.setOnClickListener {
-            if(name.getText().toString().isEmpty())
-            {
+            if(name.getText().toString().isEmpty()) {
                 textinput.setError("PlayList Name Is Mandatory")
                 isvalid = false;
 
-            }
-            else
-            {
+            } else {
                 textinput.setErrorEnabled(false);
                 isvalid = true;
             }
@@ -353,7 +350,7 @@ class Playlist : Fragment() {
             {
 
                 var temp: Long = 0
-                if(name.text.toString().toLowerCase()=="favourites")
+                if(name.text.toString().toLowerCase()==Constants.PLAYLIST_FAV)
                 {
                     playlist_already_exists()
                     return@setOnClickListener
@@ -364,9 +361,7 @@ class Playlist : Fragment() {
                     Playlist.playlist_name_array.add(name.text.toString())
                     Playlist().notifychange()
 
-                }
-                else
-                {
+                } else {
                    playlist_already_exists()
                 }
 
@@ -418,13 +413,12 @@ class Playlist : Fragment() {
 
         var adapter:ArrayAdapter<String>? = null
         lateinit var playlist_name_array:ArrayList<String>
-        internal lateinit var hide_txt:TextView
 
     }
 
     fun notifychange() {
         adapter?.notifyDataSetChanged()
-        Playlist_single.notify_change()
+        Playlist_single().notify_change()
     }
 
     private fun getview(v:View)
